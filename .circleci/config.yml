@@ -21,3 +21,9 @@ jobs:
           paths:
             - ./node_modules
       - run: 'npm test'
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - test_frontend
