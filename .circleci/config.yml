@@ -15,19 +15,19 @@ jobs:
           name: Update NPM
           command: sudo -H npm install -g npm@latest
       - restore_cache:
-          key: dependency-cache-{{ checksum "$CIRCLE_WORKING_DIRECTORY/frontend/package.json" }}
+          key: dependency-cache-{{ checksum "./frontend/package.json" }}
       - run: 
           name: Install Dependencies
           command: npm install
-          working_directory: $CIRCLE_WORKING_DIRECTORY/frontend
+          working_directory: ~/project/frontend
       - save_cache:
-          key: dependency-cache-{{ checksum "$CIRCLE_WORKING_DIRECTORY/frontend/package.json" }}
+          key: dependency-cache-{{ checksum "./frontend/package.json" }}
           paths:
-            - $CIRCLE_WORKING_DIRECTORY/frontend/node_modules
+            - ~/project/frontend/node_modules
       - run: 
           name: 'Test Front-End'
           command: npm test
-          working_directory: $CIRCLE_WORKING_DIRECTORY/frontend
+          working_directory: ~/project/frontend
 workflows:
   version: 2
   build:
