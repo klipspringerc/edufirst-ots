@@ -11,9 +11,6 @@ jobs:
       - image: circleci/node:latest
     steps:
       - checkout
-      - run:
-          name: Update NPM
-          command: sudo -H npm install -g npm@latest
       - restore_cache:
           key: dependency-cache-{{ checksum "./frontend/package.json" }}
       - run: 
