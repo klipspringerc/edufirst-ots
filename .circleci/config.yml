@@ -1,8 +1,33 @@
 version: 2
 jobs:
-   build:
-     docker:
-       - image: circleci/python:3.6
-     steps:
-       - checkout
-       - run: echo "no tests implemented yet"
+  build:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run: echo "no tests implemented yet"
+  test_frontend:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "./frontend/package.json" }}
+      - run: 
+          name: Install Dependencies
+          command: npm install
+          working_directory: ~/project/frontend
+      - save_cache:
+          key: dependency-cache-{{ checksum "./frontend/package.json" }}
+          paths:
+            - ~/project/frontend/node_modules
+      - run: 
+          name: 'Test Front-End'
+          command: npm test
+          working_directory: ~/project/frontend
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - test_frontend
