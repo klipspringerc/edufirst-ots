@@ -9,7 +9,8 @@ jobs:
       - run: 
           name: Run Python Test
           command: |
-            pip install -r ./backend/requirements.txt
+            export PATH=~/.local/bin:$PATH
+            pip install --user -r ./backend/requirements.txt
             pushd ./backend/edufirst
             pytest
             popd
