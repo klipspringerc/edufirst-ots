@@ -1,11 +1,18 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/edufirst-ots
     docker:
       - image: circleci/python:3.6
     steps:
       - checkout
-      - run: echo "no tests implemented yet"
+      - run: 
+          name: Run Python Test
+          command: |
+		pip install -r ./backend/requirements.txt
+                pushd ./backend/edufirst
+		pytest
+		popd
   test_frontend:
     docker:
       - image: circleci/node:latest
