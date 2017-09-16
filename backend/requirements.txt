@@ -1,5 +1,4 @@
 Django==1.11.5
 py==1.4.34
-pyspark==2.1.1+hadoop2.7
 pytest==3.2.2
 pytz==2017.2
