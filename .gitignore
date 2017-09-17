@@ -166,4 +166,7 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+# Mac OS attributes tracking file
+*.DS_Store
+
 # dotenv environment variables file
