@@ -4,11 +4,6 @@ import './App.css';
 import {form} from 'react-form';
 import {connect} from 'react-redux';
 
-@connect((store)=>{
-    return{
-        user: store.user
-    }
-})
 class App extends Component {
 
     constructor(props) {
