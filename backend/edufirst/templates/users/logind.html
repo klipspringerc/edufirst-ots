@@ -1,0 +1,26 @@
+{% extends 'debug-base.html' %}
+
+{% block content %}
+
+{% if errormsg %}
+{{ errormsg }}
+<br />
+<br />
+{% endif %}
+
+<h1>login form</h1>
+<form method="POST" action="{% url 'users:login' %}">
+    {% csrf_token %}
+    Username:
+    <br/>
+    <input type="text" name="username"/>
+    <br/>
+    Password:
+    <br/>
+    <input type="password" name="password"/>
+    <br/>
+    <br/>
+    <input class="btn btn-primary" type="submit" value="login">
+</form>
+
+{% endblock %}

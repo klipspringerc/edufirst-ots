@@ -3,15 +3,15 @@ jobs:
   test_backend:
     working_directory: ~/edufirst-ots
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:2.7
     steps:
       - checkout
       - run: 
-          name: Run Python Test
+          name: Run Python Unit Test
           command: |
             export PATH=~/.local/bin:$PATH
             pip install --user -r ./backend/requirements.txt
-            pushd ./backend/edufirst
+            pushd ./backend
             pytest
             popd
   test_frontend:
