@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 
 @connect((store)=>{
     return{
-        user: store.user.user
+        user: store.user
     }
 })
 class App extends Component {
