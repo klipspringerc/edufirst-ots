@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from edufirst.views import debug_homeview
-from posts.views import all_posts_view
+from posts.views import all_posts_view, all_topics_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/users/', include('users.urls')),
     url(r'^api/v1/posts/', include('posts.urls')),
+    url(r'^api/v1/topics/', all_topics_view),
     url('^$', all_posts_view, name="home"),
 ]

@@ -2,6 +2,13 @@
 
 {% block content %}
 
+Search:
+<form method="POST" action="{% url 'posts:search' %}">
+    {% csrf_token %}
+    <textarea name="keywords" cols="80" rows="1"></textarea>
+    <br/>
+</form>
+
 <h1>post overview</h1>
 <a class="btn btn-primary" href="{% url 'posts:create' %}">New Post</a>
 
@@ -11,11 +18,29 @@
 {% for post in posts.all %}
 
 <table>
-  <tr>
-    <td style="padding-right: 20px;"><a href="#"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></a><br/>{{ post.votes_total }}<br/><a href="#"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a></td>
-    <td><a href="{{ post.body }}">{{ post.title }}</a><br/>{{ post.pub_date_pretty }} by <a href="#">{{ post.author.username }}</a></td>
-  </tr>
+    <tr>
+        <td style="padding-right: 20px;">
+            <a href="#" onClick="document.getElementById('upvote{{ post.id }}').submit()">
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></a><br/>
+            {{ post.votes_total }}<br/>
+            <a href="#" onClick="document.getElementById('downvote{{ post.id }}').submit()"><span
+                    class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a></td>
+        <td>
+            <a href="{{ post.body }}">{{ post.title }}</a><br/>
+            {{ post.pub_date_pretty }} by <a href="#">{{ post.author.username }}</a>
+        </td>
+    </tr>
 </table>
+
+<form id="upvote{{ post.id }}" method="POST" action="{% url 'posts:upvotepost' post.id %}">
+    {% csrf_token %}
+    <input type="hidden">
+</form>
+
+<form id="downvote{{ post.id }}" method="POST" action="{% url 'posts:downvotepost' post.id %}">
+    {% csrf_token %}
+    <input type="hidden">
+</form>
 
 {% endfor %}
 
