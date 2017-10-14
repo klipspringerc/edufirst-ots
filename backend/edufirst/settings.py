@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['13.229.56.229', '13.229.26.108', '127.0.0.1']
 INSTALLED_APPS = [
     'users',
     'posts',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

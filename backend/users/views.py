@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
+from users.models import Account
 
 def signup_view(request):
     if request.method == 'POST':
@@ -17,6 +17,8 @@ def signup_view(request):
         except User.DoesNotExist:
             if password == password_verify:
                 user = User.objects.create_user(username=username, password=password)
+                account = Account(user=user, certificate="None")
+                account.save()
                 login(request, user)
                 return HttpResponse("signup success", status=200)
             else:
