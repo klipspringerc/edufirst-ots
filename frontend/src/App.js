@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 
-@connect(store => ({users: store.users}))
 class App extends Component {
   render() {
     return (
@@ -11,4 +10,6 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = store => ({users: store.users});
+
+export default connect(mapStateToProps)(App);
