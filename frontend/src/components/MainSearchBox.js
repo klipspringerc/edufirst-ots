@@ -8,3 +8,5 @@ const MainSearchBox = ({onChange}) => (
              placeholder="Enter your search query here."/>
     </div>
 );
+
+export default MainSearchBox;
