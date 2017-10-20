@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
-from posts.models import Post, Topic
+from posts.models import Post, Topic, Answer, Comment
 from posts.serializers import PostSerializer, PostOverviewSerializer, TopicSerializer
 
 # Create your views here.
@@ -36,10 +36,51 @@ def all_posts_view(request):
     return render(request, 'posts/post-overview.html', {'posts': posts})
 
 
+def create_answer_view(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        if request.user.is_authenticated():
+            if post:
+                answer = Answer()
+                answer.body = request.POST['body']
+                answer.pub_date = timezone.datetime.now()
+                answer.post = post
+                answer.author = request.user
+                answer.save()
+                return HttpResponse("answer created", status=200)
+            else:
+                return HttpResponse("unknown post id", status=404)
+        else:
+            return HttpResponse("permission denied", status=403)
+    else:
+        return render(request, 'posts/create-answerd.html', {'post_id': post_id})
+
+
+def create_comment_view(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        if request.user.is_authenticated():
+            if post:
+                comment = Comment()
+                comment.body = request.POST['body']
+                comment.pub_date = timezone.datetime.now()
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return HttpResponse("comment created", status=200)
+            else:
+                return HttpResponse("unknown post id", status=404)
+        else:
+            return HttpResponse("permission denied", status=403)
+    else:
+        return render(request, 'posts/create-commentd.html', {'post_id': post_id})
+
+
 def search_view(request):
     # if request.method == 'POST':
     #     key
     return HttpResponse("search result")
+
 
 def post_detail_jsonview(request, post_id):
     try:
