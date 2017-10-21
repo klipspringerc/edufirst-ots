@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { fetchTopTrendingQuestions } from '../actions/top-trending-questions';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {showSearchBox} from '../actions/search';
+import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
-import { showSearchBox } from '../actions/search';
 
 class SearchPage extends Component {
   static propTypes = {
@@ -22,10 +22,10 @@ class SearchPage extends Component {
   }
 
   renderTopTrendingQuestions() {
-    const { loading, topTrendingQuestions } = this.props;
+    const {loading, topTrendingQuestions} = this.props;
     return (
-      <TopTrendingQuestions loading={loading}
-        questions={topTrendingQuestions} />
+        <TopTrendingQuestions loading={loading}
+                              questions={topTrendingQuestions}/>
     );
   }
 
@@ -34,14 +34,14 @@ class SearchPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({topTrendingQuestions}) => {
   return ({
-    loading: state.loadingTopTrendingQuestions,
-    topTrendingQuestions: state.topTrendingQuestions,
+    loading: topTrendingQuestions.loadingTopTrendingQuestions,
+    topTrendingQuestions: topTrendingQuestions.topTrendingQuestions,
   });
-}
+};
 const mapDispatchToProps = dispatch => ({
   handleFetchTopTrendingQuestions: () => dispatch(fetchTopTrendingQuestions()),
-  handleShowSearchBox: () => dispatch(showSearchBox())
+  handleShowSearchBox: () => dispatch(showSearchBox()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

@@ -5,7 +5,7 @@ import {
 
 function topTrendingQuestions(state = {
   loadingTopTrendingQuestions: false,
-  topTrendingQuestions: []
+  topTrendingQuestions: [],
 }, action) {
   switch (action.type) {
     case REQUEST_TOP_TRENDING_QUESTIONS:

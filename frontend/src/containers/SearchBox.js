@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Subject } from 'rxjs';
-import { search } from '../actions/search';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Subject} from 'rxjs';
+import {search} from '../actions/search';
 import QuestionSimple from '../components/QuestionSimple';
 import MachineGeneratedResult from './MachineGeneratedResult';
 
@@ -14,9 +14,9 @@ class SearchBox extends Component {
       questionId: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       author: PropTypes.string.isRequired,
-      votes: PropTypes.string.isRequired,
+      votes: PropTypes.number.isRequired,
       topAnswer: PropTypes.string.isRequired,
-      authorId: PropTypes.number.isRequired
+      authorId: PropTypes.number.isRequired,
     })).isRequired,
     handleSearch: PropTypes.func.isRequired,
     showSearchResults: PropTypes.bool.isRequired,
@@ -29,42 +29,42 @@ class SearchBox extends Component {
 
     this.handleChangeSubject = new Subject();
     this.handleChangeSubject.debounceTime(200)
-      .subscribe(this.handleChange);
+        .subscribe(this.handleChange);
   }
 
   renderMachineGeneratedResult() {
-    const { machineGeneratedResult, folded } = this.props;
+    const {machineGeneratedResult, folded} = this.props;
     return (
-      <MachineGeneratedResult
-        folded={folded}
-        machineGeneratedResult={machineGeneratedResult} />
+        <MachineGeneratedResult
+            folded={folded}
+            machineGeneratedResult={machineGeneratedResult}/>
     );
   }
 
   renderSuggestedQuestions() {
-    const { questions } = this.props;
+    const {questions} = this.props;
     return (
-      <div>
-        {questions.map(question => (
-          <QuestionSimple
-            key={question.questionId}
-            title={question.title}
-            author={question.author}
-            votes={question.votes}
-            topAnswer={question.topAnswer}
-            questionId={question.questionId}
-            authorId={question.authorId} />
-        ))}
-      </div>
+        <div>
+          {questions.map(question => (
+              <QuestionSimple
+                  key={question.questionId}
+                  title={question.title}
+                  author={question.author}
+                  votes={question.votes}
+                  topAnswer={question.topAnswer}
+                  questionId={question.questionId}
+                  authorId={question.authorId}/>
+          ))}
+        </div>
     );
   }
 
   renderSearchResults() {
     return (
-      <div>
-        {this.renderMachineGeneratedResult()}
-        {this.renderSuggestedQuestions()}
-      </div>
+        <div>
+          {this.renderMachineGeneratedResult()}
+          {this.renderSuggestedQuestions()}
+        </div>
     );
   }
 
@@ -74,20 +74,20 @@ class SearchBox extends Component {
 
   render() {
     return (
-      <div>
-        <input type="search" placeholder="Search here."
-          onChange={e => this.handleChangeSubject.next(e.target.value)} />
-        {this.props.showSearchResults ? this.renderSearchResults() : null}
-      </div>
+        <div>
+          <input type="search" placeholder="Search here."
+                 onChange={e => this.handleChangeSubject.next(e.target.value)}/>
+          {this.props.showSearchResults ? this.renderSearchResults() : null}
+        </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  machineGeneratedResult: state.machineGeneratedResult,
-  questions: state.similarQuestions,
-  showSearchResults: state.showSearchResults,
-  folded: state.folded,
+const mapStateToProps = ({search, fold}) => ({
+  machineGeneratedResult: search.machineGeneratedResult,
+  questions: search.similarQuestions,
+  showSearchResults: search.showSearchResults,
+  folded: fold.folded,
 });
 
 const mapDispatchToProps = dispatch => ({

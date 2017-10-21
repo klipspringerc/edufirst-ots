@@ -10,7 +10,7 @@ class MachineGeneratedResult extends Component {
     folded: PropTypes.bool.isRequired,
     machineGeneratedResult: PropTypes.shape({
       imageUrl: PropTypes.string,
-      text: PropTypes.string.isRequired
+      text: PropTypes.string.isRequired,
     }).isRequired,
     handleFoldButtonClick: PropTypes.func.isRequired,
   };
@@ -21,7 +21,10 @@ class MachineGeneratedResult extends Component {
         <div>
           {this.props.folded ? (<div className="folded">{text}</div>) : (
               <div>
-                {imageUrl ? <img src={imageUrl} className="unfolded"/> : null}
+                {imageUrl
+                    ?
+                    <img src={imageUrl} className="unfolded" alt="geneerated"/>
+                    : null}
                 <div className="unfolded">{text}</div>
               </div>
           )}

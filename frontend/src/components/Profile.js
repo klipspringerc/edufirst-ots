@@ -48,7 +48,7 @@ class Profile extends Component {
 
   renderActivities() {
     switch (this.state.selected) {
-      case 'answers' :
+      case 'answers':
         return <ProfileAnswers answers={this.props.answers}/>;
       case 'questions':
         return <ProfileQuestions questions={this.props.questions}/>;

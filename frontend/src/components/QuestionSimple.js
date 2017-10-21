@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-const QuestionSimple = ({ title, author, votes, topAnswer, questionId, authorId }) => {
+const QuestionSimple = ({title, author, votes, topAnswer, questionId, authorId}) => {
   return (
-    <div className="question-simple">
-      <table>
-        <tbody>
+      <div className="question-simple">
+        <table>
+          <tbody>
           <tr>
             <td className="question-title">
               <Link to={`/questions/${questionId}`}>{title}</Link>
@@ -21,9 +21,9 @@ const QuestionSimple = ({ title, author, votes, topAnswer, questionId, authorId 
               <Link to={`/questions/${questionId}`}>{topAnswer}</Link>
             </td>
           </tr>
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
   );
 };
 

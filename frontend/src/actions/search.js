@@ -1,66 +1,65 @@
+import {fetchPost} from './posts';
+
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 
-function searchRequest(text) {
+function searchRequestAction(searchRequest) {
   return {
     type: SEARCH_REQUEST,
-    text,
+    searchRequest,
   };
 }
 
 export const SEARCH_RESPONSE = 'SEARCH_RESPONSE';
 
-function searchResponse(text, json) {
+function searchResponseAction(searchRequest, searchResponse) {
   return {
     type: SEARCH_RESPONSE,
-    text,
-    machineGeneratedResult: json.data.machineGeneratedResult,
-    similarQuestions: json.data.similarQuestions,
+    searchResponse,
   };
 }
 
-const SEARCH_RESULT = {
-  machineGeneratedResult: {
-    imageUrl: null,
-    text: 'machineGeneratedResult'
-  },
-  similarQuestions: [
-    {
-      title: 'Q1',
-      author: 'a1',
-      votes: 10,
-      topAnswer: 'This is an answer',
-      questionId: 1,
-      authorId: 1,
-    }, {
-      title: 'Q2',
-      author: 'a2',
-      votes: 9,
-      topAnswer: 'This is another answer',
-      questionId: 2,
-      authorId: 2,
-    }],
-};
-
-export function search(text) {
+export function search(searchRequest) {
   return dispatch => {
-    dispatch(searchRequest(text));
-    // TODO replaced by actual API call
-    return new Promise((resolve, reject) =>
-      setTimeout(() => resolve(SEARCH_RESULT), 1000))
-      .then(json => dispatch(searchResponse(text, { data: json })));
+    dispatch(searchRequest(searchRequest));
+    fetch('http://api.edufirstonline.com/api/v1/posts/search', {
+      body: JSON.stringify(searchRequest),
+    })
+        .then(response => response.json())
+        .then(searchResponse => {
+          dispatch(searchResponseAction(searchRequest, searchResponse));
+          // Query all posts in this search immeidately to update store.
+          searchResponse.posts.forEach(post => dispatch(fetchPost(post.id)));
+        });
   };
 }
 
-export const SHOW_SEARCH_BOX = 'SHOW_SEARCH_BOX';
-export const HIDE_SEARCH_BOX = 'HIDE_SEARCH_BOX';
-export function showSearchBox() {
+export const REQUEST_SUGGESTIONS = 'REQUEST_SUGGESTIONS';
+
+function requestSuggestionsAction(keywords) {
   return {
-    type: SHOW_SEARCH_BOX
+    type: REQUEST_SUGGESTIONS,
+    keywords,
   };
 }
 
-export function hideSearchBox() {
+export const RECEIVE_SUGGESTIONS = 'RECEIVE_SUGGESTIONS';
+
+function receiveSuggestionsAction(keywords, suggestionsResponse) {
   return {
-    type: HIDE_SEARCH_BOX
+    type: RECEIVE_SUGGESTIONS,
+    keywords,
+    suggestionsResponse,
+  };
+}
+
+export function fetchSuggestions(keywords) {
+  return dispatch => {
+    dispatch(requestSuggestionsAction(keywords));
+    fetch('http://api.edufirstonline.com/api/v1/posts/suggestions', {
+      body: keywords,
+    })
+        .then(response => response.json())
+        .then(suggestionsResponse =>
+            dispatch(receiveSuggestionsAction(keywords, suggestionsResponse)));
   };
 }

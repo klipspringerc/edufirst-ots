@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import SearchBox from './SearchBox';
-import { connect } from 'react-redux';
 
-const TopBar = ({ showSearchBox, user }) => {
+const TopBar = ({showSearchBox, user}) => {
   return (
-    <div>
-      <Link to="/">EduFirst</Link>
-      <Link to="/topics">Topics</Link>
-      {showSearchBox ? (<SearchBox />) : null}
-      <Link to={user ? `/profile/${user.id}` : '/login'}>
-        {user ? user.name : 'Login'}
-      </Link>
-    </div>
+      <div>
+        <Link to="/">EduFirst</Link>
+        <Link to="/topics">Topics</Link>
+        {showSearchBox ? (<SearchBox/>) : null}
+        <Link to={user ? `/profile/${user.id}` : '/login'}>
+          {user ? user.name : 'Login'}
+        </Link>
+      </div>
   );
 };
 
@@ -25,12 +25,12 @@ TopBar.propTypes = {
   }),
 };
 
-const mapStateToProps = state => ({
-  user: state.user ? {
-    id: state.user.id,
-    name: state.user.username,
+const mapStateToProps = ({user, searchBox}) => ({
+  user: user ? {
+    id: user.id,
+    name: user.username,
   } : null,
-  showSearchBox: state.showSearchBox,
+  showSearchBox: searchBox.showSearchBox,
 });
 
 export default connect(mapStateToProps)(TopBar);

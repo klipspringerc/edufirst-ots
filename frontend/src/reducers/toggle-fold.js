@@ -1,6 +1,6 @@
-import { TOGGLE_FOLD } from '../actions/toggle-fold';
+import {TOGGLE_FOLD} from '../actions/toggle-fold';
 
-function toggleFold(state = { folded: true }, action) {
+function toggleFold(state = {folded: true}, action) {
   if (action.type === TOGGLE_FOLD) {
     return {
       ...state,

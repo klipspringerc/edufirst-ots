@@ -1,9 +1,15 @@
-import { SEARCH_REQUEST, SEARCH_RESPONSE, SHOW_SEARCH_BOX, HIDE_SEARCH_BOX } from '../actions/search';
+import reduceReducers from 'reduce-reducers';
+import {
+  HIDE_SEARCH_BOX,
+  SEARCH_REQUEST,
+  SEARCH_RESPONSE,
+  SHOW_SEARCH_BOX,
+} from '../actions/search';
 
 export function search(state = {
   showSearchResults: false,
   machineGeneratedResult: null,
-  similarQuestions: []
+  similarQuestions: [],
 }, action) {
   switch (action.type) {
     case SEARCH_REQUEST:
@@ -20,24 +26,26 @@ export function search(state = {
   }
 };
 
-export function showSearchBox(state = {
-  showSearchBox: false
+function showSearchBox(state = {
+  showSearchBox: false,
 }, action) {
   switch (action.type) {
     case SHOW_SEARCH_BOX:
-      return { ...state, showSearchBox: true };
+      return {...state, showSearchBox: true};
     default:
       return state;
   }
 }
 
-export function hideSearchBox(state = {
-  showSearchBox: true
+function hideSearchBox(state = {
+  showSearchBox: true,
 }, action) {
   switch (action.type) {
     case HIDE_SEARCH_BOX:
-      return { ...state, showSearchBox: false };
+      return {...state, showSearchBox: false};
     default:
       return state;
   }
 }
+
+export const searchBox = reduceReducers(showSearchBox, hideSearchBox);
