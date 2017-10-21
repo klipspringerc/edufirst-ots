@@ -1,0 +1,36 @@
+{% extends 'debug-base.html' %}
+
+{% block content %}
+
+<h2> Machine Generated Answer Testing</h2>
+<hr>
+<br>
+Search:
+<form method="POST" action="{% url 'wolf:debug' %}">
+    {% csrf_token %}
+    <textarea name="keywords" cols="80" rows="2"></textarea>
+    <br/>
+    <input class="btn btn-primary" type="submit" value="Search">
+    <br>
+</form>
+<br>
+
+<h2>Results</h2>
+<hr>
+
+{% for pod in pods %}
+
+
+<h3> {{pod.title}} </h3>
+<img src="{{pod.img.src}}">
+<table>
+    <tr>
+        <td style="padding-right: 20px;">
+            {{ pod.text }}
+        </td>
+    </tr>
+</table>
+
+{% endfor %}
+
+{% endblock %}

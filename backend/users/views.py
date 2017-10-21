@@ -2,9 +2,12 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from users.models import Account
+from posts.models import Post
+from posts.serializers import PostOverviewSerializer
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -44,3 +47,24 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponse("logout success", status=200)
+
+
+def user_posts_debug_view(request, user_id):
+    if request.method == 'GET':
+        try:
+            cur_user = User.objects.get(username=user_id)
+        except Exception:
+            return JsonResponse({"status": "failure", "message": "user does not exist"}, status=404)
+        user_posts = Post.objects.filter(author=cur_user).order_by('-votes_total')
+        return render(request, 'posts/post-by-user-overview.html', {'user': cur_user, 'posts': user_posts})
+
+
+def user_posts_view(request, user_id):
+    if request.method == 'GET':
+        try:
+            cur_user = User.objects.get(username=user_id)
+        except Exception:
+            return JsonResponse({"status": "failure", "message": "user does not exist"}, status=404)
+        user_posts = Post.objects.filter(author=cur_user).order_by('-votes_total')
+        serializer = PostOverviewSerializer(user_posts, many=True)
+        return JsonResponse(serializer.data, safe=False)
