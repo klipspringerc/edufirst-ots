@@ -1,11 +1,12 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-const MainSearchBox = ({onChange}) => (
+const MainSearchBox = () => (
     <div>
       <div>EduFirst</div>
-      <input type="text"
-             onChange={onChange}
-             placeholder="Enter your search query here."/>
+      <Link to="/search">
+        <div>Search here</div>
+      </Link>
     </div>
 );
 

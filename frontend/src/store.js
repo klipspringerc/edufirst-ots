@@ -1,33 +1,33 @@
-import {applyMiddleware, createStore} from 'redux';
-import {createLogger} from 'redux-logger';
+import { applyMiddleware, createStore } from 'redux';
+import { createLogger } from 'redux-logger';
 import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
+import reducers from './reducers';
 
 const initialState = {
-  fetching: false,
-  fetched: false,
-  users: [],
-  error: null,
+  // user: {
+  //   username: 'zpiao1',
+  //   id: '1'
+  // }
+  showSearchResults: false,
+  machineGeneratedResult: null,
+  similarQuestions: [],
+  folded: true,
+  topTrendingQuestions:[],
+  loadingTopTrendingQuestions: false,
+  showSearchBox: false
 };
+const middleware = [promise(), thunk];
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(createLogger());
+}
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'FETCH_USERS_PENDING':
-      return {...state, fetching: true};
-    case 'FETCH_USERS_REJECTED':
-      return {...state, fetching: false, error: action.payload};
-    case 'FETCH_USERS_FULFILLED':
-      return {
-        ...state,
-        fetching: false,
-        fetched: true,
-        users: action.payload,
-      };
-    default:
-      return state;
-  }
-};
+const reducer = (state, action) => reducers.reduce((state, f) => f(state, action), state);
 
-const middleware = applyMiddleware(promise(), thunk, createLogger());
-const store = createStore(reducer, middleware);
+const store = createStore(
+  reducer,
+  initialState,
+  applyMiddleware(...middleware),
+);
+
 export default store;
