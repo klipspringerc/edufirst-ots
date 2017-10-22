@@ -29,6 +29,12 @@ Search:
             <a href="{{ post.body }}">{{ post.title }}</a><br/>
             {{ post.pub_date_pretty }} by <a href="#">{{ post.author.username }}</a>
         </td>
+        <form action="{% url upload_pic %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <p>
+                <input id="id_image" type="file" class="" name="image">
+            </p>
+            <input type="submit" value="Submit" />
+        </form>
     </tr>
 </table>
 
