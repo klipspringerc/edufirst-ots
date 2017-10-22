@@ -1,5 +1,5 @@
 import {fetchPost} from './posts';
-
+import {API_URL} from '../constants';
 export const REQUEST_POSTS_BY_USER = 'REQUEST_POSTS_BY_USER';
 
 function requestPostsByUserAction(userId) {
@@ -85,7 +85,7 @@ export function login(loginRequest) {
   return dispatch => {
     const {username} = loginRequest;
     dispatch(loginRequestAction(username));
-    fetch('http://api.edufirstonline.com/users/login', {
+    fetch(`${API_URL}/users/login`, {
       method: 'POST',
       body: loginRequest,
     })
@@ -121,8 +121,7 @@ export function signup(signUpRequest) {
     dispatch(signupRequestAction(username, email));
     fetch('http://api.edufirstonline.com/api/v1/users/signup', {
       method: 'POST',
-      body: signUpRequest,
-      mode: 'cors'
+      body: signUpRequest
     })
         .then(response => dispatch(signupResponseAction(username, email)));
   };

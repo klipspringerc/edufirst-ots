@@ -59,9 +59,7 @@ function receivePostsByTopicAction(topicId, offset, postsByTopicResponse) {
 export function fetchPost(postId) {
   return dispatch => {
     dispatch(requestPostAction(postId));
-    fetch(`http://api.edufirstonline.com/api/v1/posts/${postId}`, {
-      mode: 'cors'
-    })
+    fetch(`http://api.edufirstonline.com/api/v1/posts/${postId}`)
         .then(response => response.json())
         .then(post => dispatch(receivePostAction(postId, post)));
   };
@@ -72,8 +70,7 @@ export function postPost(post, authentication) {
     dispatch(postPostRequestAction(post));
     fetch('http://api.edufirstonline.com/api/v1/posts/', {
       method: 'POST',
-      body: JSON.stringify({post, authentication}),
-      mode: 'cors'
+      body: JSON.stringify({post, authentication})
     })
         .then(response => response.text())
         .then(postId => {

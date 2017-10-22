@@ -23,8 +23,7 @@ export function putLike(postId, authentication) {
     dispatch(putLikeRequestAction(postId));
     fetch(`http://api.edufirstonline.com/v1/posts/${postId}/like`, {
       body: JSON.stringify(authentication),
-      method: 'PUT',
-      mode: 'cors'
+      method: 'PUT'
     })
         .then(response => {
           dispatch(putLikeResponseAction(postId));

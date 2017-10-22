@@ -24,8 +24,7 @@ export function search(searchRequest) {
     dispatch(searchRequestAction(searchRequest));
     fetch('http://api.edufirstonline.com/api/v1/posts/search', {
       method: 'POST',
-      body: JSON.stringify(searchRequest),
-      mode: 'cors'
+      body: JSON.stringify(searchRequest)
     })
         .then(response => response.json())
         .then(searchResponse => {
@@ -59,8 +58,7 @@ export function fetchSuggestions(keywords) {
   return dispatch => {
     dispatch(requestSuggestionsAction(keywords));
     fetch('http://api.edufirstonline.com/api/v1/posts/suggestions', {
-      body: keywords,
-      mode: 'cors'
+      body: keywords
     })
         .then(response => response.json())
         .then(suggestionsResponse =>

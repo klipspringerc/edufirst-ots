@@ -32,8 +32,7 @@ export function postComment(postId, commentType, body, authentication) {
         body,
         authentication,
       }),
-      method: 'POST',
-      mode: 'cors'
+      method: 'POST'
     })
         .then(response => {
           dispatch(postCommentResponseAction(postId, commentType, body));
