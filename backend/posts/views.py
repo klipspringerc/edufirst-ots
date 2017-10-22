@@ -11,10 +11,11 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 # from stemming.porter2 import stem
 from nltk.tokenize import sent_tokenize, word_tokenize
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-
+@csrf_exempt
 def create_view(request):
     if request.method == 'POST':
         if request.user.is_authenticated():
@@ -41,6 +42,7 @@ def all_posts_view(request):
     return render(request, 'posts/post-overview.html', {'posts': posts})
 
 
+@csrf_exempt
 def create_answer_view(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(pk=post_id)
@@ -61,6 +63,7 @@ def create_answer_view(request, post_id):
         return render(request, 'posts/create-answerd.html', {'post_id': post_id})
 
 
+@csrf_exempt
 def create_comment_view(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(pk=post_id)
@@ -82,6 +85,7 @@ def create_comment_view(request, post_id):
         return render(request, 'posts/create-commentd.html', {'post_id': post_id})
 
 
+@csrf_exempt
 def search_debug_view(request):
     if request.method == 'POST':
         keyword = request.POST['keywords']
@@ -92,6 +96,7 @@ def search_debug_view(request):
         return render(request, 'posts/post-overview.html', {'posts': posts})
 
 
+@csrf_exempt
 def search_view(request):
     if request.method == 'POST':
         keyword = request.POST['keywords']
