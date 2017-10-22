@@ -1,3 +1,5 @@
+import {API_URL} from '../constants';
+
 export const REQUEST_POST = 'REQUEST_POST';
 
 function requestPostAction(postId) {
@@ -59,9 +61,7 @@ function receivePostsByTopicAction(topicId, offset, postsByTopicResponse) {
 export function fetchPost(postId) {
   return dispatch => {
     dispatch(requestPostAction(postId));
-    fetch(`http://api.edufirstonline.com/api/v1/posts/${postId}`, {
-//      mode: 'cors'
-    })
+    fetch(`${API_URL}/posts/${postId}`)
         .then(response => response.json())
         .then(post => dispatch(receivePostAction(postId, post)));
   };
@@ -70,10 +70,9 @@ export function fetchPost(postId) {
 export function postPost(post, authentication) {
   return dispatch => {
     dispatch(postPostRequestAction(post));
-    fetch('http://api.edufirstonline.com/api/v1/posts/', {
+    fetch(`${API_URL}/posts/`, {
       method: 'POST',
-      body: JSON.stringify({post, authentication}),
-//      mode: 'cors'
+      body: JSON.stringify({post, authentication})
     })
         .then(response => response.text())
         .then(postId => {
@@ -87,7 +86,7 @@ export function postPost(post, authentication) {
 export function fetchPostsByTopic(topicId, offset) {
   return dispatch => {
     dispatch(requestPostsByTopicAction(topicId, offset));
-    fetch(`http://api.edufirstonline.com/api/v1/posts/topic/${topicId}`, {
+    fetch(`${API_URL}/posts/topic/${topicId}`, {
       body: offset,
     })
         .then(response => response.json())

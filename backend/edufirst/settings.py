@@ -24,7 +24,8 @@ SECRET_KEY = 'b*r6r2ks05k+=e@gg+*sd+$g+@5%bti+%j%$^utnvky^+qx#c&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.229.56.229', '13.229.26.108', '127.0.0.1', 'www.edufirstonline.com', 'api.edufirstonline.com']
+ALLOWED_HOSTS = ['13.229.56.229', '13.229.26.108', '127.0.0.1',
+                 'www.edufirstonline.com', 'api.edufirstonline.com']
 
 # Application definition
 
@@ -126,8 +127,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+REACT_APP_DIR = os.path.join(os.path.dirname(BASE_DIR), 'frontend')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    os.path.join(REACT_APP_DIR, 'build', 'static')
 ]
 
 CORS_ALLOW_METHODS = (

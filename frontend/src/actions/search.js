@@ -1,5 +1,5 @@
 import {fetchPost} from './posts';
-
+import {API_URL} from '../constants';
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 
 function searchRequestAction(searchRequest) {
@@ -22,10 +22,9 @@ function searchResponseAction(searchRequest, searchResponse) {
 export function search(searchRequest) {
   return dispatch => {
     dispatch(searchRequestAction(searchRequest));
-    fetch('http://api.edufirstonline.com/api/v1/posts/search', {
+    fetch(`${API_URL}/posts/search`, {
       method: 'POST',
-      body: JSON.stringify(searchRequest),
-//      mode: 'cors'
+      body: JSON.stringify(searchRequest)
     })
         .then(response => response.json())
         .then(searchResponse => {
@@ -58,9 +57,8 @@ function receiveSuggestionsAction(keywords, suggestionsResponse) {
 export function fetchSuggestions(keywords) {
   return dispatch => {
     dispatch(requestSuggestionsAction(keywords));
-    fetch('http://api.edufirstonline.com/api/v1/posts/suggestions', {
-      body: keywords,
-//      mode: 'cors'
+    fetch(`${API_URL}/posts/suggestions`, {
+      body: keywords
     })
         .then(response => response.json())
         .then(suggestionsResponse =>

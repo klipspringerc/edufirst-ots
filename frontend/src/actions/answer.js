@@ -25,8 +25,7 @@ export function postAnswer(postId, answerBody, authentication) {
     dispatch(postAnswerRequestAction(postId, answerBody));
     fetch(`${API_URL}/posts/${postId}/answers`, {
       body: JSON.stringify({answerBody, authentication}),
-      method: 'POST',
-//      mode: 'cors'
+      method: 'POST'
     })
         .then(response => {
           dispatch(postAnswerResponseAction(postId, answerBody));
