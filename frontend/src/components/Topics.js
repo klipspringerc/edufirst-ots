@@ -4,9 +4,9 @@ import {Link} from 'react-router-dom';
 
 const Topics = ({topics}) => (
     <div>
-      {topics.map((topic, index) => (
-          <Link to={`/topics/${index}`}>
-            <div key={index}>
+      {topics.map(topic => (
+          <Link to={`/topics/${topic.topic_name}`} key={topic.topic_name}>
+            <div>
               {topic.image
                   ? <img src={topic.image} alt={topic.topic_name}/>
                   : null}

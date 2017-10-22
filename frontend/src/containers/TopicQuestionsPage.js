@@ -1,8 +1,8 @@
-import QuestionSimple from '../components/QuestionSimple';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchPostsByTopic} from '../actions/posts';
+import QuestionSimple from '../components/QuestionSimple';
 
 class TopicQuestionsPage extends Component {
   static propTypes = {

@@ -1,15 +1,14 @@
-import {login} from '../actions/users';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, reduxForm} from 'redux-form';
+import {Link} from 'react-router-dom';
+import {Field, formValueSelector, reduxForm} from 'redux-form';
+import {login} from '../actions/users';
 
-let LoginPage = ({handleLogin, form}) => (
+let LoginPage = ({handleLogin, loginRequest}) => (
     <form onSubmit={e => {
       e.preventDefault();
-      if (form.login) {
-        handleLogin(form.login);
-      }
+      return handleLogin(loginRequest);
     }}>
       <div>
         <label>Username</label>
@@ -20,19 +19,27 @@ let LoginPage = ({handleLogin, form}) => (
         <Field name="password" component="input" type="password"/>
       </div>
       <button type="submit">Login</button>
+      <Link to="/signup">
+        <button>Signup</button>
+      </Link>
     </form>
 );
 
 LoginPage.propTypes = {
-  form: PropTypes.object.isRequired,
-  handleSignup: PropTypes.func.isRequired,
+  loginRequest: PropTypes.object,
+  handleLogin: PropTypes.func.isRequired,
 };
 
+LoginPage = reduxForm({form: 'login'})(LoginPage);
+const selector = formValueSelector('login');
 
-const mapStateToProps = ({form}) => ({form});
+const mapStateToProps = state => {
+  const loginRequest = selector(state, 'username', 'password');
+  return {loginRequest};
+};
+
 const mapDispatchToProps = dispatch => ({
   handleLogin: loginRequest => dispatch(login(loginRequest)),
 });
 
-LoginPage = connect(mapStateToProps, mapDispatchToProps)(LoginPage);
-export default reduxForm({form: 'login'})(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

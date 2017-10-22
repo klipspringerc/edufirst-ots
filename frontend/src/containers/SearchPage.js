@@ -4,9 +4,9 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {clearSearchResults, showSearchBox} from '../actions/search';
 import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
+import QuestionSimple from '../components/QuestionSimple';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
-import QuestionSimple from '../components/QuestionSimple';
 
 class SearchPage extends Component {
   static propTypes = {
@@ -66,6 +66,7 @@ class SearchPage extends Component {
                               questions={topTrendingQuestions}/>
     );
   }
+
   renderSearchResults() {
     const {user, keywords} = this.props;
     return (
@@ -87,12 +88,12 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <div>
-        {this.renderTopTrendingQuestions()}
-        {//this.renderSearchResults()}
-      }
-      </div>
-      );
+        <div>
+          {this.renderTopTrendingQuestions()}
+          {//this.renderSearchResults()}
+          }
+        </div>
+    );
   }
 }
 
