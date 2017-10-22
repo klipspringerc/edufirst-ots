@@ -130,8 +130,8 @@ STATIC_URL = '/static/'
 REACT_APP_DIR = os.path.join(os.path.dirname(BASE_DIR), 'frontend')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(REACT_APP_DIR, 'build', 'static')
+    os.path.join(REACT_APP_DIR, 'build', 'static'),
+    # os.path.join(BASE_DIR, "static"),
 ]
 
 CORS_ALLOW_METHODS = (
