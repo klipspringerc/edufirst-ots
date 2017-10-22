@@ -13,12 +13,13 @@ import SignupPage from '../containers/SignupPage';
 import TopBar from '../containers/TopBar';
 import TopicQuestionsPage from '../containers/TopicQuestionsPage';
 import TopicsPage from '../containers/TopicsPage';
+import Layout from '../layout/Layout'
 
 const Root = ({store}) => (
     <Provider store={store}>
       <Router>
         <div>
-          <TopBar/>
+          <Layout/>
           <Route path="/" exact component={HomePage}/>
           <Route path="/search" exact component={SearchPage}/>
           <Route path="/question/:questionId" component={QuestionPage}/>

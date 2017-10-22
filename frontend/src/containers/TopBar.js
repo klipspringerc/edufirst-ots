@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import SearchBox from './SearchBox';
+import {Navbar, Nav, NavItem} from 'react-bootstrap';
 
 const TopBar = ({searchBox, user}) => {
   let userId = null;
@@ -27,5 +28,4 @@ TopBar.propTypes = {
 };
 
 const mapStateToProps = ({user, searchBox}) => ({user, searchBox});
-
 export default connect(mapStateToProps)(TopBar);

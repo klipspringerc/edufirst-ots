@@ -6,6 +6,7 @@ import {Subject} from 'rxjs';
 import {search} from '../actions/search';
 import QuestionSimple from '../components/QuestionSimple';
 import MachineGeneratedResult from './MachineGeneratedResult';
+import {Input, Button, FormGroup, FormControl, Form} from 'react-bootstrap';
 
 class SearchBox extends Component {
 
@@ -77,11 +78,19 @@ class SearchBox extends Component {
 
   render() {
     return (
+        <Form inline className='navbar-form' action="">
+            <FormGroup>
+              <FormControl type="text" placeholder="Search here." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
+            </FormGroup>
+            <Button bsStyle='success' type='submit'>Search</Button>
+        </Form>
+        /*
         <div>
           <input type="search" placeholder="Search here."
                  onChange={e => this.handleChangeSubject.next(e.target.value)}/>
           {this.props.showSearchResults ? this.renderSearchResults() : null}
         </div>
+        */
     );
   }
 }

@@ -21,7 +21,7 @@ class TopicsPage extends Component {
   }
 }
 
-const mapStateToProps = ({topics}) => ({topics});
+const mapStateToProps = ({topics}) => ({topics:topics.topics});
 const mapDispatchToProps = dispatch => ({
   handleFetchTopics: () => dispatch(fetchTopics()),
 });
