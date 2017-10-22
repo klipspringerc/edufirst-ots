@@ -7,6 +7,10 @@ from django.http import HttpResponse, JsonResponse
 from posts.models import Post, Topic, Answer, Comment
 from posts.serializers import PostSerializer, PostOverviewSerializer, TopicSerializer
 from difflib import SequenceMatcher
+from django.contrib.auth.models import User
+from datetime import datetime, timedelta
+from stemming.porter2 import stem
+from nltk.tokenize import sent_tokenize, word_tokenize
 
 # Create your views here.
 
@@ -138,9 +142,9 @@ def rank_post(search_content, unordered_posts):
     similarity_score = []
 
     for post in unordered_posts:
-        title_score = SequenceMatcher(None, search_content, post.title).ratio()
-        body_score = SequenceMatcher(None, search_content, post.body).ratio()
-        similarity_score.append((title_score+body_score)/2)
+        title_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.title)).ratio()
+        body_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.body)).ratio()
+        similarity_score.append((title_score + body_score) / 2)
 
     ordered_posts = [ind_post for ind_score, ind_post in sorted(zip(similarity_score, unordered_posts))]
     ordered_posts.reverse()
@@ -151,7 +155,7 @@ def rank_post(search_content, unordered_posts):
 def stem_sentence(str):
     words = word_tokenize(str)
     tokens = [stem(word) for word in words]
-    return ' '.join(token for token in tokens if token.isalnum())
+    return ' '.join(token.lower() for token in tokens if token.isalnum())
 
 
 # determine whether a user is a water army
