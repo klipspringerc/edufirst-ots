@@ -7,7 +7,12 @@ from django.http import HttpResponse, JsonResponse
 from posts.models import Post, Topic, Answer, Comment
 from posts.serializers import PostSerializer, PostOverviewSerializer, TopicSerializer
 from difflib import SequenceMatcher
-from posts.sensitive.language_filter import language_filter
+from django.contrib.auth.models import User
+from datetime import datetime, timedelta
+from stemming.porter2 import stem
+from nltk.tokenize import sent_tokenize, word_tokenize
+
+# Create your views here.
 
 
 def create_view(request):
@@ -18,7 +23,7 @@ def create_view(request):
             if title and body:
                 post = Post()
                 post.title = title
-                post.body = language_filter(body)
+                post.body = body
                 post.pub_date = timezone.datetime.now()
                 post.author = request.user
                 post.save()
@@ -128,12 +133,59 @@ def post_downvote_view(request, post_id):
         return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
 
 
+# def answer_upvote_view(request, anser_id):
+
 def rank_post(search_content, unordered_posts):
+
+    unordered_posts = Post.objects.all()
+
     similarity_score = []
+
     for post in unordered_posts:
-        title_score = SequenceMatcher(None, search_content, post.title).ratio()
-        body_score = SequenceMatcher(None, search_content, post.body).ratio()
-        similarity_score.append((title_score+body_score)/2)
+        # match topics
+        topic_list = [topic.name for topic in post.topics.all()]
+        search_tokens = generate_tokens(search_content)
+        token_count = 0
+        for topic in topic_list:
+            token_count = token_count + search_tokens.count(topic)
+        token_ratio = token_count / len(search_tokens)
+
+        title_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.title)).ratio()
+        body_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.body)).ratio()
+        similarity_score.append((title_score + body_score + token_ratio) / 3)
+
     ordered_posts = [ind_post for ind_score, ind_post in sorted(zip(similarity_score, unordered_posts))]
     ordered_posts.reverse()
+
     return ordered_posts
+
+def generate_tokens(str):
+    words = word_tokenize(str)
+    return [stem(word).lower() for word in words]
+
+
+def stem_sentence(str):
+    tokens = generate_tokens(str)
+    return ' '.join(token for token in tokens if token.isalnum())
+
+
+# determine whether a user is a water army
+def water_army_detection(user_id):
+    # get current user
+    user =  User.objects.get(id=user_id)
+
+    # calculate time limit
+    time_limit = datetime.now() - timedelta(minutes=10)
+
+    # get posts
+    posts = Post.objects.filter(author=user).filter(pub_date__range=(time_limit, datetime.now()))
+
+    # get comments
+    comments = Comment.objects.filter(author=user).filter(pub_date__range=(time_limit, datetime.now()))
+
+    # get answers
+    answers = Answer.objects.filter(author=user).filter(pub_date__range=(time_limit, datetime.now()))
+
+    total = posts.count() + comments.count() + answers.count()
+
+    return total > 10
