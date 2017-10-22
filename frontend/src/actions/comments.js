@@ -1,5 +1,5 @@
 import {fetchPost} from './posts';
-
+import {API_URL} from '../constants';
 export const POST_COMMENT_REQUEST = 'POST_COMMENT_REQUEST';
 
 function postCommentRequestAction(postId, commentType, body) {
@@ -25,7 +25,7 @@ function postCommentResponseAction(postId, commentType, body) {
 export function postComment(postId, commentType, body, authentication) {
   return dispatch => {
     dispatch(postCommentRequestAction(postId, commentType, body));
-    fetch(`http://api.edufirstonline.com/posts/${postId}/comments`, {
+    fetch(`${API_URL}/posts/${postId}/comments`, {
       body: JSON.stringify({
         commentType,
         post_id: postId,

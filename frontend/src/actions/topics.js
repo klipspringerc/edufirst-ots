@@ -1,3 +1,5 @@
+import {API_URL} from '../constants';
+
 export const REQUEST_TOPICS = 'REQUEST_TOPICS';
 
 function requestTopicsAction() {
@@ -18,7 +20,7 @@ function receiveTopicsAction(topics) {
 export function fetchTopics() {
   return dispatch => {
     dispatch(requestTopicsAction());
-    fetch('http://api.edufirstonline.com/api/v1/topics')
+    fetch(`${API_URL}/topics`)
         .then(response => response.json())
         .then(topics => dispatch(receiveTopicsAction(topics)));
   };

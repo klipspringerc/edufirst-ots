@@ -22,7 +22,7 @@ function receivePostsByUserAction(userId, posts) {
 export function fetchPostsByUser(userId) {
   return dispatch => {
     dispatch(requestPostsByUserAction(userId));
-    fetch(`http://api.edufirstonline.com/api/v1/users/${userId}/posts`)
+    fetch(`${API_URL}/users/${userId}/posts`)
         .then(response => response.json())
         .then(posts => {
           dispatch(receivePostsByUserAction(userId, posts));
@@ -54,7 +54,7 @@ export function putUserCertificate(userId, token) {
     dispatch(putUserCertificateRequestAction(userId));
     const headers = new Headers();
     headers.append('token', token);
-    fetch(`http://api.edufirstonline.com/users/${userId}/certificate`, {
+    fetch(`${API_URL}/users/${userId}/certificate`, {
       method: 'PUT',
       headers,
     })
@@ -87,7 +87,7 @@ export function login(loginRequest) {
     dispatch(loginRequestAction(username));
     fetch(`${API_URL}/users/login`, {
       method: 'POST',
-      body: loginRequest,
+      body: JSON.stringify(loginRequest),
     })
         .then(response => response.json())
         .then(authentication => dispatch(
@@ -119,9 +119,9 @@ export function signup(signUpRequest) {
   return dispatch => {
     const {username, email} = signUpRequest;
     dispatch(signupRequestAction(username, email));
-    fetch('http://api.edufirstonline.com/api/v1/users/signup', {
+    fetch(`${API_URL}/users/signup`, {
       method: 'POST',
-      body: signUpRequest
+      body: JSON.stringify(signUpRequest)
     })
         .then(response => dispatch(signupResponseAction(username, email)));
   };

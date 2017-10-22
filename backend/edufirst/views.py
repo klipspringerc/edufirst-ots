@@ -3,7 +3,7 @@ import os
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
-from settings import REACT_APP_DIR
+from edufirst.settings import REACT_APP_DIR
 
 
 def debug_homeview(request):
@@ -17,7 +17,6 @@ def integration_test_view(request):
 class FrontendAppView(View):
     def get(self, request):
         try:
-            print os.path.join(REACT_APP_DIR, 'build', 'index.html')
             with open(os.path.join(REACT_APP_DIR, 'build', 'index.html')) as f:
                 return HttpResponse(f.read())
         except Exception:
