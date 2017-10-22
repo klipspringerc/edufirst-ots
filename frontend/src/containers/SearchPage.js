@@ -1,5 +1,7 @@
+import {Card, CardHeader} from 'material-ui/Card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {Col, Grid} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {clearSearchResults, showSearchBox} from '../actions/search';
@@ -7,6 +9,14 @@ import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
 import QuestionSimple from '../components/QuestionSimple';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
+
+const style = {
+  height: 100,
+  width: 100,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
 
 class SearchPage extends Component {
   static propTypes = {
@@ -63,12 +73,32 @@ class SearchPage extends Component {
 
   renderTopTrendingQuestions() {
     const {loading, topTrendingQuestions} = this.props;
-    return (
-        <div>
+    const TestCards = () => (
+        <Card style={{width: '350px', height: '80%'}}>
+          <CardHeader
+              title="Trending Topics"
+              avatar="https://placeimg.com/80/80/animals"
+          />
           <TopTrendingQuestions loading={loading}
                                 questions={topTrendingQuestions}/>
-        </div>
+        </Card>
     );
+    return (
+        <Grid style={{height: '80%'}}>
+          <Col className="pull-right">
+            <TestCards/>
+          </Col>
+        </Grid>
+    );
+    /*
+      <div style={{textAlign: 'right'}}>
+          <TestCards/>
+      </div>
+      <Paper style={style}>
+          <TopTrendingQuestions loading={loading}
+                                questions={topTrendingQuestions}/>
+        </Paper>
+    */
   }
 
   renderSearchResults() {

@@ -4,18 +4,19 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Field, formValueSelector, reduxForm} from 'redux-form';
 import {login} from '../actions/users';
+import "../components/auxiliary_position.css"
 
 let LoginPage = ({handleLogin, loginRequest}) => (
-    <form onSubmit={e => {
+    <form className="middle-to-right" onSubmit={e => {
       e.preventDefault();
       return handleLogin(loginRequest);
     }}>
       <div>
-        <label>Username</label>
+        <label style={{width:100}} >Username</label>
         <Field name="username" component="input" type="text"/>
       </div>
       <div>
-        <label>Password</label>
+        <label style={{width:100}}>Password</label>
         <Field name="password" component="input" type="password"/>
       </div>
       <button type="submit">Login</button>
