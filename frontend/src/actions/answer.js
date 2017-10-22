@@ -26,6 +26,7 @@ export function postAnswer(postId, answerBody, authentication) {
     fetch(`http://api.edufirstonline.com/api/v1/posts/${postId}/answers`, {
       body: JSON.stringify({answerBody, authentication}),
       method: 'POST',
+      mode: 'cors'
     })
         .then(response => {
           dispatch(postAnswerResponseAction(postId, answerBody));
