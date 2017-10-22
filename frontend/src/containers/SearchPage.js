@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {clearSearchResults, showSearchBox} from '../actions/search';
 import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
-import QuestionSimple from '../components/QuestionSimple';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
 import CardExampleExpandable from '../components/ExpandablePosts';
@@ -117,8 +116,8 @@ class SearchPage extends Component {
   render() {
     return (
         <div>
-          {this.renderTopTrendingQuestions()}
           {this.renderSearchResults()}
+          {this.renderTopTrendingQuestions()}
         </div>
     );
   }
