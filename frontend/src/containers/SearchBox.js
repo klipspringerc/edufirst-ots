@@ -78,22 +78,15 @@ class SearchBox extends Component {
 
   render() {
     return (
-        <Form inline className='navbar-form' action="">
+        <Form inline className='navbar-form' action=""
+              onSubmit={e => {e.preventDefault();}}>
           <FormGroup>
             <FormControl type="text" placeholder="Search here."
-                         onChange={e => this.handleChangeSubject.next(
-                             e.target.value)}/>
+                         onChange={e => this.handleChangeSubject
+                             .next(e.target.value)}/>
           </FormGroup>
           <Button bsStyle='success' type='submit'>Search</Button>
         </Form>
-        /*
-        <div>
-          {this.props.showSearchResults ? this.renderSearchResults() : null}
-          <input type="search" placeholder="Search here."
-                 onChange={e => this.handleChangeSubject.next(e.target.value)}/>
-          {this.props.showSearchResults ? this.renderSearchResults() : null}
-        </div>
-        */
     );
   }
 }

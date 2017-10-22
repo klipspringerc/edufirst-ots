@@ -12,9 +12,12 @@ import SearchPage from '../containers/SearchPage';
 import SignupPage from '../containers/SignupPage';
 import TopicQuestionsPage from '../containers/TopicQuestionsPage';
 import TopicsPage from '../containers/TopicsPage';
-import Layout from '../layout/Layout';
+
+import Layout from '../layout/Layout'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const Root = ({store}) => (
+  <MuiThemeProvider>
     <Provider store={store}>
       <Router>
         <div>
@@ -34,6 +37,7 @@ const Root = ({store}) => (
         </div>
       </Router>
     </Provider>
+  </MuiThemeProvider>
 );
 
 Root.propTypes = {
