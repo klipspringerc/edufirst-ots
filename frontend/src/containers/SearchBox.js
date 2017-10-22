@@ -33,7 +33,7 @@ class SearchBox extends Component {
         <MachineGeneratedResult
             folded={folded}
             machineGeneratedResult={machineGeneratedResult}/>
-    );
+            );
   }
 
   renderSuggestedQuestions() {
