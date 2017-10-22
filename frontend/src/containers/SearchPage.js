@@ -8,6 +8,17 @@ import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
 import QuestionSimple from '../components/QuestionSimple';
 import Paper from 'material-ui/Paper';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import {Grid, Row, Col} from 'react-bootstrap';
+
+const style = {
+  height: 100,
+  width: 100,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
 
 class SearchPage extends Component {
   static propTypes = {
@@ -62,13 +73,34 @@ class SearchPage extends Component {
 
   renderTopTrendingQuestions() {
     const {loading, topTrendingQuestions} = this.props;
+    const TestCards = () => (
+      <Card style={{width: '350px', height: '80%'}}>
+        <CardHeader
+          title="Trending Topics"
+          avatar="https://placeimg.com/80/80/animals"
+        />
+        <TopTrendingQuestions loading={loading}
+                                questions={topTrendingQuestions}/>
+      </Card>
+    );
     return (
-        <div>
+        <Grid style={{height: '80%'}}>
+            <Col className="pull-right">
+              <TestCards/>
+            </Col>
+        </Grid>
+    );
+    /*
+      <div style={{textAlign: 'right'}}>
+          <TestCards/>
+      </div>
+      <Paper style={style}>
           <TopTrendingQuestions loading={loading}
                                 questions={topTrendingQuestions}/>
-        </div>
-    );
+        </Paper>
+    */
   }
+
   renderSearchResults() {
     const {user, keywords} = this.props;
     return (
@@ -90,12 +122,12 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <div>
-        {this.renderTopTrendingQuestions()}
-        {//this.renderSearchResults()}
-      }
-      </div>
-      );
+        <div>
+          {this.renderTopTrendingQuestions()}
+          {/*{this.renderSearchResults()}*/}
+
+        </div>
+    );
   }
 }
 

@@ -1,5 +1,7 @@
-import {fetchPost} from './posts';
 import {API_URL} from '../constants';
+import {fetchPost} from './posts';
+import {mapObjectToFormData} from '../util';
+
 export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 
 function postAnswerRequestAction(postId, answerBody) {
@@ -23,9 +25,9 @@ function postAnswerResponseAction(postId, answerBody) {
 export function postAnswer(postId, answerBody, authentication) {
   return dispatch => {
     dispatch(postAnswerRequestAction(postId, answerBody));
-    fetch(`${API_URL}/posts/${postId}/answers`, {
-      body: JSON.stringify({answerBody, authentication}),
-      method: 'POST'
+    fetch(`${API_URL}/posts/${postId}/answers/`, {
+      body: mapObjectToFormData({answerBody, authentication}),
+      method: 'POST',
     })
         .then(response => {
           dispatch(postAnswerResponseAction(postId, answerBody));

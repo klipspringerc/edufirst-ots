@@ -1,27 +1,26 @@
-import React from 'react';
+import {
+  BottomNavigation,
+  BottomNavigationItem,
+} from 'material-ui/BottomNavigation';
 import FontIcon from 'material-ui/FontIcon';
-import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
-import Paper from 'material-ui/Paper';
-import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
-import Icontopics from 'material-ui/svg-icons/action/view-module';
-import Iconfavorite from 'material-ui/svg-icons/action/favorite-border';
-import Iconaccount from 'material-ui/svg-icons/action/account-circle';
-import Icongift from 'material-ui/svg-icons/action/card-giftcard';
-import Iconme from 'material-ui/svg-icons/action/account-box';
-import { IndexLink, Link } from "react-router";
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import Iconaccount from 'material-ui/svg-icons/action/account-circle';
+import Icontopics from 'material-ui/svg-icons/action/view-module';
 import PropTypes from 'prop-types';
-import SearchBox from '../containers/SearchBox';
+import React from 'react';
+import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import {IndexLink, Link} from 'react-router';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import SearchBox from '../containers/SearchBox';
 
 const dashboardIcon = <FontIcon className='material-icons'>Edufirst</FontIcon>;
-const topicsIcon = <Icontopics />;
-const profileIcon = <Iconaccount />;
+const topicsIcon = <Icontopics/>;
+const profileIcon = <Iconaccount/>;
 
 injectTapEventPlugin();
+
 class Navigation extends React.Component {
 
   static propTypes = {
@@ -30,43 +29,50 @@ class Navigation extends React.Component {
   };
 
   constructor() {
-    super()
+    super();
     this.state = {
       selectedIndex: 0,
     };
-    this.select = ((index) => {this.setState({selectedIndex: index}); console.log(this.state.selectedIndex)}).bind(this);
+    this.select = ((index) => {
+      this.setState({selectedIndex: index});
+      console.log(this.state.selectedIndex);
+    }).bind(this);
   }
 
   getChildContext() {
-                return { muiTheme: getMuiTheme(baseTheme) };
+    return {muiTheme: getMuiTheme(baseTheme)};
   }
 
   render() {
-    const { user, searchBox } = this.props;
+    const {user, searchBox} = this.props;
     let userId = null;
     if (user.authentication !== null) {
       userId = user.authentication.userId;
     }
     return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/">Edufirst</a>
-          </Navbar.Brand>
-        </Navbar.Header>
-        <Nav>
-          <NavItem href="/topics">Topics</NavItem>
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/">Edufirst</a>
+            </Navbar.Brand>
+          </Navbar.Header>
           <Nav>
-            {searchBox.showSearchBox ? (<SearchBox/>) : (null)}
+            <NavItem href="/topics">Topics</NavItem>
+            <Nav>
+              {searchBox.showSearchBox ? (<SearchBox/>) : (null)}
+            </Nav>
           </Nav>
-        </Nav>
-        <Nav pullRight>
-          <Nav>
-            <NavItem href={userId ? `/profile/${userId}` : '/login'}>{user.username ? user.username : 'Login'}</NavItem>
+          <Nav pullRight>
+            <Nav>
+              <NavItem
+                  href={userId ? `/profile/${userId}` : '/login'}>{user.username
+                  ? user.username
+                  : 'Login'}</NavItem>
+            </Nav>
+
           </Nav>
-        </Nav>
-      </Navbar>    
-      );
+        </Navbar>
+    );
     /*return (
       <Paper zDepth={1} style={{textAlign:'center'}}>
         <BottomNavigation selectedIndex={this.state.selectedIndex}>
@@ -95,8 +101,9 @@ class Navigation extends React.Component {
     */
   }
 }
+
 Navigation.childContextTypes = {
-            muiTheme: PropTypes.object.isRequired,
-      };
+  muiTheme: PropTypes.object.isRequired,
+};
 const mapStateToProps = ({user, searchBox}) => ({user, searchBox});
 export default connect(mapStateToProps)(Navigation);

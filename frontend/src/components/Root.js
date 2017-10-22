@@ -10,9 +10,9 @@ import ProfilePage from '../containers/ProfilePage';
 import QuestionPage from '../containers/QuestionPage';
 import SearchPage from '../containers/SearchPage';
 import SignupPage from '../containers/SignupPage';
-import TopBar from '../containers/TopBar';
 import TopicQuestionsPage from '../containers/TopicQuestionsPage';
 import TopicsPage from '../containers/TopicsPage';
+
 import Layout from '../layout/Layout'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 

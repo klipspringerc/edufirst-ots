@@ -1,8 +1,8 @@
-import QuestionSimple from '../components/QuestionSimple';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchPostsByTopic} from '../actions/posts';
+import QuestionSimple from '../components/QuestionSimple';
 
 class TopicQuestionsPage extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ class TopicQuestionsPage extends Component {
               <QuestionSimple title={question.title}
                               author={question.author.username}
                               votes={question.votes_total}
-                              topAnswer={question.topAnswer.body}
+                              topAnswer={question.top_answer.body}
                               questionId={question.id}/>
           ))}
         </div>
@@ -32,11 +32,17 @@ class TopicQuestionsPage extends Component {
   }
 }
 
-const mapStateToProps = ({posts}, {match}) => ({
-  questions: posts.topics.find(t => t.topicId === match.params.topicId).posts,
-});
+const mapStateToProps = ({posts}, {match}) => {
+  const topic = posts.topics.find(t => t.topicId === match.params.topicId);
+  let questions = [];
+  debugger;
+  if (topic) {
+    questions = topic.posts;
+  }
+  return {questions};
+};
 const mapDispatchToProps = dispatch => ({
-  handleFetchPostsByTopic: postId => dispatch(fetchPostsByTopic(postId)),
+  handleFetchPostsByTopic: postId => dispatch(fetchPostsByTopic(postId, 0)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopicQuestionsPage);
