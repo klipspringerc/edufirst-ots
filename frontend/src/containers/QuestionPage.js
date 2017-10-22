@@ -27,7 +27,7 @@ class QuestionPage extends Component {
             <QuestionDetail questionId={question.id}
                             title={question.title}
                             body={question.body}
-                            allowAddingAnswer={!!user}/>
+                            allowAddingAnswer={!!user.authentication}/>
             <AnswersArea answers={question.answers}/>
           </div>
       );

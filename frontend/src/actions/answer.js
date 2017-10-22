@@ -1,6 +1,6 @@
 import {API_URL} from '../constants';
-import {fetchPost} from './posts';
 import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
 
 export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 
@@ -22,15 +22,16 @@ function postAnswerResponseAction(postId, answerBody) {
   };
 }
 
-export function postAnswer(postId, answerBody, authentication) {
+export function postAnswer(postId, body, authentication) {
   return dispatch => {
-    dispatch(postAnswerRequestAction(postId, answerBody));
+    dispatch(postAnswerRequestAction(postId, body));
     fetch(`${API_URL}/posts/${postId}/answers/`, {
-      body: mapObjectToFormData({answerBody, authentication}),
+      body: mapObjectToFormData(
+          {body, authentication: {userId: '', token: ''}}),
       method: 'POST',
     })
         .then(response => {
-          dispatch(postAnswerResponseAction(postId, answerBody));
+          dispatch(postAnswerResponseAction(postId, body));
           // Query the same post immediately again to update the store
           dispatch(fetchPost(postId));
         });

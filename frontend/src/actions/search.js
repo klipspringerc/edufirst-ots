@@ -86,11 +86,11 @@ export function fetchSuggestions(keywords) {
   };
 }
 
-export const CLEAR_SERACH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
 export function clearSearchResults() {
   return {
-    type: CLEAR_SERACH_RESULTS,
+    type: CLEAR_SEARCH_RESULTS,
   };
 }
 

@@ -1,6 +1,6 @@
 import reduceReducers from 'reduce-reducers';
 import {
-  CLEAR_SERACH_RESULTS,
+  CLEAR_SEARCH_RESULTS,
   HIDE_SEARCH_BOX,
   SAVE_QUERY,
   SEARCH_REQUEST,
@@ -36,7 +36,7 @@ export function searchReducer(state = {
         similarPosts: action.similarPosts,
         keywords: action.searchRequest.keywords,
       };
-    case CLEAR_SERACH_RESULTS:
+    case CLEAR_SEARCH_RESULTS:
       return {
         ...state,
         showSearchResults: false,
