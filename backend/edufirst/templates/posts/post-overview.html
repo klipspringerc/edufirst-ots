@@ -9,7 +9,6 @@ Search:
     <br/>
     <input class="btn btn-primary" type="submit" value="Search">
 </form>
-
 <h1>post overview</h1>
 <a class="btn btn-primary" href="{% url 'posts:create' %}">New Post</a>
 
@@ -30,12 +29,7 @@ Search:
             <a href="{{ post.body }}">{{ post.title }}</a><br/>
             {{ post.pub_date_pretty }} by <a href="#">{{ post.author.username }}</a>
         </td>
-        <form action="{% url upload_pic %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-            <p>
-                <input id="id_image" type="file" class="" name="image">
-            </p>
-            <input type="submit" value="Submit" />
-        </form>
+
     </tr>
 </table>
 

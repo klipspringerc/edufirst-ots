@@ -7,9 +7,11 @@
 <br/>
 <br/>
 {% endif %}
+upload_pic
 
 <h1>new post form</h1>
-<form method="POST" action="{% url 'posts:create' %}">
+
+<form method="POST" action="{% url 'posts:create' %}" enctype="multipart/form-data">
     {% csrf_token %}
     Title:
     <br/>
@@ -20,8 +22,18 @@
     <textarea name="body" cols="100" rows="5"></textarea>
     <br/>
     <br/>
+
+    <p>
+        <input id="id_image" type="file" class="" name="image">
+    </p>
     <input class="btn btn-primary" type="submit" value="Post">
 </form>
+<!--<form action="{% url upload_pic %}" method="post" enctype="multipart/form-data">{% csrf_token %}-->
+    <!--<p>-->
+        <!--<input id="id_image" type="file" class="" name="image">-->
+    <!--</p>-->
+    <!--<input type="submit" value="Submit" />-->
+<!--</form>-->
 
 
 {% endblock %}

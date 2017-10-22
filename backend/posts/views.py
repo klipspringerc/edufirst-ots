@@ -32,7 +32,6 @@ def create_view(request):
                     form = ImageUploadForm(request.POST, request.FILES)
                     if form.is_valid():
                         post.img_src=form.cleaned_data['image']
-                        return render(request,'post/upload-pic.html')
                         # return HttpResponse('image upload success')
                 else:
                     post.img_src='null'
