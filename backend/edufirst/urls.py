@@ -18,6 +18,7 @@ from django.contrib import admin
 from edufirst.views import debug_homeview
 from posts.views import all_posts_view, all_topics_view
 from wolf.views import wolf_search_view
+from edufirst.views import integration_test_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +26,6 @@ urlpatterns = [
     url(r'^api/v1/posts/', include('posts.urls')),
     url(r'^api/v1/topics/', all_topics_view),
     url(r'^api/v1/wolf/', include('wolf.urls')),
+    url(r'^integrate/$', integration_test_view),
     url('^$', all_posts_view, name="home"),
 ]
