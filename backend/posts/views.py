@@ -13,7 +13,6 @@ from datetime import datetime, timedelta
 from nltk.tokenize import sent_tokenize, word_tokenize
 from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 
 @csrf_exempt
 def create_view(request):
@@ -79,14 +78,15 @@ def create_answer_debug_view(request, post_id):
                 answer.post = post
                 answer.author = request.user
                 answer.save()
-                return JsonResponse({"status": "success", "message": "answer created", "answer_id": answer.pk}, status=201)
+                answers = Answer.objects.filter(post=post).order_by('-votes_total')
+                return render(request, 'posts/post-detail.html', {"post": post, "answers": answers, "post_id": post_id})
             else:
-                answers = Answer.objects.filter(post)
-                return render()
+                return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
         else:
             return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
     else:
         return render(request, 'posts/create-answerd.html', {'post_id': post_id})
+
 
 @csrf_exempt
 def create_comment_view(request, post_id):
@@ -163,6 +163,7 @@ def posts_by_topic_view(request, topic_id):
     return JsonResponse(serializer.data, safe=False)
 
 
+@csrf_exempt
 def post_upvote_view(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)
@@ -173,6 +174,7 @@ def post_upvote_view(request, post_id):
         return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
 
 
+@csrf_exempt
 def post_downvote_view(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)

@@ -46,7 +46,7 @@
 {% endfor %}
 
 
-<form method="POST" action="{% url 'posts:createanswer' post_id %}">
+<form method="POST" action="{% url 'posts:createanswerdebug' post_id %}">
     {% csrf_token %}
     <br/>
     <h3>Your answer:</h3>

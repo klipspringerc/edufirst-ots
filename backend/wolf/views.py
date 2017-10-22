@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from xml.etree import ElementTree
 from wolf.wolf_config import wolf_base_url, app_id
+from posts.models import Post
+from posts.views import rank_post
 import requests
 from django.views.decorators.csrf import csrf_exempt
 
@@ -29,6 +31,21 @@ def wolf_search_debug_view(request):
         response_dict = process_wolf_response(xml_str)
         pods_list = response_dict['pods']
         return render(request, 'wolf/wolf_resultd.html', {'pods': pods_list})
+
+def wolf_search_combined_view(request):
+    if request.method == 'GET':
+        return render(request, 'wolf/wolf_search_combined.html')
+    elif request.method == 'POST':
+        raw_input = request.POST['keywords']
+        xml_str = request_wolf_kb(raw_input)
+        response_dict = process_wolf_response(xml_str)
+        pods_list = response_dict['pods']
+
+        # search result in database
+        posts = Post.objects.all()
+        ranked = rank_post(raw_input, posts)
+
+        return render(request, 'wolf/wolf_result_combined.html', {'input': raw_input, 'ranked': ranked[:5], 'pods': pods_list})
 
 
 def request_wolf_kb(keywords):
