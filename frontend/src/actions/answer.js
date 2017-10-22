@@ -1,5 +1,5 @@
 import {fetchPost} from './posts';
-
+import {API_URL} from '../constants';
 export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 
 function postAnswerRequestAction(postId, answerBody) {
@@ -23,10 +23,10 @@ function postAnswerResponseAction(postId, answerBody) {
 export function postAnswer(postId, answerBody, authentication) {
   return dispatch => {
     dispatch(postAnswerRequestAction(postId, answerBody));
-    fetch(`http://api.edufirstonline.com/api/v1/posts/${postId}/answers`, {
+    fetch(`${API_URL}/posts/${postId}/answers`, {
       body: JSON.stringify({answerBody, authentication}),
       method: 'POST',
-      mode: 'cors'
+//      mode: 'cors'
     })
         .then(response => {
           dispatch(postAnswerResponseAction(postId, answerBody));

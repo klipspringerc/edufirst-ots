@@ -19,7 +19,7 @@ export function fetchTopics() {
   return dispatch => {
     dispatch(requestTopicsAction());
     fetch('http://api.edufirstonline.com/api/v1/topics', {
-      mode: 'cors'
+//      mode: 'cors'
     })
         .then(response => response.json())
         .then(topics => dispatch(receiveTopicsAction(topics)));

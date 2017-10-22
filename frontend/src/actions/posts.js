@@ -60,7 +60,7 @@ export function fetchPost(postId) {
   return dispatch => {
     dispatch(requestPostAction(postId));
     fetch(`http://api.edufirstonline.com/api/v1/posts/${postId}`, {
-      mode: 'cors'
+//      mode: 'cors'
     })
         .then(response => response.json())
         .then(post => dispatch(receivePostAction(postId, post)));
@@ -73,7 +73,7 @@ export function postPost(post, authentication) {
     fetch('http://api.edufirstonline.com/api/v1/posts/', {
       method: 'POST',
       body: JSON.stringify({post, authentication}),
-      mode: 'cors'
+//      mode: 'cors'
     })
         .then(response => response.text())
         .then(postId => {
