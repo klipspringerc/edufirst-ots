@@ -31,8 +31,8 @@ export function search(searchRequest) {
         .then(response => response.json())
         .then(searchResponse => {
           dispatch(searchResponseAction(searchRequest, searchResponse));
-          // Query all posts in this search immeidately to update store.
-          searchResponse.posts.forEach(post => dispatch(fetchPost(post.id)));
+          // Query all posts in this search immediately to update store.
+          searchResponse.forEach(post => dispatch(fetchPost(post.id)));
         });
   };
 }

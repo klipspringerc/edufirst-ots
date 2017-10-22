@@ -4,10 +4,9 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {clearSearchResults, showSearchBox} from '../actions/search';
 import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
+import QuestionSimple from '../components/QuestionSimple';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
-import QuestionSimple from '../components/QuestionSimple';
-import Paper from 'material-ui/Paper';
 
 class SearchPage extends Component {
   static propTypes = {
@@ -46,14 +45,16 @@ class SearchPage extends Component {
   renderSuggestedQuestions() {
     const {questions} = this.props;
     return (
-        <div >
+        <div>
           {questions.map(question => (
               <QuestionSimple
                   key={question.id}
                   title={question.title}
                   author={question.author.username}
                   votes={question.votes_total}
-                  topAnswer={question.top_answer.body}
+                  topAnswer={question.top_answer
+                      ? question.top_answer.body
+                      : null}
                   questionId={question.id}/>
           ))}
         </div>
@@ -74,7 +75,7 @@ class SearchPage extends Component {
     const {user, keywords} = this.props;
     return (
         <div>
-          {this.renderMachineGeneratedResult()}
+          {/*{this.renderMachineGeneratedResult()}*/}
           {this.renderSuggestedQuestions()}
           <Link to={user.authentication
               ? `/question/editQuestion/${keywords}`
@@ -92,9 +93,8 @@ class SearchPage extends Component {
   render() {
     return (
         <div>
-          {this.renderTopTrendingQuestions()}
-          {/*{this.renderSearchResults()}*/}
-
+          {/*{this.renderTopTrendingQuestions()}*/}
+          {this.renderSearchResults()}
         </div>
     );
   }

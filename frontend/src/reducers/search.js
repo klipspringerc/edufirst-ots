@@ -21,11 +21,10 @@ export function searchReducer(state = {
         keywords: action.searchRequest.keywords,
       };
     case SEARCH_RESPONSE: {
-      const {machineAnswer, posts} = action.searchResponse;
+      const posts = action.searchResponse;
       return {
         ...state,
         showSearchResults: true,
-        machineAnswer,
         similarPosts: posts,
         keywords: action.searchRequest.keywords,
       };
