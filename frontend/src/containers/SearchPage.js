@@ -100,6 +100,7 @@ class SearchPage extends Component {
         </Paper>
     */
   }
+
   renderSearchResults() {
     const {user, keywords} = this.props;
     return (
@@ -121,12 +122,12 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <div >
-        {this.renderTopTrendingQuestions()}
-        {//this.renderSearchResults()}
-      }
-      </div>
-      );
+        <div>
+          {this.renderTopTrendingQuestions()}
+          {/*{this.renderSearchResults()}*/}
+
+        </div>
+    );
   }
 }
 

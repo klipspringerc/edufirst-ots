@@ -1,5 +1,7 @@
-import {fetchPost} from './posts';
 import {API_URL} from '../constants';
+import {fetchPost} from './posts';
+import {mapObjectToFormData} from '../util';
+
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 
 function searchRequestAction(searchRequest) {
@@ -22,9 +24,9 @@ function searchResponseAction(searchRequest, searchResponse) {
 export function search(searchRequest) {
   return dispatch => {
     dispatch(searchRequestAction(searchRequest));
-    fetch(`${API_URL}/posts/search`, {
+    fetch(`${API_URL}/posts/search/`, {
       method: 'POST',
-      body: JSON.stringify(searchRequest)
+      body: mapObjectToFormData(searchRequest),
     })
         .then(response => response.json())
         .then(searchResponse => {
@@ -57,8 +59,8 @@ function receiveSuggestionsAction(keywords, suggestionsResponse) {
 export function fetchSuggestions(keywords) {
   return dispatch => {
     dispatch(requestSuggestionsAction(keywords));
-    fetch(`${API_URL}/posts/suggestions`, {
-      body: keywords
+    fetch(`${API_URL}/posts/suggestions/`, {
+      body: keywords,
     })
         .then(response => response.json())
         .then(suggestionsResponse =>

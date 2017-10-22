@@ -1,15 +1,13 @@
-import {signup} from '../actions/users';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, reduxForm} from 'redux-form';
+import {Field, formValueSelector, reduxForm} from 'redux-form';
+import {signup} from '../actions/users';
 
-const SignupPage = ({handleSignup, form}) => (
+let SignupPage = ({handleSignup, signupRequest}) => (
     <form onSubmit={e => {
       e.preventDefault();
-      if (form.signup) {
-        handleSignup(form.signup);
-      }
+      handleSignup(signupRequest);
     }}>
       <div>
         <label>Email</label>
@@ -28,14 +26,19 @@ const SignupPage = ({handleSignup, form}) => (
 );
 
 SignupPage.propTypes = {
-  form: PropTypes.object.isRequired,
+  signupRequest: PropTypes.object,
   handleSignup: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({form}) => ({form});
+SignupPage = reduxForm({form: 'signup'})(SignupPage);
+const selector = formValueSelector('signup');
+
+const mapStateToProps = state => {
+  const signupRequest = selector(state, 'email', 'username', 'password');
+  return {signupRequest};
+};
 const mapDispatchToProps = dispatch => ({
   handleSignup: signUpRequest => dispatch(signup(signUpRequest)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    reduxForm({form: 'signup'})(SignupPage));
+export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);

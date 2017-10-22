@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Col, Row} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import {Row, Col} from 'react-bootstrap';
 
 const TopTrendingQuestions = ({loading, questions}) => (
     <div>

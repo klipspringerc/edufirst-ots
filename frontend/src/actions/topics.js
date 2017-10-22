@@ -20,7 +20,7 @@ function receiveTopicsAction(topics) {
 export function fetchTopics() {
   return dispatch => {
     dispatch(requestTopicsAction());
-    fetch(`${API_URL}/topics`)
+    fetch(`${API_URL}/topics/`)
         .then(response => response.json())
         .then(topics => dispatch(receiveTopicsAction(topics)));
   };

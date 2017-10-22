@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {Button, Form, FormControl, FormGroup, Input} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Subject} from 'rxjs';
 import {search} from '../actions/search';
 import QuestionSimple from '../components/QuestionSimple';
 import MachineGeneratedResult from './MachineGeneratedResult';
-import {Input, Button, FormGroup, FormControl, Form} from 'react-bootstrap';
 
 class SearchBox extends Component {
 
@@ -33,7 +33,7 @@ class SearchBox extends Component {
         <MachineGeneratedResult
             folded={folded}
             machineGeneratedResult={machineGeneratedResult}/>
-    );
+            );
   }
 
   renderSuggestedQuestions() {
@@ -80,18 +80,10 @@ class SearchBox extends Component {
     return (
         <Form inline className='navbar-form' action="" onSubmit={e => {e.preventDefault();}}>
             <FormGroup>
-              <FormControl type="text" placeholder="Search here." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
+              <FormControl class="form-control form-control-lg" style={{width:300}} type="text" placeholder="Ask me anything..." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
             </FormGroup>
             <Button bsStyle='success' type='submit'>Search</Button>
         </Form>
-        /*
-        <div>
-          {this.props.showSearchResults ? this.renderSearchResults() : null}
-          <input type="search" placeholder="Search here."
-                 onChange={e => this.handleChangeSubject.next(e.target.value)}/>
-          {this.props.showSearchResults ? this.renderSearchResults() : null}
-        </div>
-        */
     );
   }
 }

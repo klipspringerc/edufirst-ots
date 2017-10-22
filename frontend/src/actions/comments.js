@@ -1,5 +1,7 @@
-import {fetchPost} from './posts';
 import {API_URL} from '../constants';
+import {fetchPost} from './posts';
+import {mapObjectToFormData} from '../util';
+
 export const POST_COMMENT_REQUEST = 'POST_COMMENT_REQUEST';
 
 function postCommentRequestAction(postId, commentType, body) {
@@ -25,14 +27,14 @@ function postCommentResponseAction(postId, commentType, body) {
 export function postComment(postId, commentType, body, authentication) {
   return dispatch => {
     dispatch(postCommentRequestAction(postId, commentType, body));
-    fetch(`${API_URL}/posts/${postId}/comments`, {
-      body: JSON.stringify({
+    fetch(`${API_URL}/posts/${postId}/comments/`, {
+      body: mapObjectToFormData({
         commentType,
         post_id: postId,
         body,
         authentication,
       }),
-      method: 'POST'
+      method: 'POST',
     })
         .then(response => {
           dispatch(postCommentResponseAction(postId, commentType, body));
