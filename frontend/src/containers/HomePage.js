@@ -26,8 +26,8 @@ class HomePage extends Component {
                         line_linked: {
                             shadow: {
                                 enable: true,
-                                color: "#0000ff",
-                                blur: 5
+                                color: "#022cfc",
+                                blur: 10
                             }
                         }
                     }
