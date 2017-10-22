@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from users.models import Account
@@ -24,6 +24,7 @@ class Post(models.Model):
     pub_date = models.DateTimeField()
     author = models.ForeignKey(User)
     votes_total = models.IntegerField(default=0)
+    img_src = models.ImageField(upload_to = 'usr_pic_src/', default = 'usr_pic_src/'+str(author+'-'+datetime.datetime.now())+'.jpg')
     topics = models.ManyToManyField(Topic)
 
     def pub_date_pretty(self):
@@ -32,6 +33,9 @@ class Post(models.Model):
     def get_answers(self):
         answers = Answer.objects.filter(post=self)
         return answers
+
+    def get_pic(self):
+        return self.img_src
 
     def get_author_name(self):
         return self.author.username
