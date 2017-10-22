@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {clearSearchResults, showSearchBox} from '../actions/search';
 import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
+import MachineGeneratedResult from './MachineGeneratedResult';
+import QuestionSimple from '../components/QuestionSimple';
 
 class SearchPage extends Component {
   static propTypes = {
@@ -15,6 +18,10 @@ class SearchPage extends Component {
       title: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
     })).isRequired,
+    machineGeneratedResult: PropTypes.object,
+    questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    showSearchResults: PropTypes.bool.isRequired,
+    folded: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -26,6 +33,32 @@ class SearchPage extends Component {
     this.props.handleClearSearchResults();
   }
 
+  renderMachineGeneratedResult() {
+    const {machineGeneratedResult, folded} = this.props;
+    return (
+        <MachineGeneratedResult
+            folded={folded}
+            machineGeneratedResult={machineGeneratedResult}/>
+    );
+  }
+
+  renderSuggestedQuestions() {
+    const {questions} = this.props;
+    return (
+        <div>
+          {questions.map(question => (
+              <QuestionSimple
+                  key={question.id}
+                  title={question.title}
+                  author={question.author.username}
+                  votes={question.votes_total}
+                  topAnswer={question.top_answer.body}
+                  questionId={question.id}/>
+          ))}
+        </div>
+    );
+  }
+
   renderTopTrendingQuestions() {
     const {loading, topTrendingQuestions} = this.props;
     return (
@@ -33,16 +66,46 @@ class SearchPage extends Component {
                               questions={topTrendingQuestions}/>
     );
   }
+  renderSearchResults() {
+    const {user, keywords} = this.props;
+    return (
+        <div>
+          {this.renderMachineGeneratedResult()}
+          {this.renderSuggestedQuestions()}
+          <Link to={user.authentication
+              ? `/question/editQuestion/${keywords}`
+              : '/login'}>
+            <button>
+              {user.authentication
+                  ? 'Create New Post'
+                  : 'Login to Create a Post'}
+            </button>
+          </Link>
+        </div>
+    );
+  }
 
   render() {
-    return this.renderTopTrendingQuestions();
+    return (
+      <div>
+        {this.renderTopTrendingQuestions()}
+        {//this.renderSearchResults()}
+      }
+      </div>
+      );
   }
 }
 
-const mapStateToProps = ({topTrendingQuestions}) => {
+const mapStateToProps = ({topTrendingQuestions, posts, fold, user}) => {
   return ({
     loading: topTrendingQuestions.loadingTopTrendingQuestions,
     topTrendingQuestions: topTrendingQuestions.topTrendingQuestions,
+    machineGeneratedResult: posts.machineAnswer,
+    questions: posts.similarPosts,
+    showSearchResults: posts.showSearchResults,
+    keywords: posts.keywords,
+    folded: fold.folded,
+    user,
   });
 };
 const mapDispatchToProps = dispatch => ({
