@@ -1,60 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import {Field, formValueSelector, reduxForm} from 'redux-form';
 import {login} from '../actions/users';
 import "../components/auxiliary_position.css";
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-/*
-<form className="middle-to-right" onSubmit={e => {
-      e.preventDefault();
-      return handleLogin(loginRequest);
-    }}>
-      <div>
-        <label style={{width:100}} >Username</label>
-        <Field name="username" component="input" type="text"/>
-      </div>
-      <div>
-        <label style={{width:100}}>Password</label>
-        <Field name="password" component="input" type="password"/>
-      </div>
-      <button type="submit">Login</button>
-      <Link to="/signup">
-        <button>Signup</button>
-      </Link>
-</form>
-
-<div>
-    <form className="middle-to-right" onSubmit={e => {
-      e.preventDefault();
-      return handleLogin(loginRequest);
-      }}>
-        <div>
-          <label style={{width:100}} >Username</label>
-          <TextField>
-            <Field name="username" component="input" type="text"/>
-          </TextField>
-        </div>
-        <div>
-          <label style={{width:100}}>Password</label>
-          <TextField>
-            <Field name="password" component="input" type="password"/>
-          </TextField>
-        </div>
-        {/*<button type="submit">Login</button>* /}
-        <RaisedButton label="Submit" primary={true} onClick={(event) => handleLogin(loginRequest)}/>
-        <Link to="/signup">
-          <button>Signup</button>
-        </Link>
-      </form>
-    </div>
-
-*/
-
-let LoginPage = ({handleLogin, loginRequest}) => (
+let LoginPage = ({handleLogin, loginRequest, user}) => {
+  if (user.username && user.authentication.status == "success") {
+    return <Redirect to="/"/>;
+  } else {
+    return (
     <div>
     <form className="middle-to-right" onSubmit={e => {
       e.preventDefault();
@@ -79,7 +37,38 @@ let LoginPage = ({handleLogin, loginRequest}) => (
         </Link>
       </form>
     </div>
-);
+    );
+  }
+};
+/*
+import '../components/auxiliary_position.css';
+
+let LoginPage = ({handleLogin, loginRequest, user}) => {
+  if (user.username && user.authentication) {
+    return <Redirect to="/"/>;
+  } else {
+    return (
+        <form className="middle-to-right" onSubmit={e => {
+          e.preventDefault();
+          return handleLogin(loginRequest);
+        }}>
+          <div>
+            <label style={{width: 100}}>Username</label>
+            <Field name="username" component="input" type="text"/>
+          </div>
+          <div>
+            <label style={{width: 100}}>Password</label>
+            <Field name="password" component="input" type="password"/>
+          </div>
+          <button type="submit">Login</button>
+          <Link to="/signup">
+            <button>Signup</button>
+          </Link>
+        </form>
+    );
+  }
+};
+*/
 
 LoginPage.propTypes = {
   loginRequest: PropTypes.object,
@@ -91,7 +80,7 @@ const selector = formValueSelector('login');
 
 const mapStateToProps = state => {
   const loginRequest = selector(state, 'username', 'password');
-  return {loginRequest};
+  return {loginRequest, user: state.user};
 };
 
 const mapDispatchToProps = dispatch => ({

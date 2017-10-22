@@ -93,10 +93,7 @@ export function login(loginRequest) {
     })
         .then(response => response.json())
         .then(authentication => dispatch(
-            loginResponseAction(username, authentication)))
-        .catch(err => {
-          debugger;
-        });
+            loginResponseAction(username, authentication)));
   };
 }
 
