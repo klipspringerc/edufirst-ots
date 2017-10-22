@@ -136,9 +136,6 @@ def post_downvote_view(request, post_id):
 # def answer_upvote_view(request, anser_id):
 
 def rank_post(search_content, unordered_posts):
-
-    unordered_posts = Post.objects.all()
-
     similarity_score = []
 
     for post in unordered_posts:
