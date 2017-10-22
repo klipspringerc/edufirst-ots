@@ -64,7 +64,6 @@ class Navigation extends React.Component {
           <Nav>
             <NavItem href={userId ? `/profile/${userId}` : '/login'}>{user.username ? user.username : 'Login'}</NavItem>
           </Nav>
-
         </Nav>
       </Navbar>    
       );

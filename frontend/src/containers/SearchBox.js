@@ -80,7 +80,7 @@ class SearchBox extends Component {
     return (
         <Form inline className='navbar-form' action="">
             <FormGroup>
-              <FormControl type="text" placeholder="Search here." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
+              <FormControl type="text" placeholder="Ask me anything..." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
             </FormGroup>
             <Button bsStyle='success' type='submit'>Search</Button>
         </Form>
