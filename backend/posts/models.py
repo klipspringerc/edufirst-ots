@@ -24,7 +24,7 @@ class Post(models.Model):
     pub_date = models.DateTimeField()
     author = models.ForeignKey(User)
     votes_total = models.IntegerField(default=0)
-    img_src = models.ImageField(upload_to = 'usr_pic_src/', default = 'usr_pic_src/'+str(author+'-'+datetime.datetime.now())+'.jpg')
+    img_src = models.ImageField(upload_to = 'backend/posts/picture/', default = 'usr_pic_src/'+str(pub_date)+'.jpg')
     topics = models.ManyToManyField(Topic)
 
     def pub_date_pretty(self):

@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import json
-from django.shortcuts import render, redirect
-from django.utils import timezone
-from django.http import HttpResponse, JsonResponse
-from posts.models import Post, Topic, Answer, Comment
-from posts.serializers import PostSerializer, PostOverviewSerializer, TopicSerializer
+
 from difflib import SequenceMatcher
 
-# Create your views here.
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.utils import timezone
+from posts.models import Post, Topic, Answer, Comment
+from posts.serializers import PostSerializer, PostOverviewSerializer, TopicSerializer
 
+# Create your views here.
+# from backend.posts.ImageUploadForm import ImageUploadForm
+
+from django import forms
+
+
+class ImageUploadForm(forms.Form):
+    """Image upload form."""
+    image = forms.ImageField()
 
 def create_view(request):
     if request.method == 'POST':
@@ -22,6 +30,14 @@ def create_view(request):
                 post.body = body
                 post.pub_date = timezone.datetime.now()
                 post.author = request.user
+                if (request.FILES != None):
+                    form = ImageUploadForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        post.img_src=form.cleaned_data['image']
+                        return render(request,'post/upload-pic.html')
+                        # return HttpResponse('image upload success')
+                else:
+                    post.img_src='null'
                 post.save()
                 return JsonResponse({"status": "success", "message": "post created", "post_id": post.pk}, status=201)
             else:
