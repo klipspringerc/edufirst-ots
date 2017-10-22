@@ -193,12 +193,41 @@ paths:
             $ref: '#/definitions/Post'
         '404':
           description: Post not found
-  '/posts/{postId}/like':
+  '/posts/{postId}/upvote':
     put:
       tags:
         - posts
-      summary: Like a post
-      operationId: likePost
+      summary: upvote a post
+      operationId: upvotePost
+      consumes:
+        - application/json
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post
+          required: true
+          type: string
+        - name: authentication
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LikeRequest'
+      responses:
+        '200':
+          description: success
+        '400':
+          description: unknown post ID
+        '403':
+          description: permission denied
+      security:
+        - edufirst_auth:
+            - 'write:posts'
+  '/posts/{postId}/downvote':
+    put:
+      tags:
+        - posts
+      summary: downvote a post
+      operationId: downvotePost
       consumes:
         - application/json
       parameters:
