@@ -1,5 +1,5 @@
 import {fetchPost} from './posts';
-
+import {API_URL} from '../constants';
 export const PUT_LIKE_REQUEST = 'PUT_LIKE_REQUEST';
 
 function putLikeRequestAction(postId) {
@@ -21,10 +21,9 @@ function putLikeResponseAction(postId) {
 export function putLike(postId, authentication) {
   return dispatch => {
     dispatch(putLikeRequestAction(postId));
-    fetch(`http://api.edufirstonline.com/v1/posts/${postId}/like`, {
+    fetch(`${API_URL}/posts/${postId}/like`, {
       body: JSON.stringify(authentication),
-      method: 'PUT',
-      mode: 'cors'
+      method: 'PUT'
     })
         .then(response => {
           dispatch(putLikeResponseAction(postId));

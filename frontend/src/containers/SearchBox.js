@@ -86,6 +86,7 @@ class SearchBox extends Component {
         </Form>
         /*
         <div>
+          {this.props.showSearchResults ? this.renderSearchResults() : null}
           <input type="search" placeholder="Search here."
                  onChange={e => this.handleChangeSubject.next(e.target.value)}/>
           {this.props.showSearchResults ? this.renderSearchResults() : null}

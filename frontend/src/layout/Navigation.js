@@ -53,18 +53,14 @@ class Navigation extends React.Component {
           <Navbar.Brand>
             <a href="/">Edufirst</a>
           </Navbar.Brand>
-          {//<Navbar.Toggle />
-          }
         </Navbar.Header>
         <Nav>
           <NavItem href="/topics">Topics</NavItem>
           <Nav>
-            <SearchBox/>
+            {searchBox.showSearchBox ? (<SearchBox/>) : (null)}
           </Nav>
         </Nav>
         <Nav pullRight>
-          {//searchBox.showSearchBox ? (<SearchBox/>) : (<SearchBox/>)
-          }
           <Nav>
             <NavItem href={userId ? `/profile/${userId}` : '/login'}>{user.username ? user.username : 'Login'}</NavItem>
           </Nav>

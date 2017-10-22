@@ -19,7 +19,7 @@ class TopicQuestionsPage extends Component {
   render() {
     const {questions} = this.props;
     return (
-        <div>
+        <div className="col-sm-3 text-right">
           {questions.map(question => (
               <QuestionSimple title={question.title}
                               author={question.author.username}

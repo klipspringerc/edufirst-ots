@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Row, Col} from 'react-bootstrap';
 
 const TopTrendingQuestions = ({loading, questions}) => (
-    <div>
-      {loading ? 'Loading...' : (
+    <Row className="show-grid">
+      <Col xs={3} xsOffset={9}>
+        {loading ? 'Loading...' : (
           <ul>
             {questions.map(question => (
                 <li key={question.id}>
@@ -14,8 +16,9 @@ const TopTrendingQuestions = ({loading, questions}) => (
                 </li>
             ))}
           </ul>
-      )}
-    </div>
+        )}
+      </Col>
+    </Row>
 );
 TopTrendingQuestions.propTypes = {
   loading: PropTypes.bool.isRequired,
