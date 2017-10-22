@@ -1,15 +1,12 @@
 import React from 'react';
-// import "aux.css";
+import "./aux.css";
 import {Link} from 'react-router-dom';
 import {Jumbotron, Button} from 'react-bootstrap';
-import SearchBox from '../containers/SearchBox';
+import SearchBox from '../containers/LargeSearchBox.js';
 const MainSearchBox = () => (
-
-    <div className='col-sm-6'>
-		<div class="col-md-12 col-md-offset-9">
-	 		<SearchBox/>
-    	</div>
-	</div>
+<div className= "modal-dialog">
+	<SearchBox/>
+</div>
 );
 
 export default MainSearchBox;
