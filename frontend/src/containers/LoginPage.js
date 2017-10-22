@@ -14,7 +14,7 @@ let LoginPage = ({handleLogin, loginRequest, user}) => {
   } else {
     return (
     <div>
-    <form className="middle-to-right" onSubmit={e => {
+    <form className="middle-down-row" onSubmit={e => {
       e.preventDefault();
       return handleLogin(loginRequest);
       }}>
@@ -31,6 +31,8 @@ let LoginPage = ({handleLogin, loginRequest, user}) => {
           </TextField>
         </div>
         {/*<button type="submit">Login</button>*/}
+        <br />
+        <br />
         <RaisedButton label="Submit" primary={true} onClick={(event) => handleLogin(loginRequest)}/>
         <Link to="/signup">
           <RaisedButton label="Signup"/>

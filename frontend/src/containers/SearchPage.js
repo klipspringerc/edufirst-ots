@@ -79,7 +79,7 @@ class SearchPage extends Component {
         <Card style={{width: '350px', height: '80%'}}>
           <CardHeader
               title="Trending Topics"
-              avatar="https://placeimg.com/80/80/animals"
+              avatar="http://www.wickedwolfapps.com/images/portfolio/Icon_TrendingNow.png"
           />
           <TopTrendingQuestions loading={loading}
                                 questions={topTrendingQuestions}/>
