@@ -7,6 +7,7 @@ import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
 import QuestionSimple from '../components/QuestionSimple';
+import Paper from 'material-ui/Paper';
 
 class SearchPage extends Component {
   static propTypes = {
@@ -45,7 +46,7 @@ class SearchPage extends Component {
   renderSuggestedQuestions() {
     const {questions} = this.props;
     return (
-        <div>
+        <div >
           {questions.map(question => (
               <QuestionSimple
                   key={question.id}
@@ -62,8 +63,10 @@ class SearchPage extends Component {
   renderTopTrendingQuestions() {
     const {loading, topTrendingQuestions} = this.props;
     return (
-        <TopTrendingQuestions loading={loading}
-                              questions={topTrendingQuestions}/>
+        <div>
+          <TopTrendingQuestions loading={loading}
+                                questions={topTrendingQuestions}/>
+        </div>
     );
   }
   renderSearchResults() {
