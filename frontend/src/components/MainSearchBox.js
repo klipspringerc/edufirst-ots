@@ -1,5 +1,5 @@
 import React from 'react';
-import "./aux.css";
+import "./auxiliary_position.css";
 import {Link} from 'react-router-dom';
 import {Jumbotron, Button} from 'react-bootstrap';
 import SearchBox from '../containers/LargeSearchBox.js';

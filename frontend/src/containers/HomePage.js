@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import "../components/auxiliary_position.css"
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {hideSearchBox} from '../actions/search';
@@ -16,7 +17,12 @@ class HomePage extends Component {
 
   render() {
     return (
-        <MainSearchBox/>
+        <div>
+          <div className="middle-row">
+            <img src={"http://edufirstedu.com/includes/jQuerySlider2/PowerSlider3/EduFirst%20Logo%20FINAL.png"}/>
+          </div>
+          <MainSearchBox/>
+        </div>
     );
   }
 }
