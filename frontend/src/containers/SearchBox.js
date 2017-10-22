@@ -16,6 +16,7 @@ class SearchBox extends Component {
     showSearchResults: PropTypes.bool.isRequired,
     folded: PropTypes.bool.isRequired,
     handleSearch: PropTypes.func.isRequired,
+    searchQuery: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -25,6 +26,7 @@ class SearchBox extends Component {
     this.handleChangeSubject = new Subject();
     this.handleChangeSubject.debounceTime(200)
         .subscribe(this.handleChange);
+    this.handleChangeSubject.next(this.props.searchQuery);
   }
 
   renderMachineGeneratedResult() {
@@ -86,7 +88,8 @@ class SearchBox extends Component {
                          style={{width: 300}} type="text"
                          placeholder="Ask me anything..."
                          onChange={e => this.handleChangeSubject
-                             .next(e.target.value)}/>
+                             .next(e.target.value)}
+                         defaultValue={this.props.searchQuery}/>
           </FormGroup>
           <Button bsStyle='success' type='submit'>Search</Button>
         </Form>
@@ -94,14 +97,17 @@ class SearchBox extends Component {
   }
 }
 
-const mapStateToProps = ({posts, fold, user}) => ({
-  machineGeneratedResult: posts.machineAnswer,
-  questions: posts.similarPosts,
-  showSearchResults: posts.showSearchResults,
-  keywords: posts.keywords,
-  folded: fold.folded,
-  user,
-});
+const mapStateToProps = ({posts, fold, user, searchQuery}) => {
+  return ({
+    machineGeneratedResult: posts.machineAnswer,
+    questions: posts.similarPosts,
+    showSearchResults: posts.showSearchResults,
+    keywords: posts.keywords,
+    folded: fold.folded,
+    searchQuery: searchQuery.searchQuery,
+    user,
+  });
+};
 
 const mapDispatchToProps = dispatch => ({
   handleSearch: text => dispatch(search({keywords: text, offset: 0})),

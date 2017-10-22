@@ -90,23 +90,14 @@ class SearchPage extends Component {
           </Col>
         </Grid>
     );
-    /*
-      <div style={{textAlign: 'right'}}>
-          <TestCards/>
-      </div>
-      <Paper style={style}>
-          <TopTrendingQuestions loading={loading}
-                                questions={topTrendingQuestions}/>
-        </Paper>
-    */
   }
 
   renderSearchResults() {
-    const {user, keywords} = this.props;
+    const {user, keywords, machineGeneratedResult, questions} = this.props;
     return (
         <div>
-          {/*{this.renderMachineGeneratedResult()}*/}
-          {this.renderSuggestedQuestions()}
+          {machineGeneratedResult ? this.renderMachineGeneratedResult() : null}
+          {questions.length !== 0 ? this.renderSuggestedQuestions() : null}
           <Link to={user.authentication
               ? `/question/editQuestion/${keywords}`
               : '/login'}>

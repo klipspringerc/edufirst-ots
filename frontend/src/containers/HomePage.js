@@ -19,22 +19,20 @@ class HomePage extends Component {
   render() {
     return (
         <div>
-          <Particles
-              params={{
-                particles: {
-                  line_linked: {
-                    shadow: {
-                      enable: true,
-                      color: '#022cfc',
-                      blur: 10,
-                    },
-                  },
+          <Particles params={{
+            particles: {
+              line_linked: {
+                shadow: {
+                  enable: true,
+                  color: '#022cfc',
+                  blur: 10,
                 },
-              }}
-              style={{
-                width: 100,
-              }}
-          />
+              },
+            },
+          }}
+                     style={{
+                       width: 100,
+                     }}/>
           <div className="middle-row">
             <img
                 src={'http://edufirstedu.com/includes/jQuerySlider2/PowerSlider3/EduFirst%20Logo%20FINAL.png'}/>

@@ -9,6 +9,7 @@ import toggleFold from './reducers/toggle-fold';
 import topTrendingQuestions from './reducers/top-trending-questions';
 import topicsReducer from './reducers/topics';
 import userReducer from './reducers/users';
+import {searchQueryReducer} from './reducers/search';
 
 const initialState = {
   user: {
@@ -45,6 +46,9 @@ const initialState = {
     topics: [],
     loadingTopics: false,
   },
+  searchQuery: {
+    searchQuery: ''
+  }
 };
 const middleware = [promise(), thunk];
 if (process.env.NODE_ENV !== 'production') {
@@ -58,6 +62,7 @@ const reducer = combineReducers({
   fold: toggleFold,
   form: formReducer,
   topics: topicsReducer,
+  searchQuery: searchQueryReducer
 });
 
 const store = createStore(
