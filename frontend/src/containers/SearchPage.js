@@ -56,6 +56,7 @@ class SearchPage extends Component {
 
   renderSuggestedQuestions() {
     const {questions} = this.props;
+    console.log(this.props);
     return (
         <div >
           {questions.map(question => (
@@ -105,7 +106,7 @@ class SearchPage extends Component {
     const {user, keywords} = this.props;
     return (
         <div>
-          {this.renderMachineGeneratedResult()}
+          {/*this.renderMachineGeneratedResult()*/}
           {this.renderSuggestedQuestions()}
           <Link to={user.authentication
               ? `/question/editQuestion/${keywords}`
@@ -124,7 +125,7 @@ class SearchPage extends Component {
     return (
         <div>
           {this.renderTopTrendingQuestions()}
-          {/*{this.renderSearchResults()}*/}
+          {this.renderSearchResults()}
 
         </div>
     );
