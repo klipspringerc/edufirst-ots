@@ -3,7 +3,7 @@
 {% block content %}
 
 Search:
-<form method="POST" action="{% url 'posts:search' %}">
+<form method="POST" action="{% url 'posts:searchdebug' %}">
     {% csrf_token %}
     <textarea name="keywords" cols="80" rows="1"></textarea>
     <br/>
