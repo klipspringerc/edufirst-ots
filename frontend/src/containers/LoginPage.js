@@ -4,10 +4,12 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Field, formValueSelector, reduxForm} from 'redux-form';
 import {login} from '../actions/users';
-import "../components/auxiliary_position.css"
+import "../components/auxiliary_position.css";
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
-let LoginPage = ({handleLogin, loginRequest}) => (
-    <form className="middle-to-right" onSubmit={e => {
+/*
+<form className="middle-to-right" onSubmit={e => {
       e.preventDefault();
       return handleLogin(loginRequest);
     }}>
@@ -23,7 +25,60 @@ let LoginPage = ({handleLogin, loginRequest}) => (
       <Link to="/signup">
         <button>Signup</button>
       </Link>
-    </form>
+</form>
+
+<div>
+    <form className="middle-to-right" onSubmit={e => {
+      e.preventDefault();
+      return handleLogin(loginRequest);
+      }}>
+        <div>
+          <label style={{width:100}} >Username</label>
+          <TextField>
+            <Field name="username" component="input" type="text"/>
+          </TextField>
+        </div>
+        <div>
+          <label style={{width:100}}>Password</label>
+          <TextField>
+            <Field name="password" component="input" type="password"/>
+          </TextField>
+        </div>
+        {/*<button type="submit">Login</button>* /}
+        <RaisedButton label="Submit" primary={true} onClick={(event) => handleLogin(loginRequest)}/>
+        <Link to="/signup">
+          <button>Signup</button>
+        </Link>
+      </form>
+    </div>
+
+*/
+
+let LoginPage = ({handleLogin, loginRequest}) => (
+    <div>
+    <form className="middle-to-right" onSubmit={e => {
+      e.preventDefault();
+      return handleLogin(loginRequest);
+      }}>
+        <div>
+          <label style={{width:100}} >Username</label>
+          <TextField>
+            <Field name="username" component="input" type="text"/>
+          </TextField>
+        </div>
+        <div>
+          <label style={{width:100}}>Password</label>
+          <TextField>
+            <Field name="password" component="input" type="password"/>
+          </TextField>
+        </div>
+        {/*<button type="submit">Login</button>*/}
+        <RaisedButton label="Submit" primary={true} onClick={(event) => handleLogin(loginRequest)}/>
+        <Link to="/signup">
+          <RaisedButton label="Signup" primary={true}/>
+        </Link>
+      </form>
+    </div>
 );
 
 LoginPage.propTypes = {
