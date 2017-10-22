@@ -2,19 +2,12 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Button, Form, FormControl, FormGroup, Input} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {Subject} from 'rxjs';
 import {search} from '../actions/search';
-import QuestionSimple from '../components/QuestionSimple';
-import MachineGeneratedResult from './MachineGeneratedResult';
 
 class SearchBox extends Component {
 
   static propTypes = {
-    machineGeneratedResult: PropTypes.object,
-    questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-    showSearchResults: PropTypes.bool.isRequired,
-    folded: PropTypes.bool.isRequired,
     handleSearch: PropTypes.func.isRequired,
     searchQuery: PropTypes.string.isRequired,
   };
@@ -27,52 +20,6 @@ class SearchBox extends Component {
     this.handleChangeSubject.debounceTime(200)
         .subscribe(this.handleChange);
     this.handleChangeSubject.next(this.props.searchQuery);
-  }
-
-  renderMachineGeneratedResult() {
-    const {machineGeneratedResult, folded} = this.props;
-    return (
-        <MachineGeneratedResult
-            folded={folded}
-            machineGeneratedResult={machineGeneratedResult}/>
-    );
-  }
-
-  renderSuggestedQuestions() {
-    debugger;
-    const {questions} = this.props;
-    return (
-        <div>
-          {questions.map(question => (
-              <QuestionSimple
-                  key={question.id}
-                  title={question.title}
-                  author={question.author.username}
-                  votes={question.votes_total}
-                  topAnswer={question.top_answer.body}
-                  questionId={question.id}/>
-          ))}
-        </div>
-    );
-  }
-
-  renderSearchResults() {
-    const {user, keywords} = this.props;
-    return (
-        <div>
-          {this.renderMachineGeneratedResult()}
-          {this.renderSuggestedQuestions()}
-          <Link to={user.authentication
-              ? `/question/editQuestion/${keywords}`
-              : '/login'}>
-            <button>
-              {user.authentication
-                  ? 'Create New Post'
-                  : 'Login to Create a Post'}
-            </button>
-          </Link>
-        </div>
-    );
   }
 
   handleChange(text) {
@@ -97,17 +44,9 @@ class SearchBox extends Component {
   }
 }
 
-const mapStateToProps = ({posts, fold, user, searchQuery}) => {
-  return ({
-    machineGeneratedResult: posts.machineAnswer,
-    questions: posts.similarPosts,
-    showSearchResults: posts.showSearchResults,
-    keywords: posts.keywords,
-    folded: fold.folded,
-    searchQuery: searchQuery.searchQuery,
-    user,
-  });
-};
+const mapStateToProps = ({searchQuery}) => ({
+  searchQuery: searchQuery.searchQuery,
+});
 
 const mapDispatchToProps = dispatch => ({
   handleSearch: text => dispatch(search({keywords: text, offset: 0})),

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Particles from 'react-particles-js';
 import {connect} from 'react-redux';
-import {hideSearchBox} from '../actions/search';
+import {hideSearchBox, showSearchBox} from '../actions/search';
 import '../components/auxiliary_position.css';
 import MainSearchBox from '../components/MainSearchBox';
 
@@ -10,10 +10,15 @@ class HomePage extends Component {
 
   static propTypes = {
     handleHideSearchBox: PropTypes.func.isRequired,
+    handleShowSearchBox: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     this.props.handleHideSearchBox();
+  }
+
+  componentWillUnmount() {
+    this.props.handleShowSearchBox();
   }
 
   render() {
@@ -45,6 +50,7 @@ class HomePage extends Component {
 
 const mapDispatchToProps = dispatch => ({
   handleHideSearchBox: () => dispatch(hideSearchBox()),
+  handleShowSearchBox: () => dispatch(showSearchBox()),
 });
 
 export default connect(null, mapDispatchToProps)(HomePage);

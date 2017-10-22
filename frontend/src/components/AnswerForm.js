@@ -2,14 +2,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+import {Field, formValueSelector, reduxForm} from 'redux-form';
 
-const AnswerForm = ({question, handleSubmit}) => {
+let AnswerForm = ({question, handleSubmit, answer}) => {
   return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={e => {
+        e.preventDefault();
+        handleSubmit(answer);
+      }}>
         <div className="questionTitle">{question.title}</div>
         <div className="questionBody">{question.body}</div>
-        <Field name="answer" component={ReactQuill}/>
+        <Field name="answer" component="input" type="text"/>
         <input type="submit"/>
       </form>
   );
@@ -18,6 +22,14 @@ const AnswerForm = ({question, handleSubmit}) => {
 AnswerForm.propTypes = {
   question: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  answer: PropTypes.string,
 };
 
-export default reduxForm({form: 'answer'})(AnswerForm);
+AnswerForm = reduxForm({form: 'answer'})(AnswerForm);
+const selector = formValueSelector('answer');
+
+const mapStateToProps = state => {
+  return {answer: selector(state, 'answer')};
+};
+
+export default connect(mapStateToProps)(AnswerForm);

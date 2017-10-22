@@ -27,12 +27,10 @@ class EditAnswerPage extends Component {
     }
   }
 
-  handleSubmit() {
-    const {form, user, match, handlePostAnswer} = this.props;
-    if (form.answer) {
-      handlePostAnswer(match.params.questionId, form.answer.answer,
-          user.authentication);
-    }
+  handleSubmit(answer) {
+    const {user, match, handlePostAnswer} = this.props;
+    handlePostAnswer(match.params.questionId, {body: answer},
+        user.authentication);
   }
 
   render() {
