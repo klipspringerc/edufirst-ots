@@ -8,5 +8,7 @@ export default function postAnswerReducer(state = {
       return {...state, postingAnswer: true};
     case POST_ANSWER_RESPONSE:
       return {...state, postingAnswer: false};
+    default:
+      return state; 
   }
 }

@@ -8,5 +8,7 @@ export default function putLikeReducer(state = {
       return {...state, puttingLike: true};
     case PUT_LIKE_RESPONSE:
       return {...state, puttingLike: false};
+    default:
+      return state;
   }
 }

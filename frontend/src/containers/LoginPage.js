@@ -1,11 +1,12 @@
-import {login} from 'frontend/src/actions/users';
+import {login} from '../actions/users';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 
-const LoginPage = ({handleLogin, form}) => (
-    <form onSubmit={() => {
+let LoginPage = ({handleLogin, form}) => (
+    <form onSubmit={e => {
+      e.preventDefault();
       if (form.login) {
         handleLogin(form.login);
       }
@@ -27,10 +28,11 @@ LoginPage.propTypes = {
   handleSignup: PropTypes.func.isRequired,
 };
 
+
 const mapStateToProps = ({form}) => ({form});
 const mapDispatchToProps = dispatch => ({
-  handleSignup: loginRequest => dispatch(login(loginRequest)),
+  handleLogin: loginRequest => dispatch(login(loginRequest)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    reduxForm({form: 'login'})(LoginPage));
+LoginPage = connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default reduxForm({form: 'login'})(LoginPage);

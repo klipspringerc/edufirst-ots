@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {toggleFold} from '../actions/toggle-fold';
+import {toggleFoldAction} from '../actions/toggle-fold';
 import './MachineGeneratedResult.css';
 
 class MachineGeneratedResult extends Component {
@@ -35,6 +35,6 @@ class MachineGeneratedResult extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  handleFoldButtonClick: () => dispatch(toggleFold()),
+  handleFoldButtonClick: () => dispatch(toggleFoldAction()),
 });
 export default connect(null, mapDispatchToProps)(MachineGeneratedResult);

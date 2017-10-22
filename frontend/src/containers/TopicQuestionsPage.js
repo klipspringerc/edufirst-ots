@@ -1,4 +1,4 @@
-import QuestionSimple from 'frontend/src/components/QuestionSimple';
+import QuestionSimple from '../components/QuestionSimple';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';

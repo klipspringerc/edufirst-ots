@@ -11,5 +11,7 @@ export default function postCommentReducer(state = {
       return {...state, postingComment: true};
     case POST_COMMENT_RESPONSE:
       return {...state, postingComment: false};
+    default:
+      return state;
   }
 }

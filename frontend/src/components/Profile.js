@@ -68,7 +68,8 @@ class Profile extends Component {
   }
 
   render() {
-    const {picture, name, answers, questions, topics} = this.props;
+    // const {picture, name, answers, questions, topics} = this.props;
+    const {picture, name, questions} = this.props;
     return (
         <div>
           <img src={picture} alt={name}/>

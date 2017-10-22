@@ -1,11 +1,12 @@
-import {signup} from 'frontend/src/actions/users';
+import {signup} from '../actions/users';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 
 const SignupPage = ({handleSignup, form}) => (
-    <form onSubmit={() => {
+    <form onSubmit={e => {
+      e.preventDefault();
       if (form.signup) {
         handleSignup(form.signup);
       }

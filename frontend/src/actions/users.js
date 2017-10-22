@@ -122,6 +122,7 @@ export function signup(signUpRequest) {
     fetch('http://api.edufirstonline.com/api/v1/users/signup', {
       method: 'POST',
       body: signUpRequest,
+      mode: 'cors'
     })
         .then(response => dispatch(signupResponseAction(username, email)));
   };
