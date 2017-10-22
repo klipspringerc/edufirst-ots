@@ -27,6 +27,6 @@ urlpatterns = [
     url(r'^api/v1/posts/', include('posts.urls')),
     url(r'^api/v1/topics/', all_topics_view),
     url(r'^api/v1/wolf/', include('wolf.urls')),
-    # url(r'^integrate/$', integration_test_view),
+    url(r'^integrate/$', integration_test_view),
     url(r'^overview/', all_posts_view, name="home"),
 ]

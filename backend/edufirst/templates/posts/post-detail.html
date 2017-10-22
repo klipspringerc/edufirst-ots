@@ -1,0 +1,71 @@
+{% extends 'debug-base.html' %}
+
+{% block content %}
+
+<h2> {{ post.title }} </h2>
+<table>
+    <tr>
+        <td style="padding-right: 20px;">
+            <a href="#" onClick="document.getElementById('upvote{{ post.id }}').submit()">
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></a><br/>
+            {{ post.votes_total }}<br/>
+            <a href="#" onClick="document.getElementById('downvote{{ post.id }}').submit()"><span
+                    class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a>
+        </td>
+        <td>
+            {{ post.pub_date_pretty }} by <a href="#">{{ post.author.username }}</a>
+        </td>
+    </tr>
+</table>
+<hr>
+<br>
+<p> {{ post.body }} </p>
+
+
+<br/>
+<h3>Answers:</h3>
+
+{% for answer in answers.all %}
+<hr>
+<table>
+    <tr>
+        <td style="padding-right: 20px;">
+            <a href="#" onClick="document.getElementById('upvote{{ post.id }}').submit()">
+            <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></a><br/>
+            {{ answer.votes_total }}<br/>
+            <a href="#" onClick="document.getElementById('downvote{{ post.id }}').submit()"><span
+                    class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a>
+        </td>
+        <td>
+            {{ answer.body }} <br>
+            {{ answer.pub_date_pretty }} by <a href="#">{{ answer.author.username }}</a>
+        </td>
+    </tr>
+</table>
+
+{% endfor %}
+
+
+<form method="POST" action="{% url 'posts:createanswer' post_id %}">
+    {% csrf_token %}
+    <br/>
+    <h3>Your answer:</h3>
+    <br/>
+    <textarea name="body" cols="100" rows="5"></textarea>
+    <br/>
+    <br/>
+    <input class="btn btn-primary" type="submit" value="Post">
+</form>
+
+<form id="upvote{{ post.id }}" method="POST" action="{% url 'posts:upvotepost' post.id %}">
+    {% csrf_token %}
+    <input type="hidden">
+</form>
+
+<form id="downvote{{ post.id }}" method="POST" action="{% url 'posts:downvotepost' post.id %}">
+    {% csrf_token %}
+    <input type="hidden">
+</form>
+
+
+{% endblock %}

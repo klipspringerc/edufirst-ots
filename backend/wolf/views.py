@@ -6,8 +6,10 @@ from django.http import JsonResponse
 from xml.etree import ElementTree
 from wolf.wolf_config import wolf_base_url, app_id
 import requests
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def wolf_search_view(request):
     if request.method == 'GET':
         return render(request, 'wolf/wolf_search.html')

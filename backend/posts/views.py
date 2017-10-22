@@ -48,6 +48,8 @@ def create_answer_view(request, post_id):
         post = Post.objects.get(pk=post_id)
         if request.user.is_authenticated():
             if post:
+                if water_army_detection(request.user):
+                    return JsonResponse({"status":"failure", "message": "post too frequent"}, status=403)
                 answer = Answer()
                 answer.body = request.POST['body']
                 answer.pub_date = timezone.datetime.now()
@@ -62,6 +64,29 @@ def create_answer_view(request, post_id):
     else:
         return render(request, 'posts/create-answerd.html', {'post_id': post_id})
 
+
+@csrf_exempt
+def create_answer_debug_view(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        if request.user.is_authenticated():
+            if post:
+                if water_army_detection(request.user):
+                    return JsonResponse({"status":"failure", "message": "post too frequent"}, status=403)
+                answer = Answer()
+                answer.body = request.POST['body']
+                answer.pub_date = timezone.datetime.now()
+                answer.post = post
+                answer.author = request.user
+                answer.save()
+                return JsonResponse({"status": "success", "message": "answer created", "answer_id": answer.pk}, status=201)
+            else:
+                answers = Answer.objects.filter(post)
+                return render()
+        else:
+            return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
+    else:
+        return render(request, 'posts/create-answerd.html', {'post_id': post_id})
 
 @csrf_exempt
 def create_comment_view(request, post_id):
@@ -115,6 +140,15 @@ def post_detail_jsonview(request, post_id):
         return HttpResponse(status=404)
     serializer = PostSerializer(post)
     return JsonResponse(serializer.data, safe=False)
+
+
+def post_detail_view(request, post_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return HttpResponse(status=404)
+    answers = Answer.objects.filter(post=post)
+    return render(request, 'posts/post-detail.html', {'post': post, 'answers': answers, 'post_id': post_id})
 
 
 def all_topics_view(request):
@@ -195,12 +229,10 @@ def rank_score(search_keywords, post_content):
     return score
 
 
-
-
 # determine whether a user is a water army
-def water_army_detection(user_id):
+def water_army_detection(user):
     # get current user
-    user = User.objects.get(id=user_id)
+    # user = User.objects.get(id=user_id)
     # calculate time limit
     time_limit = datetime.now() - timedelta(minutes=10)
     # get posts
