@@ -1,11 +1,10 @@
 import React from 'react';
-import "./auxiliary_position.css";
-import {Link} from 'react-router-dom';
-import {Jumbotron, Button} from 'react-bootstrap';
 import SearchBox from '../containers/LargeSearchBox.js';
+import './auxiliary_position.css';
+
 const MainSearchBox = () => (
-    <div className= "modal-dialog">
-        <SearchBox/>
+    <div className="modal-dialog">
+      <SearchBox/>
     </div>
 );
 

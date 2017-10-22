@@ -33,10 +33,11 @@ class SearchBox extends Component {
         <MachineGeneratedResult
             folded={folded}
             machineGeneratedResult={machineGeneratedResult}/>
-            );
+    );
   }
 
   renderSuggestedQuestions() {
+    debugger;
     const {questions} = this.props;
     return (
         <div>
@@ -78,11 +79,16 @@ class SearchBox extends Component {
 
   render() {
     return (
-        <Form inline className='navbar-form' action="" onSubmit={e => {e.preventDefault();}}>
-            <FormGroup>
-              <FormControl class="form-control form-control-lg" style={{width:300}} type="text" placeholder="Ask me anything..." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
-            </FormGroup>
-            <Button bsStyle='success' type='submit'>Search</Button>
+        <Form inline className='navbar-form' action=""
+              onSubmit={e => {e.preventDefault();}}>
+          <FormGroup>
+            <FormControl className="form-control form-control-lg"
+                         style={{width: 300}} type="text"
+                         placeholder="Ask me anything..."
+                         onChange={e => this.handleChangeSubject
+                             .next(e.target.value)}/>
+          </FormGroup>
+          <Button bsStyle='success' type='submit'>Search</Button>
         </Form>
     );
   }
