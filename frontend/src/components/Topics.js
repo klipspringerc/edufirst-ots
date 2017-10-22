@@ -28,8 +28,8 @@ const Topics = ({topics}) => (
         cellHeight={80}
         style={styles.gridList}
       >
-        {topics.map((topic, index) => (
-          <Link to={`/topics/${index}`}>
+        {topics.map((topic) => (
+          <Link to={`/topics/${topic.topic_name}`}>
           <GridTile
             title={topic.topic_name}
             actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
@@ -50,18 +50,3 @@ Topics.childContextTypes = {
             muiTheme: PropTypes.object.isRequired,
       };
 export default Topics;
-
-/*
-<div style={styles.root}>
-      {topics.map((topic, index) => (
-          <Link to={`/topics/${index}`}>
-            <div key={index}>
-              {topic.image
-                  ? <img src={topic.image} alt={topic.topic_name}/>
-                  : null}
-              <div>{topic.topic_name}</div>
-            </div>
-          </Link>
-      ))}
-    </div> 
-*/
