@@ -32,6 +32,7 @@ def wolf_search_debug_view(request):
         pods_list = response_dict['pods']
         return render(request, 'wolf/wolf_resultd.html', {'pods': pods_list})
 
+
 def wolf_search_combined_view(request):
     if request.method == 'GET':
         return render(request, 'wolf/wolf_search_combined.html')
@@ -40,11 +41,9 @@ def wolf_search_combined_view(request):
         xml_str = request_wolf_kb(raw_input)
         response_dict = process_wolf_response(xml_str)
         pods_list = response_dict['pods']
-
         # search result in database
         posts = Post.objects.all()
         ranked = rank_post(raw_input, posts)
-
         return render(request, 'wolf/wolf_result_combined.html', {'input': raw_input, 'ranked': ranked[:5], 'pods': pods_list})
 
 

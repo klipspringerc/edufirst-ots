@@ -163,6 +163,17 @@ def posts_by_topic_view(request, topic_id):
     return JsonResponse(serializer.data, safe=False)
 
 
+def list_topics_view(request):
+    topics = Topic.objects.order_by('name')
+    return render(request, 'posts/list-topics.html', {'topics': topics})
+
+
+def list_posts_by_topic_view(request, topic_id):
+    match_posts = Post.objects.filter(topics__pk=topic_id)
+    return render(request, 'posts/posts-by-topic.html', {'topic': topic_id, 'posts': match_posts})
+
+
+
 @csrf_exempt
 def post_upvote_view(request, post_id):
     try:

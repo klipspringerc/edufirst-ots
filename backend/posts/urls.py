@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from .views import create_view, all_posts_view, post_detail_jsonview, post_downvote_view, post_upvote_view, \
-    posts_by_topic_view, search_view, create_answer_view, create_comment_view, search_debug_view, post_detail_view, create_answer_debug_view
+    posts_by_topic_view, search_view, create_answer_view, create_comment_view, search_debug_view, post_detail_view, create_answer_debug_view, list_topics_view, list_posts_by_topic_view
 
 app_name = 'posts'
 
@@ -16,5 +16,7 @@ urlpatterns = [
     url(r'(?P<post_id>[0-9]+)/comment/$', create_comment_view, name='createcomment'),
     url(r'(?P<post_id>[0-9]+)/upvote/$', post_upvote_view, name='upvotepost'),
     url(r'(?P<post_id>[0-9]+)/downvote/$', post_downvote_view, name='downvotepost'),
-    url(r'topic/(?P<topic_id>[a-zA-Z]+)/$', posts_by_topic_view, name='postbytopic'),
+    url(r'topic/(?P<topic_id>[a-zA-Z#\+\-]+)/$', posts_by_topic_view, name='postbytopic'),
+    url(r'list-post-by-topic/(?P<topic_id>[a-zA-Z#\+\-]+)/$', list_posts_by_topic_view, name='listpostbytopic'),
+    url(r'^topics-list/$', list_topics_view, name='topics'),
 ]
