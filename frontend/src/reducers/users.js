@@ -26,7 +26,7 @@ function loginReducer(state = {
 }, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return {...state, username: action.username};
+      return state;
     case LOGIN_RESPONSE:
       return {
         ...state,
