@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     certificate = models.CharField(max_length=50, default='')
+    email = models.CharField(max_length=50, default='')
 
     def get_username(self):
         return self.user.username

@@ -4,10 +4,10 @@ from users.serializers import AccountSerializer
 
 
 class TopicSerializer(serializers.ModelSerializer):
-    topicName = serializers.CharField(source='name')
+    topic_name = serializers.CharField(source='name')
     class Meta:
         model = Topic
-        fields = ('topicName',)
+        fields = ('topic_name',)
 
 
 class AnswerSerializer(serializers.ModelSerializer):

@@ -1,0 +1,545 @@
+swagger: '2.0'
+info:
+  description: This is the EduFirst API server
+  version: 1.0.0
+  title: EduFirst
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: api.edufirstonline.com
+basePath: /api/v1
+tags:
+  - name: users
+    description: Operations about user
+  - name: posts
+    description: Access to posts
+  - name: topics
+    description: Access to topics
+  - name: wolf
+    description: Obtain Wolframalpha answers
+schemes:
+  - http
+  - https
+paths:
+  '/users/{userId}/posts':
+    get:
+      tags:
+        - users
+      summary: Get all posts by this user
+      operationId: getPostsByUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          description: The ID of the user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+        '404':
+          description: User not found
+  '/users/{userId}/certificate':
+    put:
+      tags:
+        - users
+      summary: Apply for certificate
+      operationId: applyForCertificate
+      parameters:
+        - name: userId
+          in: path
+          description: The ID of the user
+          required: true
+          type: string
+        - name: token
+          in: header
+          description: The token corresponding to the user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful
+        '400':
+          description: Unknown user ID
+      security:
+        - edufirst_auth:
+            - 'write:users'
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Login user via username and password
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      operationId: login
+      parameters:
+        - in: body
+          name: loginRequest
+          description: User information to login
+          required: true
+          schema:
+            $ref: '#/definitions/LoginRequest'
+      responses:
+        '200':
+          description: successful
+          schema:
+            $ref: '#/definitions/LoginResponse'
+  /users/signup:
+    post:
+      tags:
+        - users
+      summary: Sign up a user with information
+      operationId: signup
+      parameters:
+        - name: signUpRequest
+          in: body
+          description: User information to sign up
+          required: true
+          schema:
+            $ref: '#/definitions/SignUpRequest'
+      responses:
+        '201':
+          description: created
+  /posts:
+    post:
+      tags:
+        - posts
+      summary: Create a new post
+      operationId: addPost
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: postRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PostRequest'
+      responses:
+        '201':
+          description: created
+          schema:
+            $ref: '#/definitions/PostResponse'
+      security:
+        - edufirst_auth:
+            - 'write:posts'
+  /posts/suggestions:
+    get:
+      tags:
+        - posts
+      summary: Gets suggested posts with given keywords
+      operationId: getSuggestions
+      produces:
+        - application/json
+      parameters:
+        - name: keywords
+          in: body
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SuggestionsResponse'
+  /posts/search:
+    get:
+      tags:
+        - posts
+      summary: Search posts by keywords and offset
+      operationId: searchPosts
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: searchRequest
+          description: Information required to search posts
+          required: true
+          schema:
+            $ref: '#/definitions/SearchRequest'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/SearchResponse'
+  '/posts/{postId}':
+    get:
+      tags:
+        - posts
+      summary: Get post by ID
+      operationId: getPostById
+      produces:
+        - application/json
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/Post'
+        '404':
+          description: Post not found
+  '/posts/{postId}/like':
+    put:
+      tags:
+        - posts
+      summary: Like a post
+      operationId: likePost
+      consumes:
+        - application/json
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post
+          required: true
+          type: string
+        - name: authentication
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LikeRequest'
+      responses:
+        '200':
+          description: success
+        '400':
+          description: unknown post ID
+        '403':
+          description: permission denied
+      security:
+        - edufirst_auth:
+            - 'write:posts'
+  '/posts/{postId}/answers':
+    post:
+      tags:
+        - posts
+      summary: Add an answer
+      operationId: addAnswerToPost
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          type: string
+        - in: body
+          name: answerRequest
+          required: true
+          schema:
+            $ref: '#/definitions/AnswerRequest'
+      responses:
+        '201':
+          description: created
+        '400':
+          description: unknown post ID
+        '403':
+          description: permission denied
+      security:
+        - edufirst_auth:
+            - 'write:posts'
+  '/posts/{postId}/comments':
+    post:
+      tags:
+        - posts
+      summary: Add a comment to a post
+      operationId: addCommentToPost
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: commentRequest
+          required: true
+          schema:
+            $ref: '#/definitions/CommentRequest'
+        - in: path
+          name: postId
+          required: true
+          type: string
+      responses:
+        '201':
+          description: created
+        '400':
+          description: unknown post ID
+        '403':
+          description: permission denied
+      security:
+        - edufirst_auth:
+            - 'write:posts'
+  '/posts/topic/{topicId}':
+    get:
+      tags:
+        - posts
+      summary: Find posts by topic
+      operationId: findPostsByTopic
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: topicId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/PostsByTopicResponse'
+  /topics:
+    get:
+      tags:
+        - topics
+      summary: Get all topics
+      operationId: getAllTopics
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Topic'
+  /wolf/search:
+    get:
+      tags:
+        - wolf
+      summary: Get wolframalpha answers
+      operationId: getWolfAnswer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/WolfResponse'
+securityDefinitions:
+  edufirst_auth:
+    type: oauth2
+    authorizationUrl: 'http://13.229.56.229:8080/oauth'
+    flow: implicit
+    scopes:
+      'write:users': modify users
+      'write:posts': modify posts
+definitions:
+  LoginRequest:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  LoginResponse:
+    $ref: '#/definitions/Authentication'
+  SignUpRequest:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      email:
+        type: string
+  PostRequest:
+    type: object
+    properties:
+      post:
+        type: object
+        properties:
+          title:
+            type: string
+          body:
+            type: string
+      authentication:
+        $ref: '#/definitions/Authentication'
+  PostResponse:
+    type: object
+    properties:
+      post_id:
+        type: string
+  SuggestionsResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        postId:
+          type: string
+        postBody:
+          type: string
+  SearchRequest:
+    type: object
+    properties:
+      keywords:
+        type: string
+      offset:
+        type: integer
+        format: int64
+    required:
+      - keywords
+  PostInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      body:
+        type: string
+      pub_date:
+        type: string
+      author:
+        $ref: '#/definitions/Author'
+      votes_total:
+        type: integer
+      top_answer:
+        $ref: '#/definitions/Answer'
+  SearchResponse:
+    type: object
+    properties:
+      pod:
+        type: object
+        properties:
+          title:
+            type: string
+          text:
+            type: string
+          img:
+            type: string
+      posts:
+        type: array
+        items:
+          $ref: '#/definitions/PostInfo'
+  Topic:
+    type: object
+    properties:
+      topic_name:
+        type: string
+  Author:
+    type: object
+    properties:
+      username:
+        type: string
+      certificate:
+        type: boolean
+  Answer:
+    type: object
+    properties:
+      id:
+        type: integer
+      body:
+        type: string
+      author:
+        $ref: '#/definitions/Author'
+      pub_date:
+        type: string
+      votes_total:
+        type: integer
+  Comment:
+    type: object
+    properties:
+      id:
+        type: integer
+      body:
+        type: string
+      author:
+        $ref: '#/definitions/Author'
+      pub_date:
+        type: string
+  Post:
+    type: object
+    properties:
+      id:
+        type: integer
+      body:
+        type: string
+      author:
+        $ref: '#/definitions/Author'
+      pub_date:
+        type: string
+      votes_total:
+        type: integer
+      topics:
+        type: array
+        items:
+          type: string
+      comments:
+        type: array
+        items:
+          $ref: '#/definitions/Comment'
+      answers:
+        type: array
+        items:
+          $ref: '#/definitions/Answer'
+  Authentication:
+    type: object
+    properties:
+      userId:
+        type: string
+      token:
+        type: string
+  LikeRequest:
+    $ref: '#/definitions/Authentication'
+  AnswerRequest:
+    type: object
+    properties:
+      body:
+        type: string
+      authentication:
+        $ref: '#/definitions/Authentication'
+  CommentRequest:
+    type: object
+    properties:
+      post_id:
+        type: string
+      body:
+        type: string
+      authentication:
+        $ref: '#/definitions/Authentication'
+  PostsByTopicResponse:
+    type: array
+    items:
+      $ref: '#/definitions/PostInfo'
+  Pod:
+    type: object
+    properties:
+      title:
+        type: string
+      text:
+        type: string
+      img:
+        type: object
+        properties:
+          src:
+            type: string
+          alt:
+            type: string
+          title:
+            type: string
+          width:
+            type: string
+          height:
+            type: string
+  WolfResponse:
+    type: object
+    properties:
+      pods:
+        type: array
+        items:
+          $ref: '#/definitions/Pod'

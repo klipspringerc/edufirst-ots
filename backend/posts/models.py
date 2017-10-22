@@ -41,8 +41,12 @@ class Post(models.Model):
         return account
 
     def get_top_answer(self):
-        return Answer.objects.filter(post__id = self.id).order_by('-votes_total')[0]
-
+        answers = Answer.objects.filter(post__id = self.id).order_by('-votes_total')
+        if len(answers):
+            top_answer = answers[0]
+            return top_answer
+        else:
+            return None
 
     def __unicode__(self):
         return self.title[:30]

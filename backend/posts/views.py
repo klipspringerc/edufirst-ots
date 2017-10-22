@@ -22,11 +22,11 @@ def create_view(request):
                 post.pub_date = timezone.datetime.now()
                 post.author = request.user
                 post.save()
+                return JsonResponse({"status": "success", "message": "post created", "post_id": post.pk}, status=201)
             else:
-                return render(request, 'posts/create-postd.html', {'errormsg': 'title and body cannot be empty'})
-            return HttpResponse("post created", status=200)
+                return JsonResponse({"status": "failure", "message": "title and post body cannot be empty"}, status=406)
         else:
-            return render(request, 'users/logind.html')
+            return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
     else:
         return render(request, 'posts/create-postd.html')
 
@@ -47,11 +47,11 @@ def create_answer_view(request, post_id):
                 answer.post = post
                 answer.author = request.user
                 answer.save()
-                return HttpResponse("answer created", status=200)
+                return JsonResponse({"status": "success", "message": "answer created", "answer_id": answer.pk}, status=201)
             else:
-                return HttpResponse("unknown post id", status=404)
+                return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
         else:
-            return HttpResponse("permission denied", status=403)
+            return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
     else:
         return render(request, 'posts/create-answerd.html', {'post_id': post_id})
 
@@ -67,11 +67,12 @@ def create_comment_view(request, post_id):
                 comment.post = post
                 comment.author = request.user
                 comment.save()
-                return HttpResponse("comment created", status=200)
+                return JsonResponse({"status": "success", "message": "answer created", "comment_id": comment.pk},
+                                    status=201)
             else:
-                return HttpResponse("unknown post id", status=404)
+                return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
         else:
-            return HttpResponse("permission denied", status=403)
+            return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
     else:
         return render(request, 'posts/create-commentd.html', {'post_id': post_id})
 
@@ -104,14 +105,23 @@ def posts_by_topic_view(request, topic_id):
 
 
 def post_upvote_view(request, post_id):
-    post = Post.objects.get(pk=post_id)
-    post.votes_total += 1
-    post.save()
-    return redirect('home')
+    try:
+        post = Post.objects.get(pk=post_id)
+        post.votes_total += 1
+        post.save()
+        return JsonResponse({"status": "success", "message": "upvote sucessful"}, status=202)
+    except Exception:
+        return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
 
 
 def post_downvote_view(request, post_id):
-    post = Post.objects.get(pk=post_id)
-    post.votes_total -= 1
-    post.save()
-    return redirect('home')
+    try:
+        post = Post.objects.get(pk=post_id)
+        post.votes_total -= 1
+        post.save()
+        return JsonResponse({"status": "success", "message": "downvote sucessful"}, status=202)
+    except Exception:
+        return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
+
+
+# def answer_upvote_view(request, anser_id):
