@@ -38,7 +38,6 @@ export default class CardExampleControlled extends React.Component {
             <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
                 <CardHeader
                     title={result.title}
-                    subtitle={result.img.src}
                     actAsExpander={true}
                     showExpandableButton={true}
                 />
@@ -56,7 +55,7 @@ export default class CardExampleControlled extends React.Component {
                 >
                     <img src={result.img.src} alt={result.img.alt}/>
                 </CardMedia>
-                <CardTitle title={result.title} subtitle="" expandable={true}/>
+                <CardTitle title={result.title} subtitle="" expandable={true} style={{color: '#6dfaff', height: '200px'}}/>
                 <CardText expandable={true}>
                     {result.text}
                 </CardText>

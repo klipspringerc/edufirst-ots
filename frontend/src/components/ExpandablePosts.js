@@ -15,12 +15,14 @@ const CardExampleExpandable = ({title, author, votes, topAnswer, questionId}) =>
       />
       <CardActions>
         <FlatButton className="text-right" label={votes}/>
-        <FlatButton label="View Original"><Link
-            to={`/questions/${questionId}`}>{topAnswer}</Link></FlatButton>>
+        <FlatButton label="View Original">
+          <Link to={`/questions/${questionId}`}>{topAnswer}</Link>
+        </FlatButton>>
       </CardActions>
       <CardText expandable={true}>
         {topAnswer}
       </CardText>
+      <div style={{height: 20}}/>
     </Card>
 );
 

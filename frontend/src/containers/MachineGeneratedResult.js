@@ -12,9 +12,16 @@ class MachineGeneratedResult extends Component {
   render() {
     const results = this.props.machineGeneratedResult.pods;
     return (
-        <div>
-          {results.map((result, index) => index < 3 ?
-              <CardExampleControlled key={index} result={result}/> : null)}
+        <div className="col-md-9">
+          {results.map((result, index) => {
+            if (index < 3) {
+              return <div>
+                <CardExampleControlled result={result}/>
+                <div style={{height: 20}}/>
+              </div>;
+            }
+          })}
+
         </div>
     );
   }
