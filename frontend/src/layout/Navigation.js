@@ -49,6 +49,9 @@ class Navigation extends React.Component {
     if (user.authentication && user.authentication.status == "success") {
       userID = user.username;
     }
+    else{
+      userID = null;
+    }
     return (
         <Navbar>
           <Navbar.Header>
@@ -65,7 +68,7 @@ class Navigation extends React.Component {
           <Nav pullRight>
             <Nav>
               <NavItem
-                  href={userID ? `/profile/${userID}` : '/login'}>{user.username
+                  href={userID ? `/profile/${userID}` : '/login'}>{userID
                   ? user.username
                   : 'Login'}</NavItem>
             </Nav>

@@ -75,7 +75,7 @@ let LoginPage = ({handleLogin, loginRequest}) => (
         {/*<button type="submit">Login</button>*/}
         <RaisedButton label="Submit" primary={true} onClick={(event) => handleLogin(loginRequest)}/>
         <Link to="/signup">
-          <RaisedButton label="Signup" primary={true}/>
+          <RaisedButton label="Signup"/>
         </Link>
       </form>
     </div>
