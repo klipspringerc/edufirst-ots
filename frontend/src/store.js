@@ -11,6 +11,7 @@ import topicsReducer from './reducers/topics';
 import userReducer from './reducers/users';
 import {searchQueryReducer} from './reducers/search';
 
+
 const initialState = {
   user: {
     username: null,
