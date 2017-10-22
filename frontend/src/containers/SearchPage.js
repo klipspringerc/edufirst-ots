@@ -35,6 +35,7 @@ class SearchPage extends Component {
     folded: PropTypes.bool.isRequired,
   };
 
+
   componentDidMount() {
     this.props.handleFetchTopTrendingQuestions();
     this.props.handleShowSearchBox();
@@ -57,7 +58,7 @@ class SearchPage extends Component {
     const {questions} = this.props;
     console.log(this.props);
     return (
-        <div className="col-md-9">
+        <div className="col-md-9" style={{height:20}}>
           {questions.map(question => (
               <CardExampleExpandable
                   key={question.id}
@@ -68,6 +69,7 @@ class SearchPage extends Component {
                       ? question.top_answer.body
                       : "Be the first one to answer this question!"}
                   questionId={question.id}/>
+
           ))}
         </div>
     );
@@ -76,23 +78,26 @@ class SearchPage extends Component {
   renderTopTrendingQuestions() {
     const {loading, topTrendingQuestions} = this.props;
     const TestCards = () => (
-        <Card style={{width: '350px', height: '80%'}}>
+        <Card style={{width: '200px', height: '80%'}}>
           <CardHeader
               title="Trending Topics"
-              avatar="https://placeimg.com/80/80/animals"
+              avatar="https://www.backblaze.com/pics/mac-online-backup-imac.jpg"
           />
           <TopTrendingQuestions loading={loading}
                                 questions={topTrendingQuestions}/>
         </Card>
     );
     return (
-        <Grid className="col-md-9" style={{height: '80%'}}>
+
+        <Grid className="col-md-0" style={{height: '80%'}}>
           <Col className="pull-right">
             <TestCards/>
           </Col>
         </Grid>
+
     );
   }
+
 
   renderSearchResults() {
     const {user, keywords, machineGeneratedResult, questions} = this.props;
@@ -100,18 +105,19 @@ class SearchPage extends Component {
         <div>
           {machineGeneratedResult ? this.renderMachineGeneratedResult() : null}
           {questions.length !== 0 ? this.renderSuggestedQuestions() : null}
-          <Link to={user.authentication
-              ? `/question/editQuestion/${keywords}`
-              : '/login'}>
-            <button>
-              {user.authentication
-                  ? 'Create New Post'
-                  : 'Login to Create a Post'}
-            </button>
-          </Link>
+          {/*<Link to={user.authentication*/}
+              {/*? `/question/editQuestion/${keywords}`*/}
+              {/*: '/login'}>*/}
+            {/*<button>*/}
+              {/*{user.authentication*/}
+                  {/*? 'Create New Post'*/}
+                  {/*: 'Login to Create a Post'}*/}
+            {/*</button>*/}
+          {/*</Link>*/}
         </div>
     );
   }
+
 
   render() {
     return (

@@ -21,6 +21,7 @@ const CardExampleExpandable = ({title, author, votes, topAnswer, questionId}) =>
         <CardText expandable={true}>
             {topAnswer}
         </CardText>
+        <div style={{height:20}} />
     </Card>
 );
 
