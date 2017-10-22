@@ -1,3 +1,5 @@
+import {fetchPost} from './posts';
+
 export const REQUEST_POSTS_BY_USER = 'REQUEST_POSTS_BY_USER';
 
 function requestPostsByUserAction(userId) {
@@ -22,7 +24,10 @@ export function fetchPostsByUser(userId) {
     dispatch(requestPostsByUserAction(userId));
     fetch(`http://api.edufirstonline.com/api/v1/users/${userId}/posts`)
         .then(response => response.json())
-        .then(posts => dispatch(receivePostsByUserAction(userId, posts)));
+        .then(posts => {
+          dispatch(receivePostsByUserAction(userId, posts));
+          posts.forEach(id => dispatch(fetchPost(id)));
+        });
   };
 }
 
@@ -49,7 +54,7 @@ export function putUserCertificate(userId, token) {
     dispatch(putUserCertificateRequestAction(userId));
     const headers = new Headers();
     headers.append('token', token);
-    fetch(`http://api.edufirstonline.com/users/${userid}/certificate`, {
+    fetch(`http://api.edufirstonline.com/users/${userId}/certificate`, {
       method: 'PUT',
       headers,
     })
@@ -79,7 +84,7 @@ function loginResponseAction(username, authentication) {
 export function login(loginRequest) {
   return dispatch => {
     const {username} = loginRequest;
-    dispatch(loginRequest(username));
+    dispatch(loginRequestAction(username));
     fetch('http://api.edufirstonline.com/users/login', {
       method: 'POST',
       body: loginRequest,

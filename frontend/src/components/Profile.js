@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 const ProfileAnswers = ({answers}) => (
@@ -15,11 +16,11 @@ const ProfileQuestions = ({questions}) => (
     <div>
       {questions.map(question => (
           <div key={question.id}>
-            <div className="question">{question.question}</div>
+            <div className="question">{question.body}</div>
             <div className="asked">
-              Asked on {new Date(question.asked).toLocaleDateString()}
+              Asked on {new Date(question.pub_date).toLocaleDateString()}
             </div>
-            <div className="answers">{question.answers}</div>
+            <div className="answers">{question.answers.length}</div>
           </div>
       ))}
     </div>
@@ -34,6 +35,13 @@ const ProfileTopics = ({topics}) => (
 );
 
 class Profile extends Component {
+
+  static propTypes = {
+    picture: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    questions: PropTypes.array.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -63,18 +71,19 @@ class Profile extends Component {
     const {picture, name, answers, questions, topics} = this.props;
     return (
         <div>
-          <img src={picture}/>
+          <img src={picture} alt={name}/>
           <div>{name}</div>
-          <div onClick={() => this.handleTabClick('answers')}>
+          {/*<div onClick={() => this.handleTabClick('answers')}>
             Answers {answers.length}
-          </div>
+          </div>*/}
           <div onClick={() => this.handleTabClick('questions')}>
             Questions {questions.length}
           </div>
-          <div onClick={() => this.handleTabClick('topics')}>
+          {/*<div onClick={() => this.handleTabClick('topics')}>
             Topics {topics.length}
-          </div>
-          {this.renderActivities()}
+          </div>*/}
+          {/*{this.renderActivities()}*/}
+          <ProfileQuestions questions={questions}/>
         </div>
     );
   }

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 
@@ -13,4 +14,7 @@ const CommentForm = ({handleSubmit}) => (
     </form>
 );
 
+CommentForm.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+};
 export default reduxForm({form: 'comment'})(CommentForm);

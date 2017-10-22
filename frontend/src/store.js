@@ -3,21 +3,17 @@ import {reducer as formReducer} from 'redux-form';
 import {createLogger} from 'redux-logger';
 import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
-import comments from './reducers/comments';
-import likes from './reducers/likes';
-import {search, searchBox} from './reducers/search';
+import postsReducer from './reducers/posts';
+import {searchBox} from './reducers/search';
 import toggleFold from './reducers/toggle-fold';
 import topTrendingQuestions from './reducers/top-trending-questions';
+import topicsReducer from './reducers/topics';
+import userReducer from './reducers/users';
 
 const initialState = {
-  // user: {
-  //   username: 'zpiao1',
-  //   id: '1'
-  // },
-  search: {
-    showSearchResults: false,
-    machineGeneratedResult: null,
-    similarQuestions: [],
+  user: {
+    username: null,
+    authentication: null,
   },
   searchBox: {
     showSearchBox: false,
@@ -29,14 +25,25 @@ const initialState = {
   fold: {
     folded: true,
   },
-  comments: {
-    comments: [],
-    loadingComments: false,
-    postingComments: false,
+  posts: {
+    postingAnswer: false,
+    postingComment: false,
+    puttingLike: false,
+    loadingPost: false,
+    postingPost: false,
+    loadingPostsByTopic: false,
+    loadingPostsByUser: false,
+    showSearchResults: false,
+    posts: [],
+    machineAnswer: null,
+    similarPosts: [],
+    keywords: null,
+    topics: [],
+    userPosts: [],
   },
-  likes: {
-    postingLikes: false,
-    likes: [],
+  topics: {
+    topics: [],
+    loadingTopics: false,
   },
 };
 const middleware = [promise(), thunk];
@@ -45,9 +52,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const reducer = combineReducers({
-  search, searchBox, topTrendingQuestions, comments, likes,
+  searchBox, topTrendingQuestions,
+  user: userReducer,
+  posts: postsReducer,
   fold: toggleFold,
   form: formReducer,
+  topics: topicsReducer,
 });
 
 const store = createStore(

@@ -1,4 +1,4 @@
-export const REQUEST_POST = 'REQEUST_POST';
+export const REQUEST_POST = 'REQUEST_POST';
 
 function requestPostAction(postId) {
   return {
@@ -89,8 +89,8 @@ export function fetchPostsByTopic(topicId, offset) {
     })
         .then(response => response.json())
         .then(postsByTopicResponse => {
-          dispatch(
-              receivePostsByTopicAction(topicId, offset, postsByTopicResponse));
+          dispatch(receivePostsByTopicAction(
+              topicId, offset, postsByTopicResponse));
           // Query all posts in this topic immeidately to update store.
           postsByTopicResponse.forEach(
               postInfo => dispatch(fetchPost(postInfo.id)));

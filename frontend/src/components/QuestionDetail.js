@@ -4,10 +4,7 @@ import {Link} from 'react-router-dom';
 
 const QuestionDetail = ({questionId, questionDetail}) => (
     <div className="question-detail">
-      <div className="title">{questionDetail.title}</div>
-      <div className="description">
-        {questionDetail.description ? questionDetail.description : ''}
-      </div>
+      <div className="title">{questionDetail}</div>
       <Link to={`/question/${questionId}/editAnswer`}>
         <button>Add Answer</button>
       </Link>
@@ -16,10 +13,7 @@ const QuestionDetail = ({questionId, questionDetail}) => (
 
 QuestionDetail.propTypes = {
   questionId: PropTypes.string.isRequired,
-  questionDetail: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-  }).isRequired,
+  questionDetail: PropTypes.string.isRequired,
 };
 
 export default QuestionDetail;

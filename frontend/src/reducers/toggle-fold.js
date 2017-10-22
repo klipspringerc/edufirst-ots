@@ -1,13 +1,13 @@
-import {TOGGLE_FOLD} from '../actions/toggle-fold';
+import {CLEAR_FOLD, TOGGLE_FOLD} from '../actions/toggle-fold';
 
 function toggleFold(state = {folded: true}, action) {
-  if (action.type === TOGGLE_FOLD) {
-    return {
-      ...state,
-      folded: !state.folded,
-    };
-  } else {
-    return state;
+  switch (action.type) {
+    case TOGGLE_FOLD:
+      return {...state, folded: !state.folded};
+    case CLEAR_FOLD:
+      return {...state, folded: true};
+    default:
+      return state;
   }
 }
 

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {Subject} from 'rxjs';
 import {search} from '../actions/search';
 import QuestionSimple from '../components/QuestionSimple';
@@ -10,17 +11,10 @@ class SearchBox extends Component {
 
   static propTypes = {
     machineGeneratedResult: PropTypes.object,
-    questions: PropTypes.arrayOf(PropTypes.shape({
-      questionId: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      votes: PropTypes.number.isRequired,
-      topAnswer: PropTypes.string.isRequired,
-      authorId: PropTypes.number.isRequired,
-    })).isRequired,
-    handleSearch: PropTypes.func.isRequired,
+    questions: PropTypes.arrayOf(PropTypes.object).isRequired,
     showSearchResults: PropTypes.bool.isRequired,
-    folded: PropTypes.bool,
+    folded: PropTypes.bool.isRequired,
+    handleSearch: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -47,23 +41,32 @@ class SearchBox extends Component {
         <div>
           {questions.map(question => (
               <QuestionSimple
-                  key={question.questionId}
+                  key={question.id}
                   title={question.title}
-                  author={question.author}
-                  votes={question.votes}
-                  topAnswer={question.topAnswer}
-                  questionId={question.questionId}
-                  authorId={question.authorId}/>
+                  author={question.author.username}
+                  votes={question.votes_total}
+                  topAnswer={question.top_answer.body}
+                  questionId={question.id}/>
           ))}
         </div>
     );
   }
 
   renderSearchResults() {
+    const {user, keywords} = this.props;
     return (
         <div>
           {this.renderMachineGeneratedResult()}
           {this.renderSuggestedQuestions()}
+          <Link to={user.authentication
+              ? `/question/editQuestion/${keywords}`
+              : '/login'}>
+            <button>
+              {user.authentication
+                  ? 'Create New Post'
+                  : 'Login to Create a Post'}
+            </button>
+          </Link>
         </div>
     );
   }
@@ -83,15 +86,17 @@ class SearchBox extends Component {
   }
 }
 
-const mapStateToProps = ({search, fold}) => ({
-  machineGeneratedResult: search.machineGeneratedResult,
-  questions: search.similarQuestions,
-  showSearchResults: search.showSearchResults,
+const mapStateToProps = ({posts, fold, user}) => ({
+  machineGeneratedResult: posts.machineAnswer,
+  questions: posts.similarPosts,
+  showSearchResults: posts.showSearchResults,
+  keywords: posts.keywords,
   folded: fold.folded,
+  user,
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSearch: text => dispatch(search(text)),
+  handleSearch: text => dispatch(search({keywords: text, offset: 0})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBox);

@@ -8,15 +8,13 @@ class MachineGeneratedResult extends Component {
 
   static propTypes = {
     folded: PropTypes.bool.isRequired,
-    machineGeneratedResult: PropTypes.shape({
-      imageUrl: PropTypes.string,
-      text: PropTypes.string.isRequired,
-    }).isRequired,
+    machineGeneratedResult: PropTypes.object.isRequired,
     handleFoldButtonClick: PropTypes.func.isRequired,
   };
 
   render() {
-    const {imageUrl, text} = this.props.machineGeneratedResult;
+    const {img, answerBody} = this.props.machineGeneratedResult;
+    const imageUrl = img, text = answerBody;
     return (
         <div>
           {this.props.folded ? (<div className="folded">{text}</div>) : (

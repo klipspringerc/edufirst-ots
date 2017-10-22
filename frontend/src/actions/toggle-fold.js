@@ -5,3 +5,11 @@ export function toggleFoldAction() {
     type: TOGGLE_FOLD,
   };
 }
+
+export const CLEAR_FOLD = 'CLEAR_FOLD';
+
+export function clearFoldAction() {
+  return {
+    type: CLEAR_FOLD,
+  };
+}

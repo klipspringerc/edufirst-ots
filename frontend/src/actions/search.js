@@ -14,13 +14,14 @@ export const SEARCH_RESPONSE = 'SEARCH_RESPONSE';
 function searchResponseAction(searchRequest, searchResponse) {
   return {
     type: SEARCH_RESPONSE,
+    searchRequest,
     searchResponse,
   };
 }
 
 export function search(searchRequest) {
   return dispatch => {
-    dispatch(searchRequest(searchRequest));
+    dispatch(searchRequestAction(searchRequest));
     fetch('http://api.edufirstonline.com/api/v1/posts/search', {
       body: JSON.stringify(searchRequest),
     })
@@ -61,5 +62,29 @@ export function fetchSuggestions(keywords) {
         .then(response => response.json())
         .then(suggestionsResponse =>
             dispatch(receiveSuggestionsAction(keywords, suggestionsResponse)));
+  };
+}
+
+export const CLEAR_SERACH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+
+export function clearSearchResults() {
+  return {
+    type: CLEAR_SERACH_RESULTS,
+  };
+}
+
+export const SHOW_SEARCH_BOX = 'SHOW_SEARCH_BOX';
+
+export function showSearchBox() {
+  return {
+    type: SHOW_SEARCH_BOX,
+  };
+}
+
+export const HIDE_SEARCH_BOX = 'HIDE_SEARCH_BOX';
+
+export function hideSearchBox() {
+  return {
+    type: HIDE_SEARCH_BOX,
   };
 }

@@ -4,33 +4,28 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import SearchBox from './SearchBox';
 
-const TopBar = ({showSearchBox, user}) => {
+const TopBar = ({searchBox, user}) => {
+  let userId = null;
+  if (user.authentication !== null) {
+    userId = user.authentication.userId;
+  }
   return (
       <div>
         <Link to="/">EduFirst</Link>
         <Link to="/topics">Topics</Link>
-        {showSearchBox ? (<SearchBox/>) : null}
-        <Link to={user ? `/profile/${user.id}` : '/login'}>
-          {user ? user.name : 'Login'}
+        {searchBox.showSearchBox ? (<SearchBox/>) : null}
+        <Link to={userId ? `/profile/${userId}` : '/login'}>
+          {user.username ? user.username : 'Login'}
         </Link>
       </div>
   );
 };
 
 TopBar.propTypes = {
-  showSearchBox: PropTypes.bool.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }),
+  searchBox: PropTypes.object.isRequired,
+  user: PropTypes.object,
 };
 
-const mapStateToProps = ({user, searchBox}) => ({
-  user: user ? {
-    id: user.id,
-    name: user.username,
-  } : null,
-  showSearchBox: searchBox.showSearchBox,
-});
+const mapStateToProps = ({user, searchBox}) => ({user, searchBox});
 
 export default connect(mapStateToProps)(TopBar);

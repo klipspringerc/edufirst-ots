@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {showSearchBox} from '../actions/search';
+import {clearSearchResults, showSearchBox} from '../actions/search';
 import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 
@@ -9,6 +9,7 @@ class SearchPage extends Component {
   static propTypes = {
     handleFetchTopTrendingQuestions: PropTypes.func.isRequired,
     handleShowSearchBox: PropTypes.func.isRequired,
+    handleClearSearchResults: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     topTrendingQuestions: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -19,6 +20,10 @@ class SearchPage extends Component {
   componentDidMount() {
     this.props.handleFetchTopTrendingQuestions();
     this.props.handleShowSearchBox();
+  }
+
+  componentWillUnmount() {
+    this.props.handleClearSearchResults();
   }
 
   renderTopTrendingQuestions() {
@@ -43,5 +48,6 @@ const mapStateToProps = ({topTrendingQuestions}) => {
 const mapDispatchToProps = dispatch => ({
   handleFetchTopTrendingQuestions: () => dispatch(fetchTopTrendingQuestions()),
   handleShowSearchBox: () => dispatch(showSearchBox()),
+  handleClearSearchResults: () => dispatch(clearSearchResults()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
