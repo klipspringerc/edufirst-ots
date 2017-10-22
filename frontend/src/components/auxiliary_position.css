@@ -16,6 +16,13 @@
     transform: translate(-50%, -50%) !important;
 }
 
+.middle-little-down-row {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+}
+
 .middle-down-row {
     position: absolute;
     top: 45%;
