@@ -54,6 +54,7 @@ class SearchPage extends Component {
 
   renderSuggestedQuestions() {
     const {questions} = this.props;
+    console.log(this.props);
     return (
         <div>
           {questions.map(question => (
@@ -114,7 +115,7 @@ class SearchPage extends Component {
   render() {
     return (
         <div>
-          {/*{this.renderTopTrendingQuestions()}*/}
+          {this.renderTopTrendingQuestions()}
           {this.renderSearchResults()}
         </div>
     );

@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchPostsByTopic} from '../actions/posts';
-import QuestionSimple from '../components/QuestionSimple';
+import CardExampleExpandable from '../components/ExpandablePosts';
+import '../components/auxiliary_position.css'
 
 class TopicQuestionsPage extends Component {
   static propTypes = {
@@ -19,11 +20,12 @@ class TopicQuestionsPage extends Component {
   render() {
     const {questions} = this.props;
     return (
-        <div className="col-sm-3 text-right">
+
+        <div className="middle-row">
           {questions.map(question => (
-              <QuestionSimple title={question.title}
+              <CardExampleExpandable title={question.title}
                               author={question.author.username}
-                              votes={question.votes_total}
+                                     votes={question.votes_total}
                               topAnswer={question.top_answer.body}
                               questionId={question.id}/>
           ))}
