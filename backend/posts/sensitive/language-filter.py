@@ -19,6 +19,3 @@ def language_filter(post_content):
     # replace occurrence of sensitive words
     regex = re.compile(re_string, flags=re.IGNORECASE)
     return regex.sub(r'\1***', post_content)
-
-
-print(language_filter("test shIt one two one test sHit"))
