@@ -2,15 +2,7 @@
 
 {% block content %}
 
-Search:
-<form method="POST" action="{% url 'posts:search' %}">
-    {% csrf_token %}
-    <textarea name="keywords" cols="80" rows="1"></textarea>
-    <br/>
-</form>
-
-<h1>post overview</h1>
-<a class="btn btn-primary" href="{% url 'posts:create' %}">New Post</a>
+<h1>post of user {{user.username}} </h1>
 
 <br/>
 <br/>
