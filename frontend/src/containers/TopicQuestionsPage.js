@@ -23,11 +23,13 @@ class TopicQuestionsPage extends Component {
 
         <div className="middle-row">
           {questions.map(question => (
-              <CardExampleExpandable title={question.title}
-                              author={question.author.username}
-                                     votes={question.votes_total}
-                              topAnswer={question.top_answer.body}
-                              questionId={question.id}/>
+              <CardExampleExpandable
+                  key={question.id}
+                  title={question.title}
+                  author={question.author.username}
+                  votes={question.votes_total}
+                  topAnswer={question.top_answer.body}
+                  questionId={question.id}/>
           ))}
         </div>
     );

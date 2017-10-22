@@ -9,6 +9,8 @@ import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
 import QuestionSimple from '../components/QuestionSimple';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
+import CardExampleExpandable from '../components/ExpandablePosts';
+import '../components/auxiliary_position.css'
 
 const style = {
   height: 100,
@@ -56,16 +58,16 @@ class SearchPage extends Component {
     const {questions} = this.props;
     console.log(this.props);
     return (
-        <div>
+        <div className="col-md-9">
           {questions.map(question => (
-              <QuestionSimple
+              <CardExampleExpandable
                   key={question.id}
                   title={question.title}
                   author={question.author.username}
                   votes={question.votes_total}
                   topAnswer={question.top_answer
                       ? question.top_answer.body
-                      : null}
+                      : "Be the first one to answer this question!"}
                   questionId={question.id}/>
           ))}
         </div>
@@ -85,7 +87,7 @@ class SearchPage extends Component {
         </Card>
     );
     return (
-        <Grid style={{height: '80%'}}>
+        <Grid className="col-md-9" style={{height: '80%'}}>
           <Col className="pull-right">
             <TestCards/>
           </Col>
