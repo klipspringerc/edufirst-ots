@@ -13,19 +13,17 @@ class MachineGeneratedResult extends Component {
   };
 
   render() {
-    const {img, answerBody} = this.props.machineGeneratedResult;
-    const imageUrl = img, text = answerBody;
+    const results = this.props.machineGeneratedResult.pods;
     return (
         <div>
-          {this.props.folded ? (<div className="folded">{text}</div>) : (
-              <div>
-                {imageUrl
-                    ?
-                    <img src={imageUrl} className="unfolded" alt="geneerated"/>
-                    : null}
-                <div className="unfolded">{text}</div>
+          {results.map((result, index) => (
+              <div key={index}>
+                <div>{result.title}</div>
+                <img src={result.img.src} alt={result.img.alt}/>
+                <div>{result.text}</div>
               </div>
-          )}
+          ))}
+          {/*TODO: implement folding behavior here*/}
           <div onClick={this.props.handleFoldButtonClick}>
             {this.props.folded ? 'v' : '^'}
           </div>

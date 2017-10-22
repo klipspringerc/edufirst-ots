@@ -1,6 +1,6 @@
 import {API_URL} from '../constants';
-import {fetchPost} from './posts';
 import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
 
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 
@@ -11,13 +11,23 @@ function searchRequestAction(searchRequest) {
   };
 }
 
-export const SEARCH_RESPONSE = 'SEARCH_RESPONSE';
+export const SEARCH_RESPONSE_SIMILAR_POSTS = 'SEARCH_RESPONSE_SIMILAR_POSTS';
 
-function searchResponseAction(searchRequest, searchResponse) {
+function searchResponseSimilarPostsAction(searchRequest, similarPosts) {
   return {
-    type: SEARCH_RESPONSE,
+    type: SEARCH_RESPONSE_SIMILAR_POSTS,
     searchRequest,
-    searchResponse,
+    similarPosts,
+  };
+}
+
+export const SEARCH_RESPONSE_MACHINE_ANSWER = 'SEARCH_RESPONSE_MACHINE_ANSWER';
+
+function searchResponseMachineAnswerAction(searchRequest, machineAnswer) {
+  return {
+    type: SEARCH_RESPONSE_MACHINE_ANSWER,
+    searchRequest,
+    machineAnswer,
   };
 }
 
@@ -29,11 +39,19 @@ export function search(searchRequest) {
       body: mapObjectToFormData(searchRequest),
     })
         .then(response => response.json())
-        .then(searchResponse => {
-          dispatch(searchResponseAction(searchRequest, searchResponse));
-          // Query all posts in this search immediately to update store.
-          searchResponse.forEach(post => dispatch(fetchPost(post.id)));
+        .then(similarPosts => {
+          dispatch(
+              searchResponseSimilarPostsAction(searchRequest, similarPosts));
+          similarPosts.forEach(post => dispatch(fetchPost(post.id)));
         });
+
+    fetch(`${API_URL}/wolf/search/`, {
+      method: 'POST',
+      body: mapObjectToFormData(searchRequest),
+    })
+        .then(response => response.json())
+        .then(machineAnswer => dispatch(
+            searchResponseMachineAnswerAction(searchRequest, machineAnswer)));
   };
 }
 
@@ -89,5 +107,14 @@ export const HIDE_SEARCH_BOX = 'HIDE_SEARCH_BOX';
 export function hideSearchBox() {
   return {
     type: HIDE_SEARCH_BOX,
+  };
+}
+
+export const SAVE_QUERY = 'SAVE_QUERY';
+
+export function saveQuery(query) {
+  return {
+    type: SAVE_QUERY,
+    query,
   };
 }
