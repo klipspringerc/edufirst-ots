@@ -78,7 +78,7 @@ class SearchBox extends Component {
 
   render() {
     return (
-        <Form inline className='navbar-form' action="">
+        <Form inline className='navbar-form' action="" onSubmit={e => {e.preventDefault();}}>
             <FormGroup>
               <FormControl type="text" placeholder="Search here." onChange={e => this.handleChangeSubject.next(e.target.value)}/>
             </FormGroup>
