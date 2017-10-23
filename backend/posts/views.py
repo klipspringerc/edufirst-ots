@@ -10,6 +10,7 @@ from difflib import SequenceMatcher
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 # from stemming.porter2 import stem
+from posts.sensitive.language_filter import language_filter
 from nltk.tokenize import sent_tokenize, word_tokenize
 from django.views.decorators.csrf import csrf_exempt
 
@@ -23,7 +24,7 @@ def create_view(request):
             if title and body:
                 post = Post()
                 post.title = title
-                post.body = body
+                post.body = language_filter(body)
                 post.pub_date = timezone.datetime.now()
                 post.author = request.user
                 post.save()
@@ -50,7 +51,7 @@ def create_answer_view(request, post_id):
                 if water_army_detection(request.user):
                     return JsonResponse({"status":"failure", "message": "post too frequent"}, status=403)
                 answer = Answer()
-                answer.body = request.POST['body']
+                answer.body = language_filter(request.POST['body'])
                 answer.pub_date = timezone.datetime.now()
                 answer.post = post
                 answer.author = request.user
@@ -171,7 +172,6 @@ def list_topics_view(request):
 def list_posts_by_topic_view(request, topic_id):
     match_posts = Post.objects.filter(topics__pk=topic_id)
     return render(request, 'posts/posts-by-topic.html', {'topic': topic_id, 'posts': match_posts})
-
 
 
 @csrf_exempt
