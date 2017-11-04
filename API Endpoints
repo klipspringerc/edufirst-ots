@@ -519,9 +519,9 @@ definitions:
   Authentication:
     type: object
     properties:
-      userId:
+      status:
         type: string
-      token:
+      message:
         type: string
   LikeRequest:
     $ref: '#/definitions/Authentication'

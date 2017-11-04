@@ -25,15 +25,17 @@ function postAnswerResponseAction(postId, answerBody) {
 export function postAnswer(postId, body, authentication) {
   return dispatch => {
     dispatch(postAnswerRequestAction(postId, body));
-    fetch(`${API_URL}/posts/${postId}/answers/`, {
+    fetch(`${API_URL}/posts/${postId}/answer/`, {
       body: mapObjectToFormData(
           {body, authentication: {userId: '', token: ''}}),
       method: 'POST',
+      credentials: 'same-origin',
     })
         .then(response => {
           dispatch(postAnswerResponseAction(postId, body));
           // Query the same post immediately again to update the store
           dispatch(fetchPost(postId));
-        });
+        })
+        .catch(err => console.error(err));
   };
 }

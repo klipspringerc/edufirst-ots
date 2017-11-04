@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import {postAnswer} from '../actions/answer';
 import {fetchPost} from '../actions/posts';
 import AnswerForm from '../components/AnswerForm';
@@ -34,7 +35,10 @@ class EditAnswerPage extends Component {
   }
 
   render() {
-    const {question} = this.props;
+    const {question, user} = this.props;
+    if (!user.authentication || user.authentication.status !== 'success') {
+      return <Redirect to="/login"/>;
+    }
     return <AnswerForm question={question} handleSubmit={this.handleSubmit}/>;
   }
 }
