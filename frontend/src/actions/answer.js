@@ -29,7 +29,7 @@ export function postAnswer(postId, body, authentication) {
       body: mapObjectToFormData(
           {body, authentication: {userId: '', token: ''}}),
       method: 'POST',
-      credentials: 'same-origin',
+      credentials: 'include',
     })
         .then(response => {
           dispatch(postAnswerResponseAction(postId, body));

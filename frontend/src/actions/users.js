@@ -87,9 +87,11 @@ export function login(loginRequest) {
   return dispatch => {
     const {username} = loginRequest;
     dispatch(loginRequestAction(username));
+    console.log(`${API_URL}/users/login/`);
     fetch(`${API_URL}/users/login/`, {
       method: 'POST',
       body: mapObjectToFormData(loginRequest),
+      credentials: 'include',
     })
         .then(response => response.json())
         .then(authentication => dispatch(

@@ -76,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'edufirst.wsgi.application'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
