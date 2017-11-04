@@ -1,12 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import SearchBox from '../containers/LargeSearchBox.js';
+import './auxiliary_position.css';
 
 const MainSearchBox = () => (
-    <div>
-      <div>EduFirst</div>
-      <Link to="/search">
-        <div>Search here</div>
-      </Link>
+    <div className="modal-dialog">
+      <SearchBox/>
     </div>
 );
 

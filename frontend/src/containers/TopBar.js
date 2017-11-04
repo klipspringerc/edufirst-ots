@@ -27,5 +27,4 @@ TopBar.propTypes = {
 };
 
 const mapStateToProps = ({user, searchBox}) => ({user, searchBox});
-
 export default connect(mapStateToProps)(TopBar);

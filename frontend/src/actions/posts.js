@@ -1,4 +1,6 @@
 import {API_URL} from '../constants';
+import history from '../history';
+import {mapObjectToFormData} from '../util';
 
 export const REQUEST_POST = 'REQUEST_POST';
 
@@ -61,7 +63,7 @@ function receivePostsByTopicAction(topicId, offset, postsByTopicResponse) {
 export function fetchPost(postId) {
   return dispatch => {
     dispatch(requestPostAction(postId));
-    fetch(`${API_URL}/posts/${postId}`)
+    fetch(`${API_URL}/posts/${postId}/`)
         .then(response => response.json())
         .then(post => dispatch(receivePostAction(postId, post)));
   };
@@ -72,13 +74,16 @@ export function postPost(post, authentication) {
     dispatch(postPostRequestAction(post));
     fetch(`${API_URL}/posts/`, {
       method: 'POST',
-      body: JSON.stringify({post, authentication})
+      body: mapObjectToFormData(post),
+      credentials: 'include',
     })
-        .then(response => response.text())
-        .then(postId => {
+        .then(response => response.json())
+        .then(json => {
+          const postId = json['post_id'];
           dispatch(postPostResponseAction(post, postId));
           // Query the new post immediately to update store
           dispatch(fetchPost(postId));
+          history.push(`/questions/${postId}`);
         });
   };
 }
@@ -86,14 +91,14 @@ export function postPost(post, authentication) {
 export function fetchPostsByTopic(topicId, offset) {
   return dispatch => {
     dispatch(requestPostsByTopicAction(topicId, offset));
-    fetch(`${API_URL}/posts/topic/${topicId}`, {
+    fetch(`${API_URL}/posts/topic/${topicId}/`, {
       body: offset,
     })
         .then(response => response.json())
         .then(postsByTopicResponse => {
           dispatch(receivePostsByTopicAction(
               topicId, offset, postsByTopicResponse));
-          // Query all posts in this topic immeidately to update store.
+          // Query all posts in this topic immediately to update store.
           postsByTopicResponse.forEach(
               postInfo => dispatch(fetchPost(postInfo.id)));
         });

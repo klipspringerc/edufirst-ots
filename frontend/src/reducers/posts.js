@@ -24,7 +24,7 @@ function requestPostReducer(state = {
       const {post} = action;
       let posts;
       if (state.posts.some(p => p.id === post.id)) {
-        posts = state.posts.map(p => p.id === posts.id ? post : p);
+        posts = state.posts.map(p => p.id === post.id ? post : p);
       } else {
         posts = [...state.posts, post];
       }
