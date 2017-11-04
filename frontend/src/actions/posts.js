@@ -1,4 +1,5 @@
 import {API_URL} from '../constants';
+import history from '../history';
 import {mapObjectToFormData} from '../util';
 
 export const REQUEST_POST = 'REQUEST_POST';
@@ -73,13 +74,16 @@ export function postPost(post, authentication) {
     dispatch(postPostRequestAction(post));
     fetch(`${API_URL}/posts/`, {
       method: 'POST',
-      body: mapObjectToFormData({post, authentication}),
+      body: mapObjectToFormData(post),
+      credentials: 'include',
     })
-        .then(response => response.text())
-        .then(postId => {
+        .then(response => response.json())
+        .then(json => {
+          const postId = json['post_id'];
           dispatch(postPostResponseAction(post, postId));
           // Query the new post immediately to update store
           dispatch(fetchPost(postId));
+          history.push(`/questions/${postId}`);
         });
   };
 }
@@ -94,7 +98,7 @@ export function fetchPostsByTopic(topicId, offset) {
         .then(postsByTopicResponse => {
           dispatch(receivePostsByTopicAction(
               topicId, offset, postsByTopicResponse));
-          // Query all posts in this topic immeidately to update store.
+          // Query all posts in this topic immediately to update store.
           postsByTopicResponse.forEach(
               postInfo => dispatch(fetchPost(postInfo.id)));
         });

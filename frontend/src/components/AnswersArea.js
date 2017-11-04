@@ -8,8 +8,8 @@ import {putLike} from '../actions/likes';
 
 const AnswersArea = ({answers, handlePutLike}) => (
     <div>
-      {answers.map(answer => (
-          <Row className="col-md-10">
+      {answers.map((answer, index) => (
+          <Row className="col-md-10" key={index}>
             <Col xsOffset={4} className="col-centered">
               <Card style={{width: '100%', height: '30%'}}>
                 <CardHeader

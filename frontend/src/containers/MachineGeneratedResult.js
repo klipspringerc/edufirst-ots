@@ -15,7 +15,7 @@ class MachineGeneratedResult extends Component {
         <div className="col-md-9">
           {results.map((result, index) => {
             if (index < 3) {
-              return <div>
+              return <div key={index}>
                 <CardExampleControlled result={result}/>
                 <div style={{height: 20}}/>
               </div>;

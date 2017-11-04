@@ -105,15 +105,15 @@ class SearchPage extends Component {
         <div>
           {machineGeneratedResult ? this.renderMachineGeneratedResult() : null}
           {questions.length !== 0 ? this.renderSuggestedQuestions() : null}
-          {/*<Link to={user.authentication*/}
-              {/*? `/question/editQuestion/${keywords}`*/}
-              {/*: '/login'}>*/}
-            {/*<button>*/}
-              {/*{user.authentication*/}
-                  {/*? 'Create New Post'*/}
-                  {/*: 'Login to Create a Post'}*/}
-            {/*</button>*/}
-          {/*</Link>*/}
+          <Link to={user.authentication
+              ? `/questions/editQuestion/${keywords}`
+              : '/login'}>
+            <button>
+              {user.authentication
+                  ? 'Create New Post'
+                  : 'Login to Create a Post'}
+            </button>
+          </Link>
         </div>
     );
   }

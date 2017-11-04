@@ -1,4 +1,5 @@
 import {API_URL} from '../constants';
+import history from '../history';
 import {mapObjectToFormData} from '../util';
 import {fetchPost} from './posts';
 
@@ -26,16 +27,15 @@ export function postAnswer(postId, body, authentication) {
   return dispatch => {
     dispatch(postAnswerRequestAction(postId, body));
     fetch(`${API_URL}/posts/${postId}/answer/`, {
-      body: mapObjectToFormData(
-          {body, authentication: {userId: '', token: ''}}),
+      body: mapObjectToFormData(body),
       method: 'POST',
       credentials: 'include',
     })
-        .then(response => {
+        .then(() => {
           dispatch(postAnswerResponseAction(postId, body));
           // Query the same post immediately again to update the store
           dispatch(fetchPost(postId));
-        })
-        .catch(err => console.error(err));
+          history.push(`/questions/${postId}`);
+        });
   };
 }

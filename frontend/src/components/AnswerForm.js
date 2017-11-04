@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import {connect} from 'react-redux';
 import {Field, formValueSelector, reduxForm} from 'redux-form';
 

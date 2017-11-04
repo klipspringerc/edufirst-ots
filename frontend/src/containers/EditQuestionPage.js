@@ -14,25 +14,23 @@ class EditQuestionPage extends Component {
 
   constructor(props) {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
-    const {form, user, handlePostPost} = this.props;
-    if (form.post) {
-      handlePostPost(form.post, user.authentication);
-    }
+  handleSubmit(post) {
+    const {user, handlePostPost} = this.props;
+    handlePostPost(post, user.authentication);
   }
 
   render() {
     const title = this.props.match.params.title;
     return (
-        <PostForm handleSubmit={this.handleLogin} title={title}/>
+        <PostForm handleSubmit={this.handleSubmit} title={title}/>
     );
   }
 }
 
-const mapStateToProps = ({user, form}) => ({user, form});
+const mapStateToProps = ({user}) => ({user});
 const mapDispatchToProps = dispatch => ({
   handlePostPost: (post, authentication) =>
       dispatch(postPost(post, authentication)),
