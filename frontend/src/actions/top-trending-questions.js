@@ -1,6 +1,6 @@
 export const REQUEST_TOP_TRENDING_QUESTIONS = 'REQUEST_TOP_TRENDING_QUESTIONS';
 
-function requestTopTrendingQuestionsAction() {
+export function requestTopTrendingQuestionsAction() {
   return {
     type: REQUEST_TOP_TRENDING_QUESTIONS,
   };
@@ -8,14 +8,14 @@ function requestTopTrendingQuestionsAction() {
 
 export const RECEIVE_TOP_TRENDING_QUESTIONS = 'RECEIVE_TOP_TRENDING_QUESTIONS';
 
-function receiveTopTrendingQuestionsAction(json) {
+export function receiveTopTrendingQuestionsAction(json) {
   return {
     type: RECEIVE_TOP_TRENDING_QUESTIONS,
     topTrendingQuestions: json.data.topTrendingQuestions,
   };
 }
 
-const TOP_TRENDING_QUESTIONS = [
+export const TOP_TRENDING_QUESTIONS = [
   {
     title: 'How do you split a list into evenly sized chunks',
     id: 25,

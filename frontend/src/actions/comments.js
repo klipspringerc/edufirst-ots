@@ -4,7 +4,7 @@ import {fetchPost} from './posts';
 
 export const POST_COMMENT_REQUEST = 'POST_COMMENT_REQUEST';
 
-function postCommentRequestAction(postId, commentType, body) {
+export function postCommentRequestAction(postId, commentType, body) {
   return {
     type: POST_COMMENT_REQUEST,
     postId,
@@ -15,7 +15,7 @@ function postCommentRequestAction(postId, commentType, body) {
 
 export const POST_COMMENT_RESPONSE = 'POST_COMMENT_RESPONSE';
 
-function postCommentResponseAction(postId, commentType, body) {
+export function postCommentResponseAction(postId, commentType, body) {
   return {
     type: POST_COMMENT_RESPONSE,
     postId,
@@ -27,7 +27,7 @@ function postCommentResponseAction(postId, commentType, body) {
 export function postComment(postId, commentType, body, authentication) {
   return dispatch => {
     dispatch(postCommentRequestAction(postId, commentType, body));
-    fetch(`${API_URL}/posts/${postId}/comments/`, {
+    return fetch(`${API_URL}/posts/${postId}/comments/`, {
       body: mapObjectToFormData({
         commentType,
         post_id: postId,
