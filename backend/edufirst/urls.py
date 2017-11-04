@@ -18,15 +18,15 @@ from django.contrib import admin
 from edufirst.views import debug_homeview
 from posts.views import all_posts_view, all_topics_view
 from wolf.views import wolf_search_view
-from edufirst.views import integration_test_view
-from . import views
+from edufirst.views import integration_test_view, FrontendAppView
+
 urlpatterns = [
+    url('^$', FrontendAppView.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/users/', include('users.urls')),
     url(r'^api/v1/posts/', include('posts.urls')),
     url(r'^api/v1/topics/', all_topics_view),
     url(r'^api/v1/wolf/', include('wolf.urls')),
-    # url(r'^integrate/$', integration_test_view),
+    url(r'^integrate/$', integration_test_view),
     url(r'^overview/', all_posts_view, name="home"),
-    url(r'^', views.FrontendAppView.as_view()),
 ]

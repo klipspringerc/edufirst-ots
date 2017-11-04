@@ -10,11 +10,12 @@ from difflib import SequenceMatcher
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 # from stemming.porter2 import stem
+from posts.sensitive.language_filter import language_filter
 from nltk.tokenize import sent_tokenize, word_tokenize
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
 
-
+@csrf_exempt
 def create_view(request):
     if request.method == 'POST':
         if request.user.is_authenticated():
@@ -23,7 +24,7 @@ def create_view(request):
             if title and body:
                 post = Post()
                 post.title = title
-                post.body = body
+                post.body = language_filter(body)
                 post.pub_date = timezone.datetime.now()
                 post.author = request.user
                 post.save()
@@ -41,13 +42,16 @@ def all_posts_view(request):
     return render(request, 'posts/post-overview.html', {'posts': posts})
 
 
+@csrf_exempt
 def create_answer_view(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(pk=post_id)
         if request.user.is_authenticated():
             if post:
+                if water_army_detection(request.user):
+                    return JsonResponse({"status":"failure", "message": "post too frequent"}, status=403)
                 answer = Answer()
-                answer.body = request.POST['body']
+                answer.body = language_filter(request.POST['body'])
                 answer.pub_date = timezone.datetime.now()
                 answer.post = post
                 answer.author = request.user
@@ -61,6 +65,33 @@ def create_answer_view(request, post_id):
         return render(request, 'posts/create-answerd.html', {'post_id': post_id})
 
 
+@csrf_exempt
+def create_answer_debug_view(request, post_id):
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        if request.user.is_authenticated():
+            if post:
+                if water_army_detection(request.user):
+                    return JsonResponse({"status":"failure", "message": "post too frequent"}, status=403)
+                answer = Answer()
+                answer.body = language_filter(request.POST['body'])
+                answer.pub_date = timezone.datetime.now()
+                answer.post = post
+                answer.author = request.user
+                answer.save()
+                answers = Answer.objects.filter(post=post).order_by('-votes_total')
+                return render(request, 'posts/post-detail.html', {"post": post, "answers": answers, "post_id": post_id, "errormsg": "answer posted"})
+            else:
+                # return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
+                answers = Answer.objects.filter(post=post).order_by('-votes_total')
+                return render(request, 'posts/post-detail.html', {"post": post, "answers": answers, "post_id": post_id, "errormsg": "post too frequent"})
+        else:
+            return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
+    else:
+        return render(request, 'posts/create-answerd.html', {'post_id': post_id})
+
+
+@csrf_exempt
 def create_comment_view(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(pk=post_id)
@@ -82,6 +113,7 @@ def create_comment_view(request, post_id):
         return render(request, 'posts/create-commentd.html', {'post_id': post_id})
 
 
+@csrf_exempt
 def search_debug_view(request):
     if request.method == 'POST':
         keyword = request.POST['keywords']
@@ -92,6 +124,7 @@ def search_debug_view(request):
         return render(request, 'posts/post-overview.html', {'posts': posts})
 
 
+@csrf_exempt
 def search_view(request):
     if request.method == 'POST':
         keyword = request.POST['keywords']
@@ -112,6 +145,15 @@ def post_detail_jsonview(request, post_id):
     return JsonResponse(serializer.data, safe=False)
 
 
+def post_detail_view(request, post_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return HttpResponse(status=404)
+    answers = Answer.objects.filter(post=post)
+    return render(request, 'posts/post-detail.html', {'post': post, 'answers': answers, 'post_id': post_id})
+
+
 def all_topics_view(request):
     topics = Topic.objects.order_by('name')
     serializer = TopicSerializer(topics, many=True)
@@ -124,6 +166,17 @@ def posts_by_topic_view(request, topic_id):
     return JsonResponse(serializer.data, safe=False)
 
 
+def list_topics_view(request):
+    topics = Topic.objects.order_by('name')
+    return render(request, 'posts/list-topics.html', {'topics': topics})
+
+
+def list_posts_by_topic_view(request, topic_id):
+    match_posts = Post.objects.filter(topics__pk=topic_id)
+    return render(request, 'posts/posts-by-topic.html', {'topic': topic_id, 'posts': match_posts})
+
+
+@csrf_exempt
 def post_upvote_view(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)
@@ -134,6 +187,7 @@ def post_upvote_view(request, post_id):
         return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
 
 
+@csrf_exempt
 def post_downvote_view(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)
@@ -190,12 +244,10 @@ def rank_score(search_keywords, post_content):
     return score
 
 
-
-
 # determine whether a user is a water army
-def water_army_detection(user_id):
+def water_army_detection(user):
     # get current user
-    user = User.objects.get(id=user_id)
+    # user = User.objects.get(id=user_id)
     # calculate time limit
     time_limit = datetime.now() - timedelta(minutes=10)
     # get posts
@@ -205,4 +257,5 @@ def water_army_detection(user_id):
     # get answers
     answers = Answer.objects.filter(author=user).filter(pub_date__range=(time_limit, datetime.now()))
     total = posts.count() + comments.count() + answers.count()
-    return total > 10
+    print total
+    return total > 8
