@@ -1,21 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Col, Row} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 const TopTrendingQuestions = ({loading, questions}) => (
     <div>
-    {loading ? 'Loading...' : (
-      <ul>
-        {questions.map(question => (
-            <li key={question.id}>
-              <Link to={`/questions/${question.id}`}>
-                {question.title}
-              </Link>
-            </li>
-        ))}
-      </ul>
-    )}
+      {loading ? 'Loading...' : (
+          <ul>
+            {questions.map(question => (
+                <li key={question.id}>
+                  <Link to={`/questions/${question.id}`}>
+                    {question.title}
+                  </Link>
+                </li>
+            ))}
+          </ul>
+      )}
     </div>
 );
 TopTrendingQuestions.propTypes = {

@@ -1,11 +1,11 @@
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Field, formValueSelector, reduxForm} from 'redux-form';
 import {signup} from '../actions/users';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import "../components/auxiliary_position.css";
+import '../components/auxiliary_position.css';
 
 let SignupPage = ({handleSignup, signupRequest}) => (
     <form className="middle-down-row" onSubmit={e => {
@@ -13,25 +13,26 @@ let SignupPage = ({handleSignup, signupRequest}) => (
       handleSignup(signupRequest);
     }}>
       <div>
-        <label style={{width:100}}>Email</label>
+        <label style={{width: 100}}>Email</label>
         <TextField>
-        <Field name="email" component="input" type="email"/>
+          <Field name="email" component="input" type="email"/>
         </TextField>
       </div>
       <div>
-        <label style={{width:100}}>Username</label>
+        <label style={{width: 100}}>Username</label>
         <TextField>
-        <Field name="username" component="input" type="text"/>
+          <Field name="username" component="input" type="text"/>
         </TextField>
       </div>
       <div>
-        <label style={{width:100}}>Password</label>
+        <label style={{width: 100}}>Password</label>
         <TextField>
-        <Field name="password" component="input" type="password"/>
+          <Field name="password" component="input" type="password"/>
         </TextField>
       </div>
       <br/>
-      <RaisedButton label="Submit" primary={true} onClick={(event) => handleSignup(signupRequest)}/>
+      <RaisedButton label="Submit" primary={true}
+                    onClick={(event) => handleSignup(signupRequest)}/>
     </form>
 );
 

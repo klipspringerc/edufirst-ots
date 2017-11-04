@@ -1,6 +1,6 @@
 import {API_URL} from '../constants';
-import {fetchPost} from './posts';
 import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
 
 export const PUT_LIKE_REQUEST = 'PUT_LIKE_REQUEST';
 

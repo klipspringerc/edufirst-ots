@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Nav, Navbar, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import SearchBox from './SearchBox';

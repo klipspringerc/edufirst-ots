@@ -6,10 +6,10 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {clearSearchResults, showSearchBox} from '../actions/search';
 import {fetchTopTrendingQuestions} from '../actions/top-trending-questions';
+import '../components/auxiliary_position.css';
+import CardExampleExpandable from '../components/ExpandablePosts';
 import TopTrendingQuestions from '../components/TopTrendingQuestions';
 import MachineGeneratedResult from './MachineGeneratedResult';
-import CardExampleExpandable from '../components/ExpandablePosts';
-import '../components/auxiliary_position.css'
 
 const style = {
   height: 100,
@@ -35,7 +35,6 @@ class SearchPage extends Component {
     folded: PropTypes.bool.isRequired,
   };
 
-
   componentDidMount() {
     this.props.handleFetchTopTrendingQuestions();
     this.props.handleShowSearchBox();
@@ -58,7 +57,7 @@ class SearchPage extends Component {
     const {questions} = this.props;
     console.log(this.props);
     return (
-        <div className="col-md-9" style={{height:20}}>
+        <div className="col-md-9" style={{height: 20}}>
           {questions.map(question => (
               <CardExampleExpandable
                   key={question.id}
@@ -67,7 +66,7 @@ class SearchPage extends Component {
                   votes={question.votes_total}
                   topAnswer={question.top_answer
                       ? question.top_answer.body
-                      : "Be the first one to answer this question!"}
+                      : 'Be the first one to answer this question!'}
                   questionId={question.id}/>
 
           ))}
@@ -98,7 +97,6 @@ class SearchPage extends Component {
     );
   }
 
-
   renderSearchResults() {
     const {user, keywords, machineGeneratedResult, questions} = this.props;
     return (
@@ -117,7 +115,6 @@ class SearchPage extends Component {
         </div>
     );
   }
-
 
   render() {
     return (

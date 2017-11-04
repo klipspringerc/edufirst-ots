@@ -1,7 +1,3 @@
-import {
-  BottomNavigation,
-  BottomNavigationItem,
-} from 'material-ui/BottomNavigation';
 import FontIcon from 'material-ui/FontIcon';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -9,7 +5,7 @@ import Iconaccount from 'material-ui/svg-icons/action/account-circle';
 import Icontopics from 'material-ui/svg-icons/action/view-module';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from 'react-bootstrap';
+import {Nav, Navbar, NavItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {IndexLink, Link} from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -46,10 +42,10 @@ class Navigation extends React.Component {
   render() {
     const {user, searchBox} = this.props;
     let userID = null;
-    if (user.authentication && user.authentication.status == "success") {
+    if (user.authentication && user.authentication.status == 'success') {
       userID = user.username;
     }
-    else{
+    else {
       userID = null;
     }
     return (

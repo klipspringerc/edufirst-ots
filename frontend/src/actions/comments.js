@@ -1,6 +1,6 @@
 import {API_URL} from '../constants';
-import {fetchPost} from './posts';
 import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
 
 export const POST_COMMENT_REQUEST = 'POST_COMMENT_REQUEST';
 

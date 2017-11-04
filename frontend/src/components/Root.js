@@ -2,7 +2,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Provider} from 'react-redux';
-import {Router, Route} from 'react-router-dom';
+import {Route, Router} from 'react-router-dom';
 import EditAnswerPage from '../containers/EditAnswerPage';
 import EditQuestionPage from '../containers/EditQuestionPage';
 import HomePage from '../containers/HomePage';

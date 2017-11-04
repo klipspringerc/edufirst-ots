@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 //import Footer from "../components/layout/Footer";
 import Navigation from './Navigation';
 
@@ -12,9 +11,9 @@ export default class Layout extends React.Component {
     };
     console.log(this);
     return (
-      <div className="text-center">
-        <Navigation />
-      </div>
+        <div className="text-center">
+          <Navigation/>
+        </div>
 
     );
   }

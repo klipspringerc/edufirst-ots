@@ -4,13 +4,11 @@ import {createLogger} from 'redux-logger';
 import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import postsReducer from './reducers/posts';
-import {searchBox} from './reducers/search';
+import {searchBox, searchQueryReducer} from './reducers/search';
 import toggleFold from './reducers/toggle-fold';
 import topTrendingQuestions from './reducers/top-trending-questions';
 import topicsReducer from './reducers/topics';
 import userReducer from './reducers/users';
-import {searchQueryReducer} from './reducers/search';
-
 
 const initialState = {
   user: {
@@ -48,8 +46,8 @@ const initialState = {
     loadingTopics: false,
   },
   searchQuery: {
-    searchQuery: ''
-  }
+    searchQuery: '',
+  },
 };
 const middleware = [promise(), thunk];
 if (process.env.NODE_ENV !== 'production') {
@@ -63,7 +61,7 @@ const reducer = combineReducers({
   fold: toggleFold,
   form: formReducer,
   topics: topicsReducer,
-  searchQuery: searchQueryReducer
+  searchQuery: searchQueryReducer,
 });
 
 const store = createStore(
