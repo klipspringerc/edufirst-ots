@@ -2,6 +2,13 @@
 
 {% block content %}
 
+
+{% if errormsg %}
+<p> {{ errormsg }} </p>
+<hr />
+{% endif %}
+
+
 <h2> {{ post.title }} </h2>
 <table>
     <tr>

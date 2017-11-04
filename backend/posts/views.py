@@ -74,15 +74,17 @@ def create_answer_debug_view(request, post_id):
                 if water_army_detection(request.user):
                     return JsonResponse({"status":"failure", "message": "post too frequent"}, status=403)
                 answer = Answer()
-                answer.body = request.POST['body']
+                answer.body = language_filter(request.POST['body'])
                 answer.pub_date = timezone.datetime.now()
                 answer.post = post
                 answer.author = request.user
                 answer.save()
                 answers = Answer.objects.filter(post=post).order_by('-votes_total')
-                return render(request, 'posts/post-detail.html', {"post": post, "answers": answers, "post_id": post_id})
+                return render(request, 'posts/post-detail.html', {"post": post, "answers": answers, "post_id": post_id, "errormsg": "answer posted"})
             else:
-                return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
+                # return JsonResponse({"status": "failure", "message": "post not exist"}, status=404)
+                answers = Answer.objects.filter(post=post).order_by('-votes_total')
+                return render(request, 'posts/post-detail.html', {"post": post, "answers": answers, "post_id": post_id, "errormsg": "post too frequent"})
         else:
             return JsonResponse({"status": "failure", "message": "user need to login"}, status=403)
     else:
@@ -255,4 +257,5 @@ def water_army_detection(user):
     # get answers
     answers = Answer.objects.filter(author=user).filter(pub_date__range=(time_limit, datetime.now()))
     total = posts.count() + comments.count() + answers.count()
-    return total > 10
+    print total
+    return total > 8
