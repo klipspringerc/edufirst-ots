@@ -6,13 +6,14 @@ jobs:
       - image: circleci/python:2.7
     steps:
       - checkout
-      - run: 
-          name: Run Python Unit Test
+      - run:
+          name: Run Python Unit & Integration Test
           command: |
             export PATH=~/.local/bin:$PATH
             pip install --user -r ./backend/requirements.txt
             pushd ./backend
             pytest
+            python manage.py test
             popd
   test_frontend:
     docker:

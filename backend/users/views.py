@@ -7,8 +7,10 @@ from django.shortcuts import render, redirect
 from users.models import Account
 from posts.models import Post
 from posts.serializers import PostOverviewSerializer
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -32,6 +34,7 @@ def signup_view(request):
         return render(request, 'users/signupd.html')
 
 
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']

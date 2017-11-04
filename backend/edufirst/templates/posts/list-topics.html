@@ -1,0 +1,11 @@
+{% extends 'debug-base.html' %}
+
+{% block content %}
+
+<h2 align="center">All My Topics</h2><br>
+<font size="4">
+    {% for topic in topics %}
+    <a href="{% url 'posts:listpostbytopic' topic.name %}">{{topic.name}}</a> <br>
+    {% endfor %}
+</font>
+{% endblock %}
