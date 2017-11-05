@@ -4,7 +4,7 @@ import {mapObjectToFormData} from '../util';
 
 export const REQUEST_POST = 'REQUEST_POST';
 
-function requestPostAction(postId) {
+export function requestPostAction(postId) {
   return {
     type: REQUEST_POST,
     postId,
@@ -13,7 +13,7 @@ function requestPostAction(postId) {
 
 export const RECEIVE_POST = 'RECEIVE_POST';
 
-function receivePostAction(postId, post) {
+export function receivePostAction(postId, post) {
   return {
     type: RECEIVE_POST,
     post,
@@ -22,7 +22,7 @@ function receivePostAction(postId, post) {
 
 export const POST_POST_REQUEST = 'POST_POST_REQUEST';
 
-function postPostRequestAction(post) {
+export function postPostRequestAction(post) {
   return {
     type: POST_POST_REQUEST,
     post,
@@ -31,7 +31,7 @@ function postPostRequestAction(post) {
 
 export const POST_POST_RESPONSE = 'POST_POST_RESPONSE';
 
-function postPostResponseAction(post, postId) {
+export function postPostResponseAction(post, postId) {
   return {
     type: POST_POST_RESPONSE,
     postId,
@@ -41,7 +41,7 @@ function postPostResponseAction(post, postId) {
 
 export const REQUEST_POSTS_BY_TOPIC = 'REQUEST_POSTS_BY_TOPIC';
 
-function requestPostsByTopicAction(topicId, offset) {
+export function requestPostsByTopicAction(topicId, offset) {
   return {
     type: REQUEST_POSTS_BY_TOPIC,
     topicId,
@@ -51,7 +51,8 @@ function requestPostsByTopicAction(topicId, offset) {
 
 export const RECEIVE_POSTS_BY_TOPIC = 'RECEIVE_POSTS_BY_TOPIC';
 
-function receivePostsByTopicAction(topicId, offset, postsByTopicResponse) {
+export function receivePostsByTopicAction(
+    topicId, offset, postsByTopicResponse) {
   return {
     type: RECEIVE_POSTS_BY_TOPIC,
     topicId,
@@ -63,7 +64,7 @@ function receivePostsByTopicAction(topicId, offset, postsByTopicResponse) {
 export function fetchPost(postId) {
   return dispatch => {
     dispatch(requestPostAction(postId));
-    fetch(`${API_URL}/posts/${postId}/`)
+    return fetch(`${API_URL}/posts/${postId}/`)
         .then(response => response.json())
         .then(post => dispatch(receivePostAction(postId, post)));
   };
@@ -72,7 +73,7 @@ export function fetchPost(postId) {
 export function postPost(post, authentication) {
   return dispatch => {
     dispatch(postPostRequestAction(post));
-    fetch(`${API_URL}/posts/`, {
+    return fetch(`${API_URL}/posts/`, {
       method: 'POST',
       body: mapObjectToFormData(post),
       credentials: 'include',
@@ -91,7 +92,7 @@ export function postPost(post, authentication) {
 export function fetchPostsByTopic(topicId, offset) {
   return dispatch => {
     dispatch(requestPostsByTopicAction(topicId, offset));
-    fetch(`${API_URL}/posts/topic/${topicId}/`, {
+    return fetch(`${API_URL}/posts/topic/${topicId}/`, {
       body: offset,
     })
         .then(response => response.json())

@@ -5,7 +5,7 @@ import {fetchPost} from './posts';
 
 export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 
-function postAnswerRequestAction(postId, answerBody) {
+export function postAnswerRequestAction(postId, answerBody) {
   return {
     type: POST_ANSWER_REQUEST,
     postId,
@@ -15,7 +15,7 @@ function postAnswerRequestAction(postId, answerBody) {
 
 export const POST_ANSWER_RESPONSE = 'POST_ANSWER_RESPONSE';
 
-function postAnswerResponseAction(postId, answerBody) {
+export function postAnswerResponseAction(postId, answerBody) {
   return {
     type: POST_ANSWER_RESPONSE,
     postId,
@@ -26,7 +26,7 @@ function postAnswerResponseAction(postId, answerBody) {
 export function postAnswer(postId, body, authentication) {
   return dispatch => {
     dispatch(postAnswerRequestAction(postId, body));
-    fetch(`${API_URL}/posts/${postId}/answer/`, {
+    return fetch(`${API_URL}/posts/${postId}/answer/`, {
       body: mapObjectToFormData(body),
       method: 'POST',
       credentials: 'include',

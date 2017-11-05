@@ -4,7 +4,7 @@ import {fetchPost} from './posts';
 
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 
-function searchRequestAction(searchRequest) {
+export function searchRequestAction(searchRequest) {
   return {
     type: SEARCH_REQUEST,
     searchRequest,
@@ -13,7 +13,7 @@ function searchRequestAction(searchRequest) {
 
 export const SEARCH_RESPONSE_SIMILAR_POSTS = 'SEARCH_RESPONSE_SIMILAR_POSTS';
 
-function searchResponseSimilarPostsAction(searchRequest, similarPosts) {
+export function searchResponseSimilarPostsAction(searchRequest, similarPosts) {
   return {
     type: SEARCH_RESPONSE_SIMILAR_POSTS,
     searchRequest,
@@ -23,7 +23,7 @@ function searchResponseSimilarPostsAction(searchRequest, similarPosts) {
 
 export const SEARCH_RESPONSE_MACHINE_ANSWER = 'SEARCH_RESPONSE_MACHINE_ANSWER';
 
-function searchResponseMachineAnswerAction(searchRequest, machineAnswer) {
+export function searchResponseMachineAnswerAction(searchRequest, machineAnswer) {
   return {
     type: SEARCH_RESPONSE_MACHINE_ANSWER,
     searchRequest,
@@ -34,7 +34,8 @@ function searchResponseMachineAnswerAction(searchRequest, machineAnswer) {
 export function search(searchRequest) {
   return dispatch => {
     dispatch(searchRequestAction(searchRequest));
-    fetch(`${API_URL}/posts/search/`, {
+
+    const searchPosts = fetch(`${API_URL}/posts/search/`, {
       method: 'POST',
       body: mapObjectToFormData(searchRequest),
     })
@@ -45,13 +46,14 @@ export function search(searchRequest) {
           similarPosts.forEach(post => dispatch(fetchPost(post.id)));
         });
 
-    fetch(`${API_URL}/wolf/search/`, {
+    const searchWolf = fetch(`${API_URL}/wolf/search/`, {
       method: 'POST',
       body: mapObjectToFormData(searchRequest),
     })
         .then(response => response.json())
         .then(machineAnswer => dispatch(
             searchResponseMachineAnswerAction(searchRequest, machineAnswer)));
+    return Promise.all([searchPosts, searchWolf]);
   };
 }
 
@@ -77,7 +79,7 @@ function receiveSuggestionsAction(keywords, suggestionsResponse) {
 export function fetchSuggestions(keywords) {
   return dispatch => {
     dispatch(requestSuggestionsAction(keywords));
-    fetch(`${API_URL}/posts/suggestions/`, {
+    return fetch(`${API_URL}/posts/suggestions/`, {
       body: keywords,
     })
         .then(response => response.json())

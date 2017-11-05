@@ -4,7 +4,7 @@ import {fetchPost} from './posts';
 
 export const REQUEST_POSTS_BY_USER = 'REQUEST_POSTS_BY_USER';
 
-function requestPostsByUserAction(userId) {
+export function requestPostsByUserAction(userId) {
   return {
     type: REQUEST_POSTS_BY_USER,
     userId,
@@ -13,7 +13,7 @@ function requestPostsByUserAction(userId) {
 
 export const RECEIVE_POSTS_BY_USER = 'RECEIVE_POSTS_BY_USER';
 
-function receivePostsByUserAction(userId, posts) {
+export function receivePostsByUserAction(userId, posts) {
   return {
     type: RECEIVE_POSTS_BY_USER,
     userId,
@@ -24,7 +24,7 @@ function receivePostsByUserAction(userId, posts) {
 export function fetchPostsByUser(userId) {
   return dispatch => {
     dispatch(requestPostsByUserAction(userId));
-    fetch(`${API_URL}/users/${userId}/posts`)
+    return fetch(`${API_URL}/users/${userId}/posts`)
         .then(response => response.json())
         .then(posts => {
           dispatch(receivePostsByUserAction(userId, posts));
@@ -35,7 +35,7 @@ export function fetchPostsByUser(userId) {
 
 export const PUT_USER_CERTIFICATE_REQUEST = 'PUT_USER_CERTIFICATE_REQUEST';
 
-function putUserCertificateRequestAction(userId) {
+export function putUserCertificateRequestAction(userId) {
   return {
     type: PUT_USER_CERTIFICATE_REQUEST,
     userId,
@@ -44,7 +44,7 @@ function putUserCertificateRequestAction(userId) {
 
 export const PUT_USER_CERTIFICATE_RESPONSE = 'PUT_USER_CERTIFICATE_RESPONSE';
 
-function putUserCertificateResponseAction(userId) {
+export function putUserCertificateResponseAction(userId) {
   return {
     type: PUT_USER_CERTIFICATE_RESPONSE,
     userId,
@@ -56,7 +56,7 @@ export function putUserCertificate(userId, token) {
     dispatch(putUserCertificateRequestAction(userId));
     const headers = new Headers();
     headers.append('token', token);
-    fetch(`${API_URL}/users/${userId}/certificate`, {
+    return fetch(`${API_URL}/users/${userId}/certificate`, {
       method: 'PUT',
       headers,
     })
@@ -66,7 +66,7 @@ export function putUserCertificate(userId, token) {
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 
-function loginRequestAction(username) {
+export function loginRequestAction(username) {
   return {
     type: LOGIN_REQUEST,
     username,
@@ -75,7 +75,7 @@ function loginRequestAction(username) {
 
 export const LOGIN_RESPONSE = 'LOGIN_RESPONSE';
 
-function loginResponseAction(username, authentication) {
+export function loginResponseAction(username, authentication) {
   return {
     type: LOGIN_RESPONSE,
     username,
@@ -87,8 +87,7 @@ export function login(loginRequest) {
   return dispatch => {
     const {username} = loginRequest;
     dispatch(loginRequestAction(username));
-    console.log(`${API_URL}/users/login/`);
-    fetch(`${API_URL}/users/login/`, {
+    return fetch(`${API_URL}/users/login/`, {
       method: 'POST',
       body: mapObjectToFormData(loginRequest),
       credentials: 'include',
@@ -101,7 +100,7 @@ export function login(loginRequest) {
 
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 
-function signupRequestAction(username, email) {
+export function signupRequestAction(username, email) {
   return {
     type: SIGNUP_REQUEST,
     username,
@@ -111,7 +110,7 @@ function signupRequestAction(username, email) {
 
 export const SIGNUP_RESPONSE = 'SIGNUP_RESPONSE';
 
-function signupResponseAction(username, email) {
+export function signupResponseAction(username, email) {
   return {
     type: SIGNUP_RESPONSE,
     username,
@@ -123,7 +122,7 @@ export function signup(signUpRequest) {
   return dispatch => {
     const {username, email} = signUpRequest;
     dispatch(signupRequestAction(username, email));
-    fetch(`${API_URL}/users/signup/`, {
+    return fetch(`${API_URL}/users/signup/`, {
       method: 'POST',
       body: mapObjectToFormData(signUpRequest),
     })
