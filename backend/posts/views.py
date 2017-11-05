@@ -201,25 +201,10 @@ def post_downvote_view(request, post_id):
 # def answer_upvote_view(request, anser_id):
 
 def rank_post(search_content, unordered_posts):
-    similarity_score = []
-    for post in unordered_posts:
-        # match topics
-        topic_list = [topic.name.lower() for topic in post.topics.all()]
-        search_tokens = generate_tokens(search_content)
-        if len(search_tokens) == 0:
-            return []
-        topic_score = 0
-        for topic in topic_list:
-            if topic in search_tokens:
-                topic_score = 1
-                break
-        title_tokens = generate_tokens(post.title)
-        title_score = rank_score(search_tokens, title_tokens) / pow(len(title_tokens),0.5)
-        body_tokens = generate_tokens(post.body)
-        body_score = rank_score(search_tokens, body_tokens) / pow(len(body_tokens), 0.3)
-        # title_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.title)).ratio()
-        # body_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.body)).ratio()
-        similarity_score.append((title_score * 3 + body_score + topic_score * 2) / 6)
+    search_tokens = generate_tokens(search_content)
+    if len(search_tokens) == 0:
+        return []
+    similarity_score = [rank_score(search_tokens, post) for post in unordered_posts]
     ordered_posts = [ind_post for ind_score, ind_post in sorted(zip(similarity_score, unordered_posts))]
     ordered_posts.reverse()
     return ordered_posts
@@ -235,13 +220,29 @@ def stem_sentence(str):
     return ' '.join(tokens)
 
 
-def rank_score(search_keywords, post_content):
+def rank_score(search_tokens, post):
+    topic_list = [topic.name.lower() for topic in post.topics.all()]
+    topic_score = 0
+    for topic in topic_list:
+        if topic in search_tokens:
+            topic_score = 1
+            break
+    title_tokens = generate_tokens(post.title)
+    title_score = match_score(search_tokens, title_tokens, 0.5)
+    body_tokens = generate_tokens(post.body)
+    body_score = match_score(search_tokens, body_tokens, 0.3)
+    # title_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.title)).ratio()
+    # body_score = SequenceMatcher(None, stem_sentence(search_content), stem_sentence(post.body)).ratio()
+    return (title_score * 3 + body_score + topic_score * 2) / 6
+
+
+def match_score(keyword_tokens, matched_tokens, factor):
     score = 0
-    keyword_set = set(search_keywords)
-    for word in post_content:
-        if word in keyword_set:
+    keyword_set = set(keyword_tokens)
+    for token in matched_tokens:
+        if token in keyword_set:
             score += 1
-    return score
+    return score / pow(len(matched_tokens), factor)
 
 
 # determine whether a user is a water army
