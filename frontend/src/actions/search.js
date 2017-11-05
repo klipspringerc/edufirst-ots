@@ -1,5 +1,7 @@
-import {fetchPost} from './posts';
 import {API_URL} from '../constants';
+import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
+
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 
 function searchRequestAction(searchRequest) {
@@ -9,29 +11,47 @@ function searchRequestAction(searchRequest) {
   };
 }
 
-export const SEARCH_RESPONSE = 'SEARCH_RESPONSE';
+export const SEARCH_RESPONSE_SIMILAR_POSTS = 'SEARCH_RESPONSE_SIMILAR_POSTS';
 
-function searchResponseAction(searchRequest, searchResponse) {
+function searchResponseSimilarPostsAction(searchRequest, similarPosts) {
   return {
-    type: SEARCH_RESPONSE,
+    type: SEARCH_RESPONSE_SIMILAR_POSTS,
     searchRequest,
-    searchResponse,
+    similarPosts,
+  };
+}
+
+export const SEARCH_RESPONSE_MACHINE_ANSWER = 'SEARCH_RESPONSE_MACHINE_ANSWER';
+
+function searchResponseMachineAnswerAction(searchRequest, machineAnswer) {
+  return {
+    type: SEARCH_RESPONSE_MACHINE_ANSWER,
+    searchRequest,
+    machineAnswer,
   };
 }
 
 export function search(searchRequest) {
   return dispatch => {
     dispatch(searchRequestAction(searchRequest));
-    fetch(`${API_URL}/posts/search`, {
+    fetch(`${API_URL}/posts/search/`, {
       method: 'POST',
-      body: JSON.stringify(searchRequest)
+      body: mapObjectToFormData(searchRequest),
     })
         .then(response => response.json())
-        .then(searchResponse => {
-          dispatch(searchResponseAction(searchRequest, searchResponse));
-          // Query all posts in this search immeidately to update store.
-          searchResponse.posts.forEach(post => dispatch(fetchPost(post.id)));
+        .then(similarPosts => {
+          dispatch(
+              searchResponseSimilarPostsAction(searchRequest, similarPosts));
+          similarPosts.forEach(post => dispatch(fetchPost(post.id)));
         });
+
+    fetch(`${API_URL}/wolf/search/`, {
+      method: 'POST',
+      body: mapObjectToFormData(searchRequest),
+    })
+        .then(response => response.json())
+        .then(machineAnswer => dispatch(
+            searchResponseMachineAnswerAction(searchRequest, machineAnswer)));
   };
 }
 
@@ -57,8 +77,8 @@ function receiveSuggestionsAction(keywords, suggestionsResponse) {
 export function fetchSuggestions(keywords) {
   return dispatch => {
     dispatch(requestSuggestionsAction(keywords));
-    fetch(`${API_URL}/posts/suggestions`, {
-      body: keywords
+    fetch(`${API_URL}/posts/suggestions/`, {
+      body: keywords,
     })
         .then(response => response.json())
         .then(suggestionsResponse =>
@@ -66,11 +86,11 @@ export function fetchSuggestions(keywords) {
   };
 }
 
-export const CLEAR_SERACH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
 export function clearSearchResults() {
   return {
-    type: CLEAR_SERACH_RESULTS,
+    type: CLEAR_SEARCH_RESULTS,
   };
 }
 
@@ -87,5 +107,14 @@ export const HIDE_SEARCH_BOX = 'HIDE_SEARCH_BOX';
 export function hideSearchBox() {
   return {
     type: HIDE_SEARCH_BOX,
+  };
+}
+
+export const SAVE_QUERY = 'SAVE_QUERY';
+
+export function saveQuery(query) {
+  return {
+    type: SAVE_QUERY,
+    query,
   };
 }

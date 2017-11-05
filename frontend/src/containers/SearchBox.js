@@ -1,20 +1,15 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import {Button, Form, FormControl, FormGroup, Input} from 'react-bootstrap';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {Subject} from 'rxjs';
 import {search} from '../actions/search';
-import QuestionSimple from '../components/QuestionSimple';
-import MachineGeneratedResult from './MachineGeneratedResult';
 
 class SearchBox extends Component {
 
   static propTypes = {
-    machineGeneratedResult: PropTypes.object,
-    questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-    showSearchResults: PropTypes.bool.isRequired,
-    folded: PropTypes.bool.isRequired,
     handleSearch: PropTypes.func.isRequired,
+    searchQuery: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -24,51 +19,7 @@ class SearchBox extends Component {
     this.handleChangeSubject = new Subject();
     this.handleChangeSubject.debounceTime(200)
         .subscribe(this.handleChange);
-  }
-
-  renderMachineGeneratedResult() {
-    const {machineGeneratedResult, folded} = this.props;
-    return (
-        <MachineGeneratedResult
-            folded={folded}
-            machineGeneratedResult={machineGeneratedResult}/>
-    );
-  }
-
-  renderSuggestedQuestions() {
-    const {questions} = this.props;
-    return (
-        <div>
-          {questions.map(question => (
-              <QuestionSimple
-                  key={question.id}
-                  title={question.title}
-                  author={question.author.username}
-                  votes={question.votes_total}
-                  topAnswer={question.top_answer.body}
-                  questionId={question.id}/>
-          ))}
-        </div>
-    );
-  }
-
-  renderSearchResults() {
-    const {user, keywords} = this.props;
-    return (
-        <div>
-          {this.renderMachineGeneratedResult()}
-          {this.renderSuggestedQuestions()}
-          <Link to={user.authentication
-              ? `/question/editQuestion/${keywords}`
-              : '/login'}>
-            <button>
-              {user.authentication
-                  ? 'Create New Post'
-                  : 'Login to Create a Post'}
-            </button>
-          </Link>
-        </div>
-    );
+    this.handleChangeSubject.next(this.props.searchQuery);
   }
 
   handleChange(text) {
@@ -77,22 +28,24 @@ class SearchBox extends Component {
 
   render() {
     return (
-        <div>
-          <input type="search" placeholder="Search here."
-                 onChange={e => this.handleChangeSubject.next(e.target.value)}/>
-          {this.props.showSearchResults ? this.renderSearchResults() : null}
-        </div>
+        <Form inline className='navbar-form' action=""
+              onSubmit={e => {e.preventDefault();}}>
+          <FormGroup>
+            <FormControl className="form-control form-control-lg"
+                         style={{width: 300}} type="text"
+                         placeholder="Ask me anything..."
+                         onChange={e => this.handleChangeSubject
+                             .next(e.target.value)}
+                         defaultValue={this.props.searchQuery}/>
+          </FormGroup>
+          <Button bsStyle='success' type='submit'>Search</Button>
+        </Form>
     );
   }
 }
 
-const mapStateToProps = ({posts, fold, user}) => ({
-  machineGeneratedResult: posts.machineAnswer,
-  questions: posts.similarPosts,
-  showSearchResults: posts.showSearchResults,
-  keywords: posts.keywords,
-  folded: fold.folded,
-  user,
+const mapStateToProps = ({searchQuery}) => ({
+  searchQuery: searchQuery.searchQuery,
 });
 
 const mapDispatchToProps = dispatch => ({

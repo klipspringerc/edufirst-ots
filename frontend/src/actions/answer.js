@@ -1,5 +1,8 @@
-import {fetchPost} from './posts';
 import {API_URL} from '../constants';
+import history from '../history';
+import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
+
 export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 
 function postAnswerRequestAction(postId, answerBody) {
@@ -20,17 +23,19 @@ function postAnswerResponseAction(postId, answerBody) {
   };
 }
 
-export function postAnswer(postId, answerBody, authentication) {
+export function postAnswer(postId, body, authentication) {
   return dispatch => {
-    dispatch(postAnswerRequestAction(postId, answerBody));
-    fetch(`${API_URL}/posts/${postId}/answers`, {
-      body: JSON.stringify({answerBody, authentication}),
-      method: 'POST'
+    dispatch(postAnswerRequestAction(postId, body));
+    fetch(`${API_URL}/posts/${postId}/answer/`, {
+      body: mapObjectToFormData(body),
+      method: 'POST',
+      credentials: 'include',
     })
-        .then(response => {
-          dispatch(postAnswerResponseAction(postId, answerBody));
+        .then(() => {
+          dispatch(postAnswerResponseAction(postId, body));
           // Query the same post immediately again to update the store
           dispatch(fetchPost(postId));
+          history.push(`/questions/${postId}`);
         });
   };
 }

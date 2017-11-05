@@ -1,40 +1,30 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {toggleFoldAction} from '../actions/toggle-fold';
+import CardExampleControlled from '../components/ExpandableMachineGeneratedAnswerTab';
 import './MachineGeneratedResult.css';
 
 class MachineGeneratedResult extends Component {
 
   static propTypes = {
-    folded: PropTypes.bool.isRequired,
     machineGeneratedResult: PropTypes.object.isRequired,
-    handleFoldButtonClick: PropTypes.func.isRequired,
   };
 
   render() {
-    const {img, answerBody} = this.props.machineGeneratedResult;
-    const imageUrl = img, text = answerBody;
+    const results = this.props.machineGeneratedResult.pods;
     return (
-        <div>
-          {this.props.folded ? (<div className="folded">{text}</div>) : (
-              <div>
-                {imageUrl
-                    ?
-                    <img src={imageUrl} className="unfolded" alt="geneerated"/>
-                    : null}
-                <div className="unfolded">{text}</div>
-              </div>
-          )}
-          <div onClick={this.props.handleFoldButtonClick}>
-            {this.props.folded ? 'v' : '^'}
-          </div>
+        <div className="col-md-9">
+          {results.map((result, index) => {
+            if (index < 3) {
+              return <div key={index}>
+                <CardExampleControlled result={result}/>
+                <div style={{height: 20}}/>
+              </div>;
+            }
+          })}
+
         </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  handleFoldButtonClick: () => dispatch(toggleFoldAction()),
-});
-export default connect(null, mapDispatchToProps)(MachineGeneratedResult);
+export default (MachineGeneratedResult);

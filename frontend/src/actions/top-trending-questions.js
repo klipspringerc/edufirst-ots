@@ -17,12 +17,16 @@ function receiveTopTrendingQuestionsAction(json) {
 
 const TOP_TRENDING_QUESTIONS = [
   {
-    title: 'Q1',
-    id: 1,
+    title: 'How do you split a list into evenly sized chunks',
+    id: 25,
   }, {
-    title: 'Q2',
-    id: 2,
-  }];
+    title: 'Does Django scale?',
+    id: 4,
+  },
+  {
+    title: 'Node and Nodejs',
+    id: 31,
+  },];
 
 export function fetchTopTrendingQuestions() {
   return dispatch => {
