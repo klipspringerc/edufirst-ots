@@ -1,5 +1,7 @@
-import {fetchPost} from './posts';
 import {API_URL} from '../constants';
+import {mapObjectToFormData} from '../util';
+import {fetchPost} from './posts';
+
 export const REQUEST_POSTS_BY_USER = 'REQUEST_POSTS_BY_USER';
 
 function requestPostsByUserAction(userId) {
@@ -85,9 +87,11 @@ export function login(loginRequest) {
   return dispatch => {
     const {username} = loginRequest;
     dispatch(loginRequestAction(username));
-    fetch(`${API_URL}/users/login`, {
+    console.log(`${API_URL}/users/login/`);
+    fetch(`${API_URL}/users/login/`, {
       method: 'POST',
-      body: JSON.stringify(loginRequest),
+      body: mapObjectToFormData(loginRequest),
+      credentials: 'include',
     })
         .then(response => response.json())
         .then(authentication => dispatch(
@@ -119,9 +123,9 @@ export function signup(signUpRequest) {
   return dispatch => {
     const {username, email} = signUpRequest;
     dispatch(signupRequestAction(username, email));
-    fetch(`${API_URL}/users/signup`, {
+    fetch(`${API_URL}/users/signup/`, {
       method: 'POST',
-      body: JSON.stringify(signUpRequest)
+      body: mapObjectToFormData(signUpRequest),
     })
         .then(response => dispatch(signupResponseAction(username, email)));
   };

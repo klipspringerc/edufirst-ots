@@ -14,9 +14,9 @@ const QuestionSimple = ({title, author, votes, topAnswer, questionId}) => (
         </tr>
         <tr>
           <td className="votes">{votes}</td>
-          <td className="topAnswer">
+          {topAnswer ? (<td className="topAnswer">
             <Link to={`/questions/${questionId}`}>{topAnswer}</Link>
-          </td>
+          </td>) : null}
         </tr>
         </tbody>
       </table>
@@ -27,7 +27,7 @@ QuestionSimple.propTypes = {
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   votes: PropTypes.number.isRequired,
-  topAnswer: PropTypes.string.isRequired,
+  topAnswer: PropTypes.string,
   questionId: PropTypes.number.isRequired,
 };
 

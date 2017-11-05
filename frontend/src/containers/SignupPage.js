@@ -1,41 +1,55 @@
-import {signup} from '../actions/users';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, reduxForm} from 'redux-form';
+import {Field, formValueSelector, reduxForm} from 'redux-form';
+import {signup} from '../actions/users';
+import '../components/auxiliary_position.css';
 
-const SignupPage = ({handleSignup, form}) => (
-    <form onSubmit={e => {
+let SignupPage = ({handleSignup, signupRequest}) => (
+    <form className="middle-down-row" onSubmit={e => {
       e.preventDefault();
-      if (form.signup) {
-        handleSignup(form.signup);
-      }
+      handleSignup(signupRequest);
     }}>
       <div>
-        <label>Email</label>
-        <Field name="email" component="input" type="email"/>
+        <label style={{width: 100}}>Email</label>
+        <TextField>
+          <Field name="email" component="input" type="email"/>
+        </TextField>
       </div>
       <div>
-        <label>Username</label>
-        <Field name="username" component="input" type="text"/>
+        <label style={{width: 100}}>Username</label>
+        <TextField>
+          <Field name="username" component="input" type="text"/>
+        </TextField>
       </div>
       <div>
-        <label>Password</label>
-        <Field name="password" component="input" type="password"/>
+        <label style={{width: 100}}>Password</label>
+        <TextField>
+          <Field name="password" component="input" type="password"/>
+        </TextField>
       </div>
-      <button type="submit">Signup</button>
+      <br/>
+      <RaisedButton label="Submit" primary={true}
+                    onClick={(event) => handleSignup(signupRequest)}/>
     </form>
 );
 
 SignupPage.propTypes = {
-  form: PropTypes.object.isRequired,
+  signupRequest: PropTypes.object,
   handleSignup: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({form}) => ({form});
+SignupPage = reduxForm({form: 'signup'})(SignupPage);
+const selector = formValueSelector('signup');
+
+const mapStateToProps = state => {
+  const signupRequest = selector(state, 'email', 'username', 'password');
+  return {signupRequest};
+};
 const mapDispatchToProps = dispatch => ({
   handleSignup: signUpRequest => dispatch(signup(signUpRequest)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    reduxForm({form: 'signup'})(SignupPage));
+export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
