@@ -80,7 +80,7 @@ class SearchPage extends Component {
         <Card style={{width: '200px', height: '80%'}}>
           <CardHeader
               title="Trending Topics"
-              avatar="https://www.backblaze.com/pics/mac-online-backup-imac.jpg"
+              avatar="https://webappstatic.buzzfeed.com/static/images/global/og-image-trending.jpg"
           />
           <TopTrendingQuestions loading={loading}
                                 questions={topTrendingQuestions}/>
