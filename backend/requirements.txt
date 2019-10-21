@@ -4,7 +4,7 @@ Django==1.11.5
 django-cors-headers==2.1.0
 djangorestframework==3.7.0
 idna==2.6
-nltk==3.2.5
+nltk==3.4.5
 py==1.4.34
 pytest==3.2.2
 pytz==2017.2
